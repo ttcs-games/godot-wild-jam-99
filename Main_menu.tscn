@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://lwwwqq1ynapw"]
+
+[ext_resource type="Script" uid="uid://d1yb632y687dc" path="res://main_menu.gd" id="1_b07fi"]
+
+[node name="Main_menu" type="Control" unique_id=1114249464]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_b07fi")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1705336590]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1174200878]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1667226848]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1371258587]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="Play_button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=611992399]
+layout_mode = 2
+text = "Play"
+
+[node name="Options_button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1878614623]
+layout_mode = 2
+text = "Options"
+
+[node name="Quit_button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1645413478]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Play_button" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Options_button" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Quit_button" to="." method="_on_quit_button_pressed"]
