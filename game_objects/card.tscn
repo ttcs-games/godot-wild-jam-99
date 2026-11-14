@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://bad0do0cr25gd"]
+
+[ext_resource type="Script" uid="uid://dqe8lhgjslaqc" path="res://game_objects/card.gd" id="1_ofhub"]
+[ext_resource type="Texture2D" uid="uid://ba403h1s6vbgp" path="res://assets/sprites/Card_Stock.png" id="2_o48n1"]
+
+[node name="Card" type="Control" unique_id=333784551]
+custom_minimum_size = Vector2(210, 300)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ofhub")
+
+[node name="Cover" type="TextureRect" parent="." unique_id=24016845]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_o48n1")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=986622541]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 37
+theme_override_constants/margin_right = 21
+theme_override_constants/margin_bottom = 11
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1760202546]
+layout_mode = 2
+alignment = 1
+
+[node name="PreviewArea" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1903990259]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.75
+mouse_filter = 2
+
+[node name="Gap" type="Control" parent="MarginContainer/VBoxContainer" unique_id=752807238]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=967517754]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Placeholder Title"
+horizontal_alignment = 1
+
+[node name="Gap2" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1578194874]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=724926020]
+custom_minimum_size = Vector2(0, 80)
+custom_maximum_size = Vector2(124, -1)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 12
+text = "This is some long ass text to see how it goes. it should have autowrap"
+autowrap_mode = 3

@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://gc8u4yf0gjcs"]
+
+[ext_resource type="Shader" uid="uid://cbevm783qlg21" path="res://assets/hue.gdshader" id="1_i00o8"]
+[ext_resource type="Texture2D" uid="uid://c2v1642610t21" path="res://assets/sprites/Glass.png" id="2_oeij8"]
+[ext_resource type="Script" uid="uid://bjwwwtuyxp6lo" path="res://game_objects/block.gd" id="3_odxlu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5npld"]
+resource_local_to_scene = true
+shader = ExtResource("1_i00o8")
+shader_parameter/shift_amount = 250.0
+
+[node name="Block" type="Sprite2D" unique_id=388570225]
+material = SubResource("ShaderMaterial_5npld")
+scale = Vector2(0.063, 0.063)
+texture = ExtResource("2_oeij8")
+centered = false
+region_rect = Rect2(0, 0, 32, 32)
+script = ExtResource("3_odxlu")
+element = 1

@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bcvw2o3gjdmh7"]
+
+[ext_resource type="Script" uid="uid://bcim5heihwsh6" path="res://tests/cursor_test.gd" id="1_d2217"]
+[ext_resource type="PackedScene" uid="uid://bcyiquvaivsql" path="res://ui/hand.tscn" id="1_s0ww8"]
+
+[node name="Control" type="Control" unique_id=600854760]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_d2217")
+
+[node name="Hand" parent="." unique_id=435155043 instance=ExtResource("1_s0ww8")]
+layout_mode = 1
+
+[node name="CursorLayer" type="CanvasLayer" parent="." unique_id=250087561]

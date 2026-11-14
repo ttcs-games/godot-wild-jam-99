@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ShapeData" format=3 uid="uid://brakit3wgeijm"]
+
+[ext_resource type="Script" uid="uid://cu4flg5hjyic8" path="res://data/shape_data.gd" id="1_war3w"]
+
+[resource]
+script = ExtResource("1_war3w")
+offsets = Array[Vector2i]([Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(1, 2)])
+display_name = "L-shape"
+metadata/_custom_type_script = "uid://cu4flg5hjyic8"
