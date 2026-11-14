@@ -46,6 +46,74 @@ text = "Options"
 layout_mode = 2
 text = "Quit"
 
+[node name="OptionMenu" type="Panel" parent="." unique_id=218056790]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="OptionMenu" unique_id=1870229193]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 256
+theme_override_constants/margin_right = 256
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OptionMenu/MarginContainer" unique_id=694511785]
+layout_mode = 2
+alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="OptionMenu/MarginContainer/VBoxContainer" unique_id=2083377633]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Master" type="Label" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1391019597]
+layout_mode = 2
+text = "Master"
+
+[node name="MasterSlider" type="HSlider" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1280937076]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Music" type="Label" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=846907563]
+layout_mode = 2
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=45054037]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SFX" type="Label" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1053575366]
+layout_mode = 2
+text = "SFX"
+
+[node name="SFXSlider" type="HSlider" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1821693499]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="BackButton" type="Button" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=562756014]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Back"
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Play_button" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Options_button" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Quit_button" to="." method="_on_quit_button_pressed"]
+[connection signal="value_changed" from="OptionMenu/MarginContainer/VBoxContainer/GridContainer/MasterSlider" to="." method="_on_master_slider_value_changed"]
+[connection signal="value_changed" from="OptionMenu/MarginContainer/VBoxContainer/GridContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="OptionMenu/MarginContainer/VBoxContainer/GridContainer/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="pressed" from="OptionMenu/MarginContainer/VBoxContainer/GridContainer/BackButton" to="." method="_on_back_button_pressed"]
