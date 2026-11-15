@@ -144,12 +144,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		var ok := place(test_offsets, hovered_cell, Elements.Id.BLUE)
 		if not ok:
 			placement_rejected.emit(test_offsets)
-			
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+	
+	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var test_offsets: Array[Vector2i] = GameManager._active_card.card_data.shape.offsets
 		var ok := place(test_offsets, hovered_cell, GameManager._active_card.card_data.element)
 		if not ok:
 			placement_rejected.emit(test_offsets)
-		else:
-			return #todo: make the card disappear from the hand.
 	

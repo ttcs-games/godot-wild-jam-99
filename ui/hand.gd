@@ -76,7 +76,7 @@ func _on_card_clicked(card: Control) -> void:
 	card_selected.emit(card, cards.find(card))
 
 func _on_grid_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
-	print(cards)
-	cards.remove_at(GameManager._active_card_index)
+	var card = cards.pop_at(GameManager._active_card_index)
+	GameManager.remove_card()
+	card.queue_free()
 	_layout()
-	print("this running?")

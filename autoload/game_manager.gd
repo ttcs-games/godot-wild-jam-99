@@ -10,7 +10,7 @@ var cursor_layer: CanvasLayer
 const CURSOR := preload("res://ui/held_cursor.tscn")
 
 var _active_card: Control = null
-var _active_card_index: int = 11 #because the player will never have more than 10 cards
+var _active_card_index: int = 1000 #because the player will never have more than 10 cards
 var _active_cursor: Node2D = null
 
 # Needs to be called 
@@ -31,6 +31,13 @@ func select_card(card: Control, card_index: int) -> void:
 	_active_cursor = CURSOR.instantiate()
 	_active_cursor.setup(card.card_data)
 	cursor_layer.add_child(_active_cursor)
+
+func remove_card() -> void:
+	_active_card.unlock()
+	_active_card = null
+	_active_cursor.queue_free()
+	_active_cursor = null
+	
 
 func rotate_selection() -> void:
 	#squares dont change while rotating

@@ -2,8 +2,8 @@
 
 extends Control
 
-@onready var hand: Control = $Hand
-@onready var cursor_layer: CanvasLayer = $CursorLayer
+@onready var hand: Control = $Hand2
+@onready var cursor_layer: CanvasLayer = $CursorLayer2
 
 func _ready() -> void:
 	# Init GameManager with hand and cursor layer

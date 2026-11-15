@@ -20,11 +20,6 @@ scale = Vector2(0.75, 0.75)
 
 [node name="Hand2" parent="Control" unique_id=435155043 instance=ExtResource("2_ob6xn")]
 layout_mode = 1
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-grow_horizontal = 1
-grow_vertical = 1
 
 [node name="CursorLayer2" type="CanvasLayer" parent="Control" unique_id=2095042195]
 
