@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c0lhdxpaa3aem"]
+
+[ext_resource type="Script" uid="uid://b1dvglqss51jf" path="res://ui/held_cursor.gd" id="1_epb13"]
+
+[node name="HeldCursor" type="Node2D" unique_id=1366404739]
+script = ExtResource("1_epb13")

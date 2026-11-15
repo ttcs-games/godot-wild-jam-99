@@ -13,7 +13,10 @@ config_version=5
 config/name="Untitled Tetris Game"
 run/main_scene="uid://lwwwqq1ynapw"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://icon.svg"
+
+[autoload]
+
+GameManager="*uid://om176pvqr6k1"
 
 [display]
 
