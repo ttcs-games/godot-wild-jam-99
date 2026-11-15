@@ -6,6 +6,7 @@ extends Node2D
 @export var grid_width: int = 10
 @export var grid_height: int = 20
 @export var cell_size: int = 32
+@export var grid_padding: int = 3
 
 # CONSTANTS
 const BLOCK := preload("res://game_objects/block.tscn")
@@ -44,9 +45,20 @@ func _ready() -> void:
 
 # Draw function is used only for aim draw (blocks are drawn by themselves - they are independent nodes)
 func _draw() -> void:
+	#drawing the bounds of the grid so it's easier to see
+	var border := Rect2(0.0 - grid_padding,0.0 - grid_padding,grid_width*cell_size + 2*grid_padding, grid_height*cell_size + 2*grid_padding)
+	draw_rect(border, Color.WHITE, false, 2.0)
+	
+	#drawing the shape if the cursor is hovering over it.
 	if in_bounds(hovered_cell):
-		var cell_aim := Rect2(cell_to_coords(hovered_cell), Vector2(cell_size, cell_size))
-		draw_rect(cell_aim, Color.WHITE, false, 2.0)
+		#if there is an active block in the player's hand, it draws that instead.
+		if GameManager._active_card != null:
+			for block in GameManager._active_card.card_data.shape.offsets:
+				var cell_aim := Rect2(cell_to_coords(hovered_cell + block), Vector2(cell_size, cell_size))
+				draw_rect(cell_aim, Color.WHITE, false, 2.0)
+		else:
+			var cell_aim := Rect2(cell_to_coords(hovered_cell), Vector2(cell_size, cell_size))
+			draw_rect(cell_aim, Color.WHITE, false, 2.0)
 
 # Checker for an array of blocks (a shape) if it can be placed in required cell
 func can_place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id) -> bool:
@@ -90,7 +102,7 @@ func _neighbors(c: Vector2i) -> Array[Vector2i]:
 		c + Vector2i(0,-1)
 	]
 
-# Try placing an array of blocks (shape) to the grid. Retruns false if failed
+# Try placing an array of blocks (shape) to the grid. Returns false if failed
 func place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id) -> bool:
 	if not can_place(offsets, origin, element):
 		return false
@@ -132,3 +144,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		var ok := place(test_offsets, hovered_cell, Elements.Id.BLUE)
 		if not ok:
 			placement_rejected.emit(test_offsets)
+			
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var test_offsets: Array[Vector2i] = GameManager._active_card.card_data.shape.offsets
+		var ok := place(test_offsets, hovered_cell, GameManager._active_card.card_data.element)
+		if not ok:
+			placement_rejected.emit(test_offsets)
+		else:
+			return #todo: make the card disappear from the hand.
+	

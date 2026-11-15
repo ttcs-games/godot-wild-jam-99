@@ -9,7 +9,7 @@ var cards: Array[Control] = []
 
 # SIGNALS
 # when card is selected
-signal card_selected(card: Control)
+signal card_selected(card: Control, card_index: int)
 
 func _ready() -> void:
 	resized.connect(_layout)
@@ -73,4 +73,10 @@ func _layout() -> void:
 # Process card's signal - signal it to GameManager
 # Not doing it directly from Card to GameManager because GameManager can't access Card's signal directly 
 func _on_card_clicked(card: Control) -> void:
-	card_selected.emit(card)
+	card_selected.emit(card, cards.find(card))
+
+func _on_grid_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
+	print(cards)
+	cards.remove_at(GameManager._active_card_index)
+	_layout()
+	print("this running?")
