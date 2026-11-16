@@ -4,14 +4,46 @@
 
 extends Node
 
+const DRAW_AMOUNT := 10
+
 var hand: Control
 var cursor_layer: CanvasLayer
+
+var deck: CardPile
+var discard: CardPile
+var exhume: CardPile
 
 const CURSOR := preload("res://ui/held_cursor.tscn")
 
 var _active_card: Control = null
 var _active_card_index: int = 1000 #because the player will never have more than 10 cards
 var _active_cursor: Node2D = null
+
+# Creates the piles and a initial deck
+func init_deck() -> void:
+	deck = CardPile.new()
+	discard = CardPile.new()
+	exhume = CardPile.new()
+	deck.add_all(CardFactory.standard_deck())
+	deck.shuffle()
+
+# Draws cards from deck into hand
+# Reshuffles discard pile into deck if there is not enough to draw
+func start_turn() -> void:
+	var cards := deck.draw(DRAW_AMOUNT)
+	if cards.size() < DRAW_AMOUNT:
+		deck.add_all(discard.draw_all())
+		deck.shuffle()
+		cards.append_array(deck.draw(DRAW_AMOUNT - cards.size()))
+	hand.setup(cards)
+
+# Puts all the cards from hand to discard pile
+func end_turn() -> void:
+	discard.add_all(hand.get_cards_data())
+	hand.clear()
+
+func discard_card(card: CardData) -> void:
+	discard.add(card)
 
 # Needs to be called 
 func select_card(card: Control, card_index: int) -> void:

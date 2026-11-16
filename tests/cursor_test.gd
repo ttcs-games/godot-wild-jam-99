@@ -14,4 +14,5 @@ func _ready() -> void:
 	hand.card_selected.connect(GameManager.select_card)
 	
 	# Set the hand to be filled with the whole deck
-	hand.setup(CardFactory.standard_deck())
+	GameManager.init_deck()
+	GameManager.start_turn()
