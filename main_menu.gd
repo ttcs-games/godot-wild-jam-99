@@ -1,5 +1,4 @@
 extends Control
-var cursor = load("res://assets/sprites/Hand 5.png")
 @onready var Mainmenu = $CenterContainer
 @onready var OptionMenu = $OptionMenu
 @onready var MasterSlider = $OptionMenu/MarginContainer/VBoxContainer/GridContainer/MasterSlider
