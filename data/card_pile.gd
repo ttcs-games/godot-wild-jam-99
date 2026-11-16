@@ -44,3 +44,6 @@ func draw(n: int) -> Array[CardData]:
 	if count > 0:
 		changed.emit()
 	return out
+
+func get_cards_copy() -> Array[CardData]:
+	return _cards.duplicate(true)
