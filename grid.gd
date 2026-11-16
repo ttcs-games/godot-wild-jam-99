@@ -145,7 +145,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if not ok:
 			placement_rejected.emit(test_offsets)
 	
-	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and GameManager._active_card != null:
 		var test_offsets: Array[Vector2i] = GameManager._active_card.card_data.shape.offsets
 		var ok := place(test_offsets, hovered_cell, GameManager._active_card.card_data.element)
 		if not ok:
