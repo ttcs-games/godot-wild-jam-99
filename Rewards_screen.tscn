@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bfpe6oflplml5"]
+
+[ext_resource type="Script" uid="uid://n51qvajcaiyd" path="res://rewards_screen.gd" id="1_85wn1"]
+
+[node name="RewardsScreen" type="Control" unique_id=1251849727]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_85wn1")
