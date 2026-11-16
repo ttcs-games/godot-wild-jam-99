@@ -22,6 +22,7 @@ GameManager="*uid://om176pvqr6k1"
 
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+mouse_cursor/custom_image="uid://qiaitkxbv255"
 
 [physics]
 

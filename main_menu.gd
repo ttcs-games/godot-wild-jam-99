@@ -1,9 +1,11 @@
 extends Control
+var cursor = load("res://assets/sprites/Hand 5.png")
 @onready var Mainmenu = $CenterContainer
 @onready var OptionMenu = $OptionMenu
 @onready var MasterSlider = $OptionMenu/MarginContainer/VBoxContainer/GridContainer/MasterSlider
 @onready var MusicSlider = $OptionMenu/MarginContainer/VBoxContainer/GridContainer/MusicSlider
 @onready var SFXSlider = $OptionMenu/MarginContainer/VBoxContainer/GridContainer/SFXSlider
+
 
 func _on_play_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://Game_zone.tscn")

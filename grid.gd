@@ -11,7 +11,7 @@ extends Node2D
 # CONSTANTS
 const BLOCK := preload("res://game_objects/block.tscn")
 @onready var block_root: Node2D = $BlockRoot # node where all the blocks will be stored
-
+@onready var cursor: AnimatedSprite2D = %Cursor #add cursor in the inspector
 # SIGNALS
 # todo: placement is yet to be processed
 # When a block is placed (L shape = 4 calls)
@@ -148,6 +148,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var test_offsets: Array[Vector2i] = GameManager._active_card.card_data.shape.offsets
 		var ok := place(test_offsets, hovered_cell, GameManager._active_card.card_data.element)
+		
 		if not ok:
 			placement_rejected.emit(test_offsets)
+		else: 
+			cursor.play("throw")
 	
+func _on_animation_finished():
+	if cursor.animation == "release":
+		cursor.sprite.play("idle")

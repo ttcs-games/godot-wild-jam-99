@@ -9,12 +9,17 @@ var cursor_layer: CanvasLayer
 
 const CURSOR := preload("res://ui/held_cursor.tscn")
 
+var cursorAnimation : AnimatedSprite2D
 var _active_card: Control = null
 var _active_card_index: int = 1000 #because the player will never have more than 10 cards
 var _active_cursor: Node2D = null
 
+
 # Needs to be called 
 func select_card(card: Control, card_index: int) -> void:
+	
+	
+	cursorAnimation.play("grab")
 	# If you already have a selected card - cancel previous selection
 	if _active_card != null:
 		_active_card.unlock()
@@ -91,3 +96,10 @@ func rotate_selection() -> void:
 		#sending the same card and index, but with a rotated shape
 		select_card(rotated_card, _active_card_index)
 		return
+func cursor_Hover() -> void:
+	if cursorAnimation.animation != "grab":
+		cursorAnimation.play("hover")
+	
+func cursor_Hover_exit() -> void:
+	if cursorAnimation.animation != "grab":
+		cursorAnimation.play("hover_exit")
