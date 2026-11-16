@@ -114,12 +114,14 @@ func _fit_shape(shape: Node2D, offsets: Array[Vector2i]) -> void:
 # Signal from mouse entering - make it hover
 func _on_mouse_entered() -> void:
 	_tween_to_hover(true)
+	GameManager.cursor_Hover()
 
 # Signal from mouse exiting - make it unhover if not selected
 func _on_mouse_exited() -> void:
 	if _locked:
 		return
 	_tween_to_hover(false)
+	GameManager.cursor_Hover_exit()
 
 # Input reading for when card is selected
 func _gui_input(event: InputEvent) -> void:
@@ -135,6 +137,7 @@ func _gui_input(event: InputEvent) -> void:
 func lock() -> void:
 	_locked = true
 	_tween_to_hover(true)
+	
 
 # Unselect the card
 func unlock() -> void:

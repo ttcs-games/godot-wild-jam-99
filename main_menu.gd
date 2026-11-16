@@ -5,6 +5,7 @@ extends Control
 @onready var MusicSlider = $OptionMenu/MarginContainer/VBoxContainer/GridContainer/MusicSlider
 @onready var SFXSlider = $OptionMenu/MarginContainer/VBoxContainer/GridContainer/SFXSlider
 
+
 func _on_play_button_pressed() -> void:
 	MusicManager.switch_track()
 	get_tree().change_scene_to_file("res://Game_zone.tscn")
