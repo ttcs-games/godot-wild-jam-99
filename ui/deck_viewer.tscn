@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://biiuj7uns81dj"]
+
+[ext_resource type="Script" uid="uid://bi5q6q1xfdulk" path="res://ui/deck_viewer.gd" id="1_7dpwc"]
+
+[node name="DeckViewer" type="Control" unique_id=206202567]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7dpwc")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=242890926]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5019608)
+
+[node name="CenterContainer" type="CenterContainer" parent="ColorRect" unique_id=1973423029]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="ColorRect/CenterContainer" unique_id=1159016661]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect/CenterContainer/Panel" unique_id=1450761467]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/CenterContainer/Panel/MarginContainer" unique_id=1004678612]
+layout_mode = 2
+
+[node name="TopBar" type="HBoxContainer" parent="ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=1837786140]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer/TopBar" unique_id=1863209137]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Deck"
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer/TopBar" unique_id=261257983]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "X"
+
+[node name="HintLabel" type="Label" parent="ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=251841771]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Ordered by element, then material, then shape"
+horizontal_alignment = 1
+
+[node name="CardScroll" type="ScrollContainer" parent="ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=1175981078]
+custom_minimum_size = Vector2(700, 500)
+layout_mode = 2
+
+[node name="CardGrid" type="GridContainer" parent="ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer/CardScroll" unique_id=1155533384]
+layout_mode = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 3

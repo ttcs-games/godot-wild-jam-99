@@ -14,11 +14,13 @@ var discard: CardPile
 var exhume: CardPile
 
 const CURSOR := preload("res://ui/held_cursor.tscn")
+const DECK_VIEWER_SCENE := preload("res://ui/deck_viewer.tscn")
 
 var cursorAnimation : AnimatedSprite2D
 var _active_card: Control = null
 var _active_card_index: int = 1000 #because the player will never have more than 10 cards
 var _active_cursor: Node2D = null
+var _open_viewer: Control = null
 
 # Creates the piles and a initial deck
 func init_deck() -> void:
@@ -69,10 +71,12 @@ func select_card(card: Control, card_index: int) -> void:
 	cursor_layer.add_child(_active_cursor)
 
 func remove_card() -> void:
-	_active_card.unlock()
-	_active_card = null
-	_active_cursor.queue_free()
-	_active_cursor = null
+	if _active_card != null:
+		_active_card.unlock()
+		_active_card = null
+	if _active_cursor != null:
+		_active_cursor.queue_free()
+		_active_cursor = null
 	
 
 func rotate_selection() -> void:
@@ -127,6 +131,7 @@ func rotate_selection() -> void:
 		#sending the same card and index, but with a rotated shape
 		select_card(rotated_card, _active_card_index)
 		return
+
 func cursor_Hover() -> void:
 	if cursorAnimation.animation != "grab":
 		cursorAnimation.play("hover")
@@ -134,3 +139,19 @@ func cursor_Hover() -> void:
 func cursor_Hover_exit() -> void:
 	if cursorAnimation.animation != "grab":
 		cursorAnimation.play("hover_exit")
+
+func open_pile_viewer(pile: CardPile, title: String) -> void:
+	remove_card()
+	if _open_viewer != null:
+		return
+	_open_viewer = DECK_VIEWER_SCENE.instantiate()
+	cursor_layer.add_child(_open_viewer)
+	_open_viewer.setup(pile, title)
+	_open_viewer.close_requested.connect(_close_pile_viewer)
+
+func _close_pile_viewer() -> void:
+	if _open_viewer == null:
+		return
+	_open_viewer.queue_free()
+	_open_viewer = null
+
