@@ -6,6 +6,8 @@ extends Node
 
 const DRAW_AMOUNT := 10
 
+var REWARD_AMOUNT := 3 #Default is 3 rewards for completing a level
+
 var hand: Control
 var cursor_layer: CanvasLayer
 
