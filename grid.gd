@@ -138,14 +138,12 @@ func _on_block_placed(cell: Vector2i, element: Elements.Id) -> void:
 
 # todo: debug function, to be removed
 func _unhandled_input(event: InputEvent) -> void:
-	# Spacebar is pressed - generate a static array of blocks and emulate place function
+	# TODO: debug spacebar/0 to end/start a turn
 	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
-		var test_offsets: Array[Vector2i] = [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1)]
-		var ok := place(test_offsets, hovered_cell, Elements.Id.BLUE)
-		if not ok:
-			placement_rejected.emit(test_offsets)
-	
-	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		GameManager.end_turn()
+	elif event is InputEventKey and event.pressed and event.keycode == KEY_0:
+		GameManager.start_turn()
+	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and GameManager._active_card != null:
 		var test_offsets: Array[Vector2i] = GameManager._active_card.card_data.shape.offsets
 		var ok := place(test_offsets, hovered_cell, GameManager._active_card.card_data.element)
 		

@@ -16,7 +16,7 @@ func _ready() -> void:
 
 # Ini the hand: create the cards
 func setup(data_array: Array[CardData]) -> void:
-	_clear()
+	clear()
 	for data in data_array:
 		var card: Control = CARD.instantiate()
 		card.setup(data)
@@ -25,8 +25,14 @@ func setup(data_array: Array[CardData]) -> void:
 		cards.append(card)
 	_layout()
 
+func get_cards_data() -> Array[CardData]:
+	var out: Array[CardData] = []
+	for card in cards:
+		out.append(card.card_data)
+	return out
+
 # Destroy all cards
-func _clear() -> void:
+func clear() -> void:
 	for card in cards:
 		card.queue_free()
 	cards.clear()
@@ -77,6 +83,7 @@ func _on_card_clicked(card: Control) -> void:
 
 func _on_grid_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
 	var card = cards.pop_at(GameManager._active_card_index)
+	GameManager.discard_card(card.card_data)
 	GameManager.remove_card()
 	card.queue_free()
 	_layout()

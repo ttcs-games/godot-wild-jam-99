@@ -8,6 +8,7 @@ var cursor = load("res://assets/sprites/Hand 5.png")
 
 
 func _on_play_button_pressed() -> void:
+	MusicManager.switch_track()
 	get_tree().change_scene_to_file("res://Game_zone.tscn")
 
 func _on_options_button_pressed() -> void:
