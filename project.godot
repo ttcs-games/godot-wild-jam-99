@@ -23,6 +23,7 @@ MusicManager="*uid://bwmghutog0v4y"
 
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+mouse_cursor/custom_image="uid://qiaitkxbv255"
 
 [physics]
 

@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bcvw2o3gjdmh7" path="res://tests/cursor_test.tscn" id="1_mhji2"]
 [ext_resource type="PackedScene" uid="uid://bcyiquvaivsql" path="res://ui/hand.tscn" id="2_ob6xn"]
 [ext_resource type="PackedScene" uid="uid://b3ori8l4rn1g4" path="res://grid.tscn" id="3_ob6xn"]
+[ext_resource type="PackedScene" uid="uid://w0up11rrrrqh" path="res://ui/cursorAnimation.tscn" id="4_rftav"]
 
 [node name="Node2D" type="Node2D" unique_id=943336645]
 
@@ -10,10 +11,10 @@
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 480.0
-offset_top = 424.0
-offset_right = 1374.6667
-offset_bottom = 722.6666
+offset_left = 447.0
+offset_top = 554.0
+offset_right = 1341.6667
+offset_bottom = 852.6666
 grow_horizontal = 1
 grow_vertical = 1
 scale = Vector2(0.75, 0.75)
@@ -22,6 +23,13 @@ scale = Vector2(0.75, 0.75)
 layout_mode = 1
 
 [node name="CursorLayer2" type="CanvasLayer" parent="Control" unique_id=2095042195]
+
+[node name="Cursor" parent="Control/CursorLayer2" unique_id=1383289649 instance=ExtResource("4_rftav")]
+unique_name_in_owner = true
+z_index = 1001
+z_as_relative = false
+position = Vector2(31, 23)
+scale = Vector2(0.41393447, 0.3506711)
 
 [node name="Grid" parent="." unique_id=37737656 instance=ExtResource("3_ob6xn")]
 position = Vector2(5, 5)

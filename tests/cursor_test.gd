@@ -4,11 +4,13 @@ extends Control
 
 @onready var hand: Control = $Hand2
 @onready var cursor_layer: CanvasLayer = $CursorLayer2
+@onready var cursor_animation: AnimatedSprite2D = %Cursor
 
 func _ready() -> void:
 	# Init GameManager with hand and cursor layer
 	GameManager.hand = hand
 	GameManager.cursor_layer = cursor_layer
+	GameManager.cursorAnimation = cursor_animation
 	
 	# Wire hand's signal to be processed by GameManager
 	hand.card_selected.connect(GameManager.select_card)
