@@ -154,4 +154,3 @@ func _close_pile_viewer() -> void:
 		return
 	_open_viewer.queue_free()
 	_open_viewer = null
-
