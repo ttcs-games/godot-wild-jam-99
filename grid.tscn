@@ -1,8 +1,13 @@
 [gd_scene format=3 uid="uid://b3ori8l4rn1g4"]
 
 [ext_resource type="Script" uid="uid://pktsj3mrmb36" path="res://grid.gd" id="1_ebq2e"]
+[ext_resource type="Script" uid="uid://cfhdkf0ucnwhx" path="res://lava.gd" id="2_65i6o"]
 
 [node name="Grid" type="Node2D" unique_id=37737656]
 script = ExtResource("1_ebq2e")
 
 [node name="BlockRoot" type="Node2D" parent="." unique_id=1964372986]
+
+[node name="Lava" type="Node2D" parent="." unique_id=1446942222]
+z_index = 1
+script = ExtResource("2_65i6o")
