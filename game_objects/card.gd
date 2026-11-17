@@ -125,9 +125,6 @@ func _on_mouse_exited() -> void:
 
 # Input reading for when card is selected
 func _gui_input(event: InputEvent) -> void:
-	# If card is already selected - skip
-	if _locked:
-		return
 	# If LMB is pressed - signal (handled by Hand) 
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		clicked.emit(self)
