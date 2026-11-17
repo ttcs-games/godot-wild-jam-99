@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bwmghutog0v4y"]
+[gd_scene format=3 uid="uid://bxukgnaigpkq7"]
 
 [ext_resource type="Script" uid="uid://d4kovxcv760j7" path="res://autoload/music_manager.gd" id="1_efffc"]
 [ext_resource type="AudioStream" uid="uid://cidgwn0gr5djh" path="res://assets/Game-Menu_Looping_LoFi.ogg" id="2_behsq"]
