@@ -27,6 +27,18 @@ func add_all(cards: Array[CardData]) -> void:
 	for card in cards:
 		_cards.append(card)
 	changed.emit()
+	
+func remove(card: CardData) -> void:
+	if card == null:
+		push_error("CardPile.add: null card")
+		return
+	_cards.erase(card)
+	changed.emit()
+	
+func remove_all(cards: Array[CardData]) -> void:
+	for card in cards:
+		_cards.erase(card)
+	changed.emit()
 
 func draw_all() -> Array[CardData]:
 	var out = _cards.duplicate(true)

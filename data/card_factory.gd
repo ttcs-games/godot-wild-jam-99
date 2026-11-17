@@ -57,33 +57,4 @@ static func standard_deck() -> Array[CardData]:
 	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.BLUE, BASIC_MATERIAL))
 	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.GREEN, BASIC_MATERIAL))
 	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.YELLOW, BASIC_MATERIAL))
-	deck.append(make(L_SHAPE.duplicate(), Elements.Id.RED, BASIC_MATERIAL))
-	deck.append(make(L_SHAPE.duplicate(), Elements.Id.BLUE, BASIC_MATERIAL))
-	deck.append(make(L_SHAPE.duplicate(), Elements.Id.GREEN, BASIC_MATERIAL))
-	deck.append(make(L_SHAPE.duplicate(), Elements.Id.YELLOW, BASIC_MATERIAL))
-	
-	deck.append(make(I_SHAPE.duplicate(), Elements.Id.RED, BASIC_MATERIAL))
-	deck.append(make(I_SHAPE.duplicate(), Elements.Id.BLUE, BASIC_MATERIAL))
-	deck.append(make(I_SHAPE.duplicate(), Elements.Id.GREEN, BASIC_MATERIAL))
-	deck.append(make(I_SHAPE.duplicate(), Elements.Id.YELLOW, BASIC_MATERIAL))
-	
-	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.RED, BASIC_MATERIAL))
-	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.BLUE, BASIC_MATERIAL))
-	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.GREEN, BASIC_MATERIAL))
-	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.YELLOW, BASIC_MATERIAL))
-	
-	deck.append(make(L_SHAPE.duplicate(), Elements.Id.RED, BASIC_MATERIAL))
-	deck.append(make(L_SHAPE.duplicate(), Elements.Id.BLUE, BASIC_MATERIAL))
-	deck.append(make(L_SHAPE.duplicate(), Elements.Id.GREEN, BASIC_MATERIAL))
-	deck.append(make(L_SHAPE.duplicate(), Elements.Id.YELLOW, BASIC_MATERIAL))
-	
-	deck.append(make(I_SHAPE.duplicate(), Elements.Id.RED, BASIC_MATERIAL))
-	deck.append(make(I_SHAPE.duplicate(), Elements.Id.BLUE, BASIC_MATERIAL))
-	deck.append(make(I_SHAPE.duplicate(), Elements.Id.GREEN, BASIC_MATERIAL))
-	deck.append(make(I_SHAPE.duplicate(), Elements.Id.YELLOW, BASIC_MATERIAL))
-	
-	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.RED, BASIC_MATERIAL))
-	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.BLUE, BASIC_MATERIAL))
-	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.GREEN, BASIC_MATERIAL))
-	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.YELLOW, BASIC_MATERIAL))
 	return deck

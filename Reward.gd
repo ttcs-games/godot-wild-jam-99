@@ -12,7 +12,7 @@ const Materials: Array[MaterialData] = [CardFactory.BASIC_MATERIAL]
 var Card_added : CardData
 var Shape_change : ShapeData
 var Element_change: Elements.Id
-#todo: var Trait_added
+var Trait_added: MaterialData
 
 var Type: Types = Types.ADD
 var amount := 1
@@ -26,7 +26,7 @@ func _init(reward_type : int, number_of_rewards: int):
 		#big line. All it does is make copies of the random cards.
 		Card_added = CardFactory.make(Shapes.pick_random(),CardElements.pick_random(),Materials.pick_random())
 	elif (Type == Types.TRAIT):
-		pass #todo
+		Trait_added = Materials.pick_random()
 	elif (Type == Types.CHANGE_SHAPE):
 		Shape_change = Shapes.pick_random()
 	elif (Type == Types.CHANGE_ELEMENT):

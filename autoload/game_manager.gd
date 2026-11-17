@@ -24,6 +24,11 @@ var _active_card_index: int = 1000 #because the player will never have more than
 var _active_cursor: Node2D = null
 var _open_viewer: Control = null
 
+#Reward Handling
+var reward_to_apply: Reward = null
+var _reward_chosen: bool = false #checks if the player has selected a reward
+var cards_affected : Array[CardData] = []
+
 # Creates the piles and a initial deck
 func init_deck() -> void:
 	deck = CardPile.new()
@@ -52,8 +57,6 @@ func discard_card(card: CardData) -> void:
 
 # Needs to be called 
 func select_card(card: Control, card_index: int) -> void:
-	
-	
 	cursorAnimation.play("grab")
 	# If you already have a selected card - cancel previous selection
 	if _active_card != null:
@@ -142,14 +145,18 @@ func cursor_Hover_exit() -> void:
 	if cursorAnimation.animation != "grab":
 		cursorAnimation.play("hover_exit")
 
-func open_pile_viewer(pile: CardPile, title: String) -> void:
+func open_pile_viewer(pile: CardPile, title: String, num_cards_displayed: int = 1000, sort_cards : bool = true) -> void:
 	remove_card()
 	if _open_viewer != null:
 		return
 	_open_viewer = DECK_VIEWER_SCENE.instantiate()
 	cursor_layer.add_child(_open_viewer)
-	_open_viewer.setup(pile, title)
+	_open_viewer.setup(pile, title, num_cards_displayed, sort_cards)
 	_open_viewer.close_requested.connect(_close_pile_viewer)
+	
+	#configuring accept rewards button to apply rewards
+	if (_reward_chosen):
+		_open_viewer.get_child(1).pressed.connect(apply_rewards)
 
 func _close_pile_viewer() -> void:
 	if _open_viewer == null:
@@ -157,3 +164,44 @@ func _close_pile_viewer() -> void:
 	_open_viewer.queue_free()
 	_open_viewer = null
 
+#applies the reward to the card. Horrible way of doing this, but it's a game jam, so have to make compromises
+func _on_card_chosen(card_affected: Control) -> void:
+	#if no reward is chosen, do this. Adding cards is already handled in rewards_screen script
+	if (_reward_chosen == false or reward_to_apply == null):
+		return
+	
+	if (card_affected.card_data in cards_affected):
+		cards_affected.erase(card_affected.card_data)
+		card_affected.unlock()
+		
+	elif (reward_to_apply.amount > len(cards_affected)):
+		cards_affected.append(card_affected.card_data)
+		card_affected.lock()
+	
+	#this is the accept rewards button
+	_open_viewer.get_child(1).visible = true
+	_open_viewer.get_child(1).disabled = false
+	
+func apply_rewards() -> void:
+	#removing these cards from the deck
+	deck.remove_all(cards_affected)
+	
+	#add them back in changed if its one of the other rewards
+	for single_card in cards_affected:
+		if (reward_to_apply.Type == Reward.Types.TRAIT):
+			single_card.material = reward_to_apply.Trait_added
+			
+		elif (reward_to_apply.Type == Reward.Types.CHANGE_ELEMENT):
+			single_card.element = reward_to_apply.Element_change
+			
+		elif (reward_to_apply.Type == Reward.Types.CHANGE_SHAPE):
+			single_card.shape = reward_to_apply.Shape_change
+	
+	if (reward_to_apply.Type != Reward.Types.REMOVE):
+		deck.add_all(cards_affected)
+	
+	_open_viewer.get_child(1).visible = false
+	_open_viewer.get_child(1).disabled = true
+	_open_viewer.close_requested.emit()
+	cards_affected = []
+	
