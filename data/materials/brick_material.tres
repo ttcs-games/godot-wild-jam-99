@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MaterialData" format=3 uid="uid://bl7rh6egla741"]
+
+[ext_resource type="Script" uid="uid://kl16elp5u6du" path="res://data/material_data.gd" id="1_ujen3"]
+[ext_resource type="Texture2D" uid="uid://diwxkmycva76b" path="res://assets/sprites/Block Brick.png" id="2_hpvib"]
+
+[resource]
+script = ExtResource("1_ujen3")
+display_name = "Brick"
+description = "When placed and touches the same element, draw 1 card from draw pile"
+sprite = ExtResource("2_hpvib")
+metadata/_custom_type_script = "uid://kl16elp5u6du"

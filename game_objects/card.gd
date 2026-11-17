@@ -12,7 +12,7 @@ const SHAPE := preload("res://game_objects/shape.tscn")
 @onready var description_label: Label = $MarginContainer/VBoxContainer/DescriptionLabel
 
 # VARIABLES
-var card_data: CardData # the data object
+@export var card_data: CardData # the data object
 var _rest_position := Vector2.ZERO # resting position of the card
 var _rest_z := 0 # resting layer position
 var _current_shape: Node2D = null # shape on the card

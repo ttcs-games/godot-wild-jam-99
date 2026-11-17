@@ -14,6 +14,10 @@ config/name="Untitled Tetris Game"
 run/main_scene="uid://lwwwqq1ynapw"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
+[audio]
+
+buses/default_bus_layout="uid://b2vlyk1nijo3c"
+
 [autoload]
 
 GameManager="*uid://om176pvqr6k1"
