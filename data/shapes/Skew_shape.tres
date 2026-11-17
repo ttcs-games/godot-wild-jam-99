@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ShapeData" format=3 uid="uid://d2r367krg154x"]
+
+[ext_resource type="Script" uid="uid://cu4flg5hjyic8" path="res://data/shape_data.gd" id="1_0jnlg"]
+
+[resource]
+script = ExtResource("1_0jnlg")
+offsets = Array[Vector2i]([Vector2i(0, 1), Vector2i(1, 1), Vector2i(1, 0), Vector2i(2, 0)])
+display_name = "Skew-shape"
+metadata/_custom_type_script = "uid://cu4flg5hjyic8"

@@ -2,6 +2,7 @@ extends Control
 
 const CARD := preload("res://game_objects/card.tscn")
 @onready var title_label: Label = $ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer/TopBar/TitleLabel
+@onready var hint_label: Label = $ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer/HintLabel
 @onready var close_button: Button = $ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer/TopBar/CloseButton
 @onready var card_grid: GridContainer = $ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer/CardScroll/CardGrid
 
@@ -17,18 +18,26 @@ func _unhandled_input(event: InputEvent) -> void:
 		close_requested.emit()
 		get_viewport().set_input_as_handled()
 
-func setup(pile: CardPile, title: String) -> void:
+func setup(pile: CardPile, title: String, num_cards_displayed: int, sort_cards: bool) -> void:
 	title_label.text = title
 	
 	var cards := pile.get_cards_copy()
-	cards.sort_custom(CardData.compare_for_display)
+	
+	#sorting cards
+	if sort_cards:
+		cards.sort_custom(CardData.compare_for_display)
+		hint_label.visible = true #if its sorted, then this label should appear
+	else:
+		hint_label.visible = false
 	
 	for child in card_grid.get_children():
 		child.queue_free()
 	
-	for data in cards:
+	var length_of_loop = min(num_cards_displayed, len(cards))
+	for i in range(length_of_loop):
 		var card: Control = CARD.instantiate()
-		card.setup(data)
+		card.clicked.connect(GameManager._on_card_chosen) #connecting to game manager, which will apply the reward.
+		card.setup(cards[i])
 		card_grid.add_child(card)
 
 func _on_grid_sorted() -> void:
