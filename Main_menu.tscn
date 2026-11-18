@@ -114,6 +114,7 @@ text = "Back"
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1092190396]
 
 [node name="Cursor" parent="CanvasLayer" unique_id=1383289649 instance=ExtResource("2_x6lt7")]
+z_index = 1001
 position = Vector2(158.31297, 173.49744)
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Play_button" to="." method="_on_play_button_pressed"]
