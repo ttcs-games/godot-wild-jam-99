@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bfpe6oflplml5"]
 
 [ext_resource type="Script" uid="uid://n51qvajcaiyd" path="res://rewards_screen.gd" id="1_85wn1"]
-[ext_resource type="PackedScene" uid="uid://w0up11rrrrqh" path="res://ui/cursorAnimation.tscn" id="2_1047e"]
+[ext_resource type="PackedScene" uid="uid://cqfhq5gsgm80q" path="res://ui/cursorAnimation.tscn" id="2_1047e"]
 [ext_resource type="PackedScene" uid="uid://cpqylr4csh80v" path="res://ui/pile_view.tscn" id="3_07ys8"]
 
 [node name="RewardsScreen" type="Control" unique_id=1251849727]
