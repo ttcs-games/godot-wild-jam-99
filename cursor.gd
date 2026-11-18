@@ -7,7 +7,9 @@ func _ready():
 	play("idle")
 
 func _process(_delta):
-	position = get_viewport().get_mouse_position()
+	position.x = get_viewport().get_mouse_position().x
+	position.y = get_viewport().get_mouse_position().y+20
+		
 
 func _on_animation_finished() -> void:
 	if animation == "hover_exit" || animation == "throw":
