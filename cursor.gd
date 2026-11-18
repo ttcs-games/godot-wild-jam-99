@@ -7,7 +7,7 @@ func _ready():
 	play("idle")
 
 func _process(_delta):
-	position.x = get_viewport().get_mouse_position().x
+	position.x = get_viewport().get_mouse_position().x+10
 	position.y = get_viewport().get_mouse_position().y+20
 		
 

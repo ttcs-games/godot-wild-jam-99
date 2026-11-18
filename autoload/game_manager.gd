@@ -266,6 +266,7 @@ func apply_rewards() -> void:
 		if (reward_to_apply.Type == Reward.Types.TRAIT):
 			single_card.material = reward_to_apply.Trait_added
 			
+			
 		elif (reward_to_apply.Type == Reward.Types.CHANGE_ELEMENT):
 			single_card.element = reward_to_apply.Element_change
 			
