@@ -4,11 +4,10 @@
 
 extends Node
 
-const DRAW_AMOUNT := 10
-
 var REWARD_AMOUNT := 3 #Default is 3 rewards for completing a level
 
 var hand: Control
+var grid: Node2D
 var cursor_layer: CanvasLayer
 
 var deck: CardPile
@@ -17,6 +16,10 @@ var exhume: CardPile
 
 const CURSOR := preload("res://ui/held_cursor.tscn")
 const DECK_VIEWER_SCENE := preload("res://ui/deck_viewer.tscn")
+const SCENE_LEVEL_DESCRIPTION := "res://level_description.tscn"
+const SCENE_GAME_ZONE := "res://Game_zone.tscn"
+const SCENE_REWARDS := "res://Rewards_screen.tscn"
+const SCENE_GAME_OVER := "res://game_over.tscn"
 
 var cursorAnimation : AnimatedSprite2D
 var _active_card: Control = null
@@ -29,6 +32,30 @@ var reward_to_apply: Reward = null
 var _reward_chosen: bool = false #checks if the player has selected a reward
 var cards_affected : Array[CardData] = []
 
+# Turn Handling
+var turn_number: int = 1
+var lava_per_turn: int = 1
+var draw_per_turn := 10
+var is_end_turn_in_progress: bool = false
+signal turn_changed(new_turn: int)
+var is_game_over: bool = false
+var is_level_won: bool = false
+
+var current_level_data: LevelData = null
+
+func start_run() -> void:
+	init_deck()
+	MusicManager.switch_track()
+	get_tree().change_scene_to_file(SCENE_LEVEL_DESCRIPTION)
+
+func finish_rewards() -> void:
+	get_tree().change_scene_to_file(SCENE_LEVEL_DESCRIPTION)
+
+func end_run() -> void:
+	is_game_over = true
+	MusicManager.switch_track()
+	get_tree().change_scene_to_file(SCENE_GAME_OVER)
+
 # Creates the piles and a initial deck
 func init_deck() -> void:
 	deck = CardPile.new()
@@ -40,23 +67,59 @@ func init_deck() -> void:
 # Draws cards from deck into hand
 # Reshuffles discard pile into deck if there is not enough to draw
 func start_turn() -> void:
-	var cards := deck.draw(DRAW_AMOUNT)
-	if cards.size() < DRAW_AMOUNT:
+	var cards := deck.draw(draw_per_turn)
+	if cards.size() < draw_per_turn:
 		deck.add_all(discard.draw_all())
 		deck.shuffle()
-		cards.append_array(deck.draw(DRAW_AMOUNT - cards.size()))
+		cards.append_array(deck.draw(draw_per_turn - cards.size()))
 	hand.setup(cards)
 
+func start_level() -> void:
+	turn_number = 1
+	is_end_turn_in_progress = false
+	is_game_over = false
+	is_level_won = false
+	if current_level_data != null:
+		lava_per_turn = current_level_data.lava_per_turn
+		draw_per_turn = current_level_data.draw_per_turn
+	else:
+		lava_per_turn = 1
+		draw_per_turn = 10
+	
+	deck.shuffle()
+	get_tree().change_scene_to_file(SCENE_GAME_ZONE)
+	
 # Puts all the cards from hand to discard pile
-func end_turn() -> void:
-	discard.add_all(hand.get_cards_data())
-	hand.clear()
+func end_turn(turn_label: Label) -> void:
+	if is_end_turn_in_progress or is_level_won:
+		return
+	if grid.is_animating:
+		return
+	
+	is_end_turn_in_progress = true
+	await _phase_discard_hand()
+	await _phase_rise_lava()
+	if is_game_over:
+		return
+	await _phase_bump_turn(turn_label)
+	await _phase_draw_hand()
+	is_end_turn_in_progress = false
+
+func finish_level() -> void:
+	deck.add_all(discard.draw_all())
+	deck.add_all(exhume.draw_all())
+	deck.add_all(hand.get_cards_data())
+	deck.shuffle()
+	get_tree().change_scene_to_file(SCENE_REWARDS)
 
 func discard_card(card: CardData) -> void:
 	discard.add(card)
 
 # Needs to be called 
 func select_card(card: Control, card_index: int) -> void:
+	if is_end_turn_in_progress or is_level_won:
+		return
+	
 	cursorAnimation.play("grab")
 	# If you already have a selected card - cancel previous selection
 	if _active_card != null:
@@ -205,3 +268,31 @@ func apply_rewards() -> void:
 	_open_viewer.close_requested.emit()
 	cards_affected = []
 	
+func _phase_discard_hand() -> void:
+	await get_tree().create_timer(0.15).timeout
+	var hand_data: Array[CardData] = hand.get_cards_data()
+	discard.add_all(hand_data)
+	hand.clear()
+	await get_tree().create_timer(0.15).timeout
+
+func _phase_rise_lava() -> void:
+	await grid.rise_lava(lava_per_turn)
+
+func _phase_bump_turn(turn_label: Label) -> void:
+	turn_number += 1
+	turn_changed.emit(turn_number)
+	if turn_label != null:
+		turn_label.text = "Turn %d" % turn_number
+		var tw := create_tween()
+		tw.tween_property(turn_label, "scale", Vector2(1.15, 1.15), 0.1)
+		tw.tween_property(turn_label, "scale", Vector2.ONE, 0.1)
+	await get_tree().create_timer(0.6).timeout
+
+func _phase_draw_hand() -> void:
+	var cards := deck.draw(draw_per_turn)
+	if cards.size() < draw_per_turn:
+		deck.add_all(discard.draw_all())
+		deck.shuffle()
+		cards.append_array(deck.draw(draw_per_turn - cards.size()))
+	hand.setup(cards)
+	await get_tree().create_timer(0.2).timeout

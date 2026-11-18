@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://c2gau7rubtat7"]
+
+[ext_resource type="Script" uid="uid://bcim5heihwsh6" path="res://tests/cursor_test.gd" id="1_7bv3l"]
+[ext_resource type="PackedScene" uid="uid://bcvw2o3gjdmh7" path="res://tests/cursor_test.tscn" id="1_mhji2"]
+[ext_resource type="PackedScene" uid="uid://bcyiquvaivsql" path="res://ui/hand.tscn" id="2_ob6xn"]
+[ext_resource type="PackedScene" uid="uid://cpqylr4csh80v" path="res://ui/pile_view.tscn" id="2_rftav"]
+[ext_resource type="PackedScene" uid="uid://b3ori8l4rn1g4" path="res://grid.tscn" id="3_ob6xn"]
+[ext_resource type="PackedScene" uid="uid://cqfhq5gsgm80q" path="res://ui/cursorAnimation.tscn" id="4_rftav"]
+
+[node name="Node2D" type="Node2D" unique_id=943336645]
+script = ExtResource("1_7bv3l")
+
+[node name="Control" parent="." unique_id=600854760 instance=ExtResource("1_mhji2")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 449.00003
+offset_top = 554.0
+offset_right = 1343.6667
+offset_bottom = 852.6666
+grow_horizontal = 1
+grow_vertical = 1
+scale = Vector2(0.75, 0.75)
+script = null
+
+[node name="DeckView" parent="Control" unique_id=321091678 instance=ExtResource("2_rftav")]
+layout_mode = 0
+offset_left = -114.666565
+offset_top = -33.333435
+offset_right = -39.666565
+offset_bottom = 26.666565
+
+[node name="Hand2" parent="Control" unique_id=435155043 instance=ExtResource("2_ob6xn")]
+layout_mode = 1
+offset_left = -40.0
+offset_top = -180.0
+offset_right = -40.0
+offset_bottom = -180.0
+
+[node name="DiscardView" parent="Control" unique_id=1190251829 instance=ExtResource("2_rftav")]
+layout_mode = 0
+offset_left = 874.6667
+offset_top = -26.666647
+offset_right = 949.6667
+offset_bottom = 33.33335
+
+[node name="CursorLayer2" type="CanvasLayer" parent="Control" unique_id=2095042195]
+
+[node name="Cursor" parent="Control/CursorLayer2" unique_id=1383289649 instance=ExtResource("4_rftav")]
+unique_name_in_owner = true
+z_index = 1001
+z_as_relative = false
+position = Vector2(31, 23)
+scale = Vector2(0.41393447, 0.3506711)
+
+[node name="Grid" parent="." unique_id=37737656 instance=ExtResource("3_ob6xn")]
+unique_name_in_owner = true
+position = Vector2(5, 5)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=746581731]
+layer = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD" unique_id=1291787390]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="TurnLabel" type="Label" parent="HUD/VBoxContainer" unique_id=1372030579]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Turn 1"
+horizontal_alignment = 1
+
+[node name="EndTurnButton" type="Button" parent="HUD/VBoxContainer" unique_id=640759790]
+custom_minimum_size = Vector2(120, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "End Turn"
+
+[connection signal="shape_placed" from="Grid" to="Control/Hand2" method="_on_grid_shape_placed"]

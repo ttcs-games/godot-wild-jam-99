@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://h6pjfhyxh6nq"]
+
+[ext_resource type="Script" uid="uid://coox3srrrk5is" path="res://game_over.gd" id="1_y26ei"]
+[ext_resource type="PackedScene" uid="uid://cqfhq5gsgm80q" path="res://ui/cursorAnimation.tscn" id="2_yxx3c"]
+
+[node name="GameOver" type="Control" unique_id=982972016]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_y26ei")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1909351059]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.09411765, 0.03137255, 0.03137255, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=405940391]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1177336477]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=498753548]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7058824, 0.15686275, 0.15686275, 1)
+theme_override_font_sizes/font_size = 36
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="Gap" type="Control" parent="CenterContainer/VBoxContainer" unique_id=1520771333]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="RestartButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1904382549]
+custom_minimum_size = Vector2(260, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "New Run"
+
+[node name="MenuButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1094820700]
+custom_minimum_size = Vector2(260, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Main Menu"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=916547178]
+
+[node name="Cursor" parent="CanvasLayer" unique_id=1383289649 instance=ExtResource("2_yxx3c")]
+z_index = 1001
+position = Vector2(158.31297, 173.49744)

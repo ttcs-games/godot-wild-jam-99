@@ -77,7 +77,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"grab",
-"speed": 60.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -91,7 +91,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"hover",
-"speed": 60.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -105,7 +105,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"hover_exit",
-"speed": 60.0
+"speed": 30.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -113,12 +113,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"idle",
-"speed": 5.0
-}, {
-"frames": [],
-"loop": 1,
-"name": &"new_animation",
-"speed": 5.0
+"speed": 0.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -135,13 +130,13 @@ animations = [{
 }],
 "loop": 0,
 "name": &"throw",
-"speed": 60.0
+"speed": 30.0
 }]
 
 [node name="Cursor" type="AnimatedSprite2D" unique_id=1383289649]
 scale = Vector2(0.41393444, 0.3506711)
 sprite_frames = SubResource("SpriteFrames_34yac")
-animation = &"hover"
+animation = &"throw"
 script = ExtResource("2_fqu3v")
 
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

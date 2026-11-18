@@ -7,6 +7,7 @@ var _rng := RandomNumberGenerator.new()
 @onready var RewardButtons : Array[Button] = [$VBoxContainer/Button, $VBoxContainer/Button2, $VBoxContainer/Button3, $VBoxContainer/Button4, $VBoxContainer/Button5]
 @onready var ClickableDeck := $DeckView
 @onready var RewardOptionsBox := $VBoxContainer
+@onready var NextLevelButton: Button = $NextLevelButton
 var Rewards : Array[Reward] = []
 
 # Called when the node enters the scene tree for the first time.
@@ -20,7 +21,8 @@ func _ready() -> void:
 	GameManager.cursor_layer = $CursorLayer2
 	ClickableDeck.bind(GameManager.deck)
 	ClickableDeck.clicked.connect(func(pile): GameManager.open_pile_viewer(pile, "Deck"))
-
+	
+	NextLevelButton.pressed.connect(GameManager.finish_rewards)
 	
 	Reward_amount = GameManager.REWARD_AMOUNT #REWARD_AMOUNT should be changed before this scene is triggered
 	

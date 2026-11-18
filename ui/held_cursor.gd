@@ -22,6 +22,9 @@ func _process(_delta: float) -> void:
 	global_position = get_global_mouse_position()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if GameManager.is_end_turn_in_progress or GameManager.is_level_won:
+		return
+	
 	if event is InputEventKey and event.pressed and event.keycode == KEY_R:
 		GameManager.rotate_selection()
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
