@@ -28,7 +28,7 @@ signal shape_placed(cells: Array[Vector2i], element: Elements.Id) # todo: materi
 # When shape cannot be placed
 signal placement_rejected(offsets: Array[Vector2i])
 signal level_cleared(delta: int)
-signal game_over
+signal game_over()
 
 # VARIABLES
 # Stores the occupied cells
@@ -59,6 +59,7 @@ func in_bounds(c: Vector2i) -> bool:
 # We process block placed signal by ourselves (to actually place it)
 func _ready() -> void:
 	block_placed.connect(_on_block_placed)
+	shape_placed.connect(_on_shape_placed)
 
 # Draw function is used only for aim draw (blocks are drawn by themselves - they are independent nodes)
 func _draw() -> void:
@@ -135,6 +136,9 @@ func place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id) -> 
 	if is_animating:
 		return false
 	
+	if GameManager.is_end_turn_in_progress:
+		return false
+	
 	if not can_place(offsets, origin, element):
 		return false
 	
@@ -143,20 +147,6 @@ func place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id) -> 
 	for offset in offsets:
 		var cell := origin + offset
 		placed.append(cell)
-	
-	# Send the win singal once ever, if any placed cell turned the line into finished line above the objective
-	if not _level_cleared_fired and objective_row >= 0 and objective_row < grid_height:
-		var checked_rows := {}
-		for cell in placed:
-			if cell.y > objective_row:
-				continue
-			if checked_rows.has(cell.y):
-				continue
-			checked_rows[cell.y] = true
-			if _is_row_full(cell.y):
-				_level_cleared_fired = true
-				level_cleared.emit(lava_row - objective_row)
-				break
 	
 	# Signal for each new block that is has been placed on a certain cell
 	for cell in placed:
@@ -187,7 +177,27 @@ func rise_lava(n: int) -> void:
 	is_animating = true
 	var tw := create_tween()
 	tw.tween_property(self, "_lava_visual_row", float(target), lava_rise_seconds).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tw.finished.connect(_on_lava_rise_finished, CONNECT_ONE_SHOT)
+	await tw.finished
+	await _run_cascade()
+	is_animating = false
+
+func apply_level_data(data: LevelData) -> void:
+	for b in cell_to_block.values():
+		if is_instance_valid(b):
+			b.queue_free()
+	cell_to_block.clear()
+	
+	grid_width  = data.grid_width
+	grid_height = data.grid_height
+	objective_row = data.objective_row
+	lava_row = grid_height
+	_lava_visual_row = float(grid_height)
+	_last_lava_row_visual = -1.0
+	_level_cleared_fired = false
+	is_animating = false
+	if lava_overlay != null:
+		lava_overlay.queue_redraw()
+	queue_redraw()
 
 # Each tick get mouse position to get aimed cell
 func _process(delta: float) -> void:
@@ -210,16 +220,31 @@ func _on_block_placed(cell: Vector2i, element: Elements.Id) -> void:
 	block_root.add_child(b)
 	cell_to_block[cell] = b
 
+func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
+	# Send the win singal once ever, if any placed cell turned the line into finished line above the objective
+	if not _level_cleared_fired and objective_row >= 0 and objective_row < grid_height:
+		var checked_rows := {}
+		for cell in cells:
+			if cell.y > objective_row:
+				continue
+			if checked_rows.has(cell.y):
+				continue
+			checked_rows[cell.y] = true
+			if _is_row_full(cell.y):
+				_level_cleared_fired = true
+				var buffer := 0
+				for y in range(objective_row + 1, lava_row):
+					if _is_row_full(y):
+						buffer += 1
+				level_cleared.emit(buffer)
+				break
+
 # todo: debug function, to be removed
 func _unhandled_input(event: InputEvent) -> void:
-	# TODO: debug spacebar/0 to end/start a turn
-	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
-		GameManager.end_turn()
-	elif event is InputEventKey and event.pressed and event.keycode == KEY_0:
-		GameManager.start_turn()
-	elif event is InputEventKey and event.pressed and event.keycode == KEY_1:
-		rise_lava(2)
-	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and GameManager._active_card != null:
+	if GameManager.is_end_turn_in_progress or GameManager.is_level_won:
+		return
+	
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and GameManager._active_card != null:
 		var test_offsets: Array[Vector2i] = GameManager._active_card.card_data.shape.offsets
 		var ok := place(test_offsets, hovered_cell, GameManager._active_card.card_data.element)
 		
@@ -262,10 +287,6 @@ func _unfinished_rows_in_lava() -> Array[int]:
 		if _is_row_unfinished(y):
 			result.append(y)
 	return result
-
-func _on_lava_rise_finished() -> void:
-	_run_cascade()
-	is_animating = false
 
 func _flash_rows(rows: Array[int]) -> void:
 	var tween := create_tween()

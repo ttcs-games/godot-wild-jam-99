@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://c2gau7rubtat7"]
 
+[ext_resource type="Script" uid="uid://bcim5heihwsh6" path="res://tests/cursor_test.gd" id="1_7bv3l"]
 [ext_resource type="PackedScene" uid="uid://bcvw2o3gjdmh7" path="res://tests/cursor_test.tscn" id="1_mhji2"]
 [ext_resource type="PackedScene" uid="uid://bcyiquvaivsql" path="res://ui/hand.tscn" id="2_ob6xn"]
 [ext_resource type="PackedScene" uid="uid://cpqylr4csh80v" path="res://ui/pile_view.tscn" id="2_rftav"]
@@ -23,14 +24,15 @@ turbulence_noise_strength = 0.02
 turbulence_noise_scale = 4.097
 
 [node name="Node2D" type="Node2D" unique_id=943336645]
+script = ExtResource("1_7bv3l")
 
 [node name="Control" parent="." unique_id=600854760 instance=ExtResource("1_mhji2")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 447.0
+offset_left = 449.00003
 offset_top = 554.0
-offset_right = 1341.6667
+offset_right = 1343.6667
 offset_bottom = 852.6666
 grow_horizontal = 1
 grow_vertical = 1
@@ -38,17 +40,27 @@ scale = Vector2(0.75, 0.75)
 
 [node name="DeckView" parent="Control" unique_id=321091678 instance=ExtResource("2_rftav")]
 layout_mode = 0
-offset_left = -86.666565
+offset_left = -114.666565
 offset_top = -33.333435
-offset_right = -11.666565
+offset_right = -39.666565
 offset_bottom = 26.666565
 
 [node name="Hand2" parent="Control" unique_id=435155043 instance=ExtResource("2_ob6xn")]
 layout_mode = 1
+offset_left = -40.0
 offset_top = -180.0
+offset_right = -40.0
 offset_bottom = -180.0
 
+[node name="DiscardView" parent="Control" unique_id=1190251829 instance=ExtResource("2_rftav")]
+layout_mode = 0
+offset_left = 874.6667
+offset_top = -26.666647
+offset_right = 949.6667
+offset_bottom = 33.33335
+
 [node name="CursorLayer2" type="CanvasLayer" parent="Control" unique_id=2095042195]
+layer = 2
 
 [node name="Cursor" parent="Control/CursorLayer2" unique_id=1383289649 instance=ExtResource("4_rftav")]
 unique_name_in_owner = true
@@ -59,6 +71,7 @@ scale = Vector2(0.41393447, 0.3506711)
 animation = &"idle"
 
 [node name="Grid" parent="." unique_id=37737656 instance=ExtResource("3_ob6xn")]
+unique_name_in_owner = true
 position = Vector2(5, 5)
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="Grid" unique_id=1312171708]
@@ -68,5 +81,99 @@ amount = 100
 preprocess = 1.03
 randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_n4c0y")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=746581731]
+layer = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD" unique_id=1291787390]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="TurnLabel" type="Label" parent="HUD/VBoxContainer" unique_id=1372030579]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Turn 1"
+horizontal_alignment = 1
+
+[node name="EndTurnButton" type="Button" parent="HUD/VBoxContainer" unique_id=640759790]
+custom_minimum_size = Vector2(120, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "End Turn"
+
+[node name="VictoryLayer" type="CanvasLayer" parent="." unique_id=1737966951]
+
+[node name="VictoryPanel" type="Control" parent="VictoryLayer" unique_id=1058366339]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="VictoryLayer/VictoryPanel" unique_id=1404498484]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6666667)
+
+[node name="CenterContainer" type="CenterContainer" parent="VictoryLayer/VictoryPanel" unique_id=2037974535]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VictoryLayer/VictoryPanel/CenterContainer" unique_id=1276520987]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VictoryLayer/VictoryPanel/CenterContainer/MarginContainer" unique_id=1828145664]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer" unique_id=480637609]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3529412, 0.5294118, 0.3529412, 1)
+theme_override_font_sizes/font_size = 32
+text = "Level complete"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer" unique_id=281673614]
+layout_mode = 2
+
+[node name="FinishedLine" type="Label" parent="VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer" unique_id=743551862]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Finished a level | +3 rewards"
+horizontal_alignment = 1
+
+[node name="BufferLabel" type="Label" parent="VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer" unique_id=400449374]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Built 0 full layers above lava | +0 reward"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer" unique_id=853541766]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="ContinueButton" type="Button" parent="VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer" unique_id=1301135158]
+custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Continue"
 
 [connection signal="shape_placed" from="Grid" to="Control/Hand2" method="_on_grid_shape_placed"]

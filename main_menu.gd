@@ -7,8 +7,8 @@ extends Control
 
 
 func _on_play_button_pressed() -> void:
-	MusicManager.switch_track()
-	get_tree().change_scene_to_file("res://Game_zone.tscn")
+	randomize()
+	GameManager.start_run()
 
 func _on_options_button_pressed() -> void:
 	Mainmenu.visible = false

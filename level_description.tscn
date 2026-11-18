@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://dgxfotsd7jlul"]
+
+[ext_resource type="Script" uid="uid://byhvwyya0f3dg" path="res://level_description.gd" id="1_2cslj"]
+[ext_resource type="PackedScene" uid="uid://cpqylr4csh80v" path="res://ui/pile_view.tscn" id="2_oul27"]
+[ext_resource type="PackedScene" uid="uid://cqfhq5gsgm80q" path="res://ui/cursorAnimation.tscn" id="3_yp1oy"]
+
+[node name="LevelDescription" type="Control" unique_id=204050947]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2cslj")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1576344280]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1554007880]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 3.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 48
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1349941983]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=941435948]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Level 1"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1247500962]
+layout_mode = 2
+
+[node name="StatsGrid" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=75395426]
+layout_mode = 2
+theme_override_constants/h_separation = 24
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1995460738]
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1060983852]
+custom_minimum_size = Vector2(180, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "Play"
+
+[node name="DeckView" parent="MarginContainer/VBoxContainer" unique_id=321091678 instance=ExtResource("2_oul27")]
+layout_mode = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2058082307]
+
+[node name="Cursor" parent="CanvasLayer" unique_id=1383289649 instance=ExtResource("3_yp1oy")]
+z_index = 1001
+z_as_relative = false
