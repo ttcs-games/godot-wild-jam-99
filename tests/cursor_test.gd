@@ -15,6 +15,7 @@ extends Node2D
 @onready var buffer_line: Label = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/BufferLabel
 @onready var continue_button: Button = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/ContinueButton
 @onready var finish_button: Button = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/FinishButton
+@onready var cursor: AnimatedSprite2D = %Cursor
 
 func _ready() -> void:
 	# Init GameManager with hand and cursor layer
@@ -22,6 +23,7 @@ func _ready() -> void:
 	GameManager.cursor_layer = cursor_layer
 	GameManager.cursorAnimation = cursor_animation
 	GameManager.grid = grid
+	GameManager.cursor = cursor
 	
 	# Wire hand's signal to be processed by GameManager
 	hand.card_selected.connect(GameManager.select_card)
@@ -40,7 +42,6 @@ func _ready() -> void:
 	end_turn_button.pressed.connect(func(): GameManager.end_turn(turn_label))
 	
 	turn_label.text = "Turn %d" % GameManager.turn_number
-	grid.game_over.connect(GameManager.end_run)
 	grid.apply_level_data(GameManager.current_level_data)
 	
 	grid.level_cleared.connect(_on_level_cleared)
