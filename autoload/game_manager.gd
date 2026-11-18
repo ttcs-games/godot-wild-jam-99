@@ -26,6 +26,7 @@ var _active_card: Control = null
 var _active_card_index: int = 1000 #because the player will never have more than 10 cards
 var _active_cursor: Node2D = null
 var _open_viewer: Control = null
+var cursor: AnimatedSprite2D = null
 
 #Reward Handling. The signal is emitted only when the reward is successfully applied, not when the viewer is closed
 var reward_to_apply: Reward = null
@@ -96,12 +97,17 @@ func start_level() -> void:
 	
 # Puts all the cards from hand to discard pile
 func end_turn(turn_label: Label) -> void:
+	if grid.is_animating or hand._is_animating:
+		return
 	if is_end_turn_in_progress or is_level_won:
 		return
 	if grid.is_animating:
 		return
 	
 	is_end_turn_in_progress = true
+	if cursor.animation == "grab":
+		cursor.play("idle")
+	remove_card()
 	await _phase_discard_hand()
 	await _phase_rise_lava()
 	if is_game_over:
@@ -286,7 +292,7 @@ func _phase_discard_hand() -> void:
 	await get_tree().create_timer(0.15).timeout
 	var hand_data: Array[CardData] = hand.get_cards_data()
 	discard.add_all(hand_data)
-	hand.clear()
+	await hand.discard_batch(hand.cards.duplicate())
 	await get_tree().create_timer(0.15).timeout
 
 func _phase_rise_lava() -> void:
@@ -306,9 +312,12 @@ func _phase_bump_turn(turn_label: Label) -> void:
 
 func _phase_draw_hand() -> void:
 	var cards := deck.draw(draw_per_turn)
+	await hand.draw_batch(cards)
 	if cards.size() < draw_per_turn:
+		await get_tree().create_timer(0.15).timeout
 		deck.add_all(discard.draw_all())
-		deck.shuffle()
-		cards.append_array(deck.draw(draw_per_turn - cards.size()))
-	hand.setup(cards)
+		deck.shuffle() # TODO: animation of flow: discard -> deck ?
+		await get_tree().create_timer(0.15).timeout
+		var extra_cards := deck.draw(draw_per_turn - cards.size())
+		await hand.draw_batch(extra_cards)
 	await get_tree().create_timer(0.2).timeout

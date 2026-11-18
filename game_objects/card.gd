@@ -24,6 +24,8 @@ var _built := false # flag to gurantee only one build call per existance
 var _tween: Tween # Object that will represent the card and animate it
 var _locked := false # flag to lock the card when selected
 
+var _hitbox_width: float = 99999.0
+
 # SIGNALS
 # When left click is pressed on the card
 signal clicked(card: Control)
@@ -165,3 +167,9 @@ func _tween_to_hover(hovered: bool) -> void:
 	var target_pos := _rest_position + (HOVER_LIFT if hovered else Vector2.ZERO)
 	_tween.parallel().tween_property(self, "scale", target_scale, 0.15)
 	_tween.parallel().tween_property(self, "position", target_pos, 0.15)
+
+func set_hitbox_width(w: float) -> void:
+	_hitbox_width = w
+
+func _has_point(point: Vector2) -> bool:
+	return point.x >= 0.0 and point.x < _hitbox_width and point.y >= 0.0 and point.y < size.y
