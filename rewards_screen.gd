@@ -17,7 +17,7 @@ var _rng := RandomNumberGenerator.new()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Reward_amount = GameManager.REWARD_AMOUNT #REWARD_AMOUNT should be changed before this scene is triggered
-	
+	Reward_amount = 5
 	#remove this line later as this scene will always be triggered after the level.
 	if GameManager.deck == null:
 		GameManager.init_deck()
@@ -161,7 +161,6 @@ func create_sub_decks():
 		#second condition is error handling. e.g deck full of yellow cards. reward is change to yellow
 		while (len(indexes) < total_cards_choice && len(all_indexes) != 0):
 			var random_num = all_indexes.pick_random()
-			print(random_num)
 			indexes.append(random_num)
 			all_indexes.erase(random_num)
 		
