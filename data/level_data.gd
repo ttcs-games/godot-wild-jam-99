@@ -11,6 +11,8 @@ extends Resource
 @export var objective_row: int = 8
 
 @export var lava_per_turn: int = 1
+@export var lava_delay: int = 0 # how many turns player ends without lava
+
 @export var draw_per_turn: int = 8
 
 @export var is_boss_level: bool = false

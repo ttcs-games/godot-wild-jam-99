@@ -176,4 +176,11 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Continue"
 
+[node name="FinishButton" type="Button" parent="VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer" unique_id=436803605]
+custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "End run
+(Main menu)"
+
 [connection signal="shape_placed" from="Grid" to="Control/Hand2" method="_on_grid_shape_placed"]

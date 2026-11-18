@@ -11,8 +11,10 @@ extends Node2D
 @onready var turn_label: Label = $HUD/VBoxContainer/TurnLabel
 @onready var end_turn_button: Button = $HUD/VBoxContainer/EndTurnButton
 @onready var victory_panel: Control = $VictoryLayer/VictoryPanel
+@onready var title_label: Label = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/TitleLabel
 @onready var buffer_line: Label = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/BufferLabel
 @onready var continue_button: Button = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/ContinueButton
+@onready var finish_button: Button = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/FinishButton
 
 func _ready() -> void:
 	# Init GameManager with hand and cursor layer
@@ -43,6 +45,7 @@ func _ready() -> void:
 	
 	grid.level_cleared.connect(_on_level_cleared)
 	continue_button.pressed.connect(_on_continue_pressed)
+	finish_button.pressed.connect(_on_finish_pressed)
 	
 	GameManager.start_turn()
 
@@ -51,6 +54,22 @@ func _on_level_cleared(buffer: int) -> void:
 	GameManager.remove_card()
 	GameManager.REWARD_AMOUNT = 3 + buffer
 	victory_panel.visible = true
+	
+	if GameManager.current_level_data.level_number == 9:
+		continue_button.text = "Continue\n(infinite run)"
+		title_label.text = "Congratulations!\nGame won"
+	else:
+		continue_button.text = "Continue"
+		title_label.text = "Level complete"
+	
+	if GameManager.current_level_data.level_number >= 9:
+		finish_button.disabled = false
+		finish_button.visible = true
+	else:
+		continue_button.text = "Continue"
+		finish_button.disabled = true
+		finish_button.visible = false
+	
 	var plural := "" if buffer == 1 else "s"
 	buffer_line.text = "Built %d full layer%s above lava  +%d reward%s" % [
 		buffer, plural, buffer, plural
@@ -58,3 +77,7 @@ func _on_level_cleared(buffer: int) -> void:
 
 func _on_continue_pressed() -> void:
 	GameManager.finish_level()
+
+func _on_finish_pressed() -> void:
+	MusicManager.switch_track()
+	get_tree().change_scene_to_file("res://Main_menu.tscn")

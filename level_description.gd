@@ -14,7 +14,7 @@ func _ready() -> void:
 	GameManager.cursor_layer = deck_layer
 	GameManager.cursorAnimation = cursor_animation
 	
-	var level_number = GameManager.current_level_data.level_number if GameManager.current_level_data != null else 1 
+	var level_number = GameManager.current_level_data.level_number + 1  if GameManager.current_level_data != null else 1 
 	var data = LevelFactory.generate(level_number)
 	deck_view.bind(GameManager.deck)
 	deck_view.clicked.connect(func(pile): GameManager.open_pile_viewer(pile, "Deck"))
@@ -28,8 +28,16 @@ func _populate(data: LevelData) -> void:
 		child.queue_free()
 	
 	var rows_from_bottom := data.grid_height - data.objective_row
+	var first_visible_turn := data.lava_delay + 2
 	_add_row("Grid Size", "%d × %d" % [data.grid_width, data.grid_height])
 	_add_row("Objective", "Layer %d from top (%d from bottom)" % [data.objective_row, rows_from_bottom])
+	if data.lava_delay > 0:
+		_add_row("Lava begins", "Turn %d (%d safe turn%s)" % [
+			first_visible_turn, data.lava_delay, "" if data.lava_delay == 1 else "s"
+		])
+	else:
+		_add_row("Lava begins", "Turn 2 (no delay)")
+	
 	_add_row("Lava per turn", "%d layer%s" % [data.lava_per_turn, "" if data.lava_per_turn == 1 else "s"])
 	_add_row("Draw per turn", "%d card%s" % [data.draw_per_turn, "" if data.draw_per_turn == 1 else "s"])
 
