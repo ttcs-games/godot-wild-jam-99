@@ -1,9 +1,19 @@
 [gd_scene format=3 uid="uid://bad0do0cr25gd"]
 
+[ext_resource type="Shader" uid="uid://cbevm783qlg21" path="res://assets/hue.gdshader" id="1_o48n1"]
 [ext_resource type="Script" uid="uid://dqe8lhgjslaqc" path="res://game_objects/card.gd" id="1_ofhub"]
-[ext_resource type="Texture2D" uid="uid://ba403h1s6vbgp" path="res://assets/sprites/Card_Stock.png" id="2_o48n1"]
+[ext_resource type="Texture2D" uid="uid://dvx1g5lbbhq1g" path="res://assets/sprites/Card Rest Layer.png" id="2_ofhub"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i0278"]
+resource_local_to_scene = true
+shader = ExtResource("1_o48n1")
+shader_parameter/shift_amount = 250.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_o48n1"]
+load_path = "res://.godot/imported/Card Text Layer.png-39ca334d22613f5e0126723ca6a8297f.ctex"
 
 [node name="Card" type="Control" unique_id=333784551]
+material = SubResource("ShaderMaterial_i0278")
 custom_minimum_size = Vector2(210, 300)
 layout_mode = 3
 anchors_preset = 0
@@ -12,6 +22,7 @@ offset_bottom = 40.0
 script = ExtResource("1_ofhub")
 
 [node name="Cover" type="TextureRect" parent="." unique_id=24016845]
+use_parent_material = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,56 +30,55 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("2_o48n1")
+texture = ExtResource("2_ofhub")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=986622541]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 37
-theme_override_constants/margin_right = 21
-theme_override_constants/margin_bottom = 11
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1760202546]
-layout_mode = 2
-alignment = 1
-
-[node name="PreviewArea" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1903990259]
+[node name="PreviewArea" type="Control" parent="." unique_id=1903990259]
 custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
+anchors_preset = 0
+offset_left = 30.0
+offset_top = 26.000004
+offset_right = 184.0
+offset_bottom = 177.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.75
 mouse_filter = 2
 
-[node name="Gap" type="Control" parent="MarginContainer/VBoxContainer" unique_id=752807238]
-custom_minimum_size = Vector2(0, 12)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
+[node name="Description" type="TextureRect" parent="." unique_id=1433055704]
+visible = false
+use_parent_material = true
+layout_mode = 0
+offset_left = 36.0
+offset_top = 178.0
+offset_right = 215.25208
+offset_bottom = 265.8173
+scale = Vector2(0.97070014, 1.138728)
+size_flags_vertical = 3
+texture = SubResource("CompressedTexture2D_o48n1")
+expand_mode = 1
+stretch_mode = 4
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=967517754]
+[node name="TitleLabel" type="Label" parent="Description" unique_id=967517754]
 custom_minimum_size = Vector2(0, 24)
-layout_mode = 2
+layout_mode = 0
+offset_left = -6.1811056
+offset_top = -24.588844
+offset_right = 152.8189
+offset_bottom = -0.5888443
 theme_override_font_sizes/font_size = 12
 text = "Placeholder Title"
 horizontal_alignment = 1
 
-[node name="Gap2" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1578194874]
-custom_minimum_size = Vector2(0, 12)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-
-[node name="DescriptionLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=724926020]
+[node name="DescriptionLabel" type="Label" parent="Description" unique_id=724926020]
 custom_minimum_size = Vector2(0, 80)
 custom_maximum_size = Vector2(124, -1)
-layout_mode = 2
+layout_mode = 0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 130.0
+offset_bottom = 86.0
+scale = Vector2(1.1999993, 1)
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 12
 text = "This is some long ass text to see how it goes. it should have autowrap"
