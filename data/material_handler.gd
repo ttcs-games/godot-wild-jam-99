@@ -17,7 +17,9 @@ func make_Material(card : CardData, material:String):
 	card.material = path[material]
 	print(card.material)
 
-
+func get_path(material:String):
+	print(path)
+	return path[material]
 func play_grass(card_deck :CardPile, block : Node2D, card : CardData):
 	#make_Material(card,"grass")
 	#draw 1

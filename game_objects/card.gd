@@ -7,10 +7,12 @@ const HOVER_LIFT := Vector2(0, -24)
 
 # CONSTANTS
 const SHAPE := preload("res://game_objects/shape.tscn")
-@onready var preview_area: Control = $MarginContainer/VBoxContainer/PreviewArea
-@onready var title_label: Label = $MarginContainer/VBoxContainer/TitleLabel
-@onready var description_label: Label = $MarginContainer/VBoxContainer/DescriptionLabel
+@onready var preview_area: Control = $PreviewArea
+@onready var title_label: Label = $Description/TitleLabel
+@onready var description_label: Label = $Description/DescriptionLabel
+@onready var description_area: TextureRect =$Description
 
+@onready var shader := material as ShaderMaterial
 # VARIABLES
 @export var card_data: CardData # the data object
 var _rest_position := Vector2.ZERO # resting position of the card
@@ -63,16 +65,20 @@ func _try_build() -> void:
 # Build the visual information for the card
 func _build_visuals(data: CardData) -> void:
 	# Fetch material, element, shape name from the card data
+	
 	var material_name := "?" if data.material == null else data.material.display_name
 	var element_name := Elements.display_name(data.element)
 	var shape_name := "?" if data.shape == null else data.shape.display_name
+	shader.set_shader_parameter("shift_amount", Elements.color(data.element))
 	# Form the Title
-	title_label.text = "%s %s %s" % [material_name, element_name, shape_name]
 	
 	# Form the description from card's material data
-	if data.material != null:
+	if data.material.display_name != "Basic" :
+		description_area.visible = true
+		title_label.text = "%s %s %s" % [material_name, element_name, shape_name]
 		description_label.text = data.material.description
 	else:
+		description_area.visible = false
 		description_label.text = ""
 	
 	# Don't draw a shape if card's data doesnt have it
