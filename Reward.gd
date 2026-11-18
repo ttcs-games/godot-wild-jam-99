@@ -4,10 +4,10 @@ extends Node
 
 #Update this if the number of shapes, elements or materials changes
 #frankly this is a bunch of bullshit, but I have to make it into arrays for the random reward generation
-enum Types { ADD, REMOVE, TRAIT, CHANGE_SHAPE, CHANGE_ELEMENT }
+enum Types { REMOVE, ADD, TRAIT, CHANGE_SHAPE, CHANGE_ELEMENT }
 const Shapes: Array[ShapeData] = [CardFactory.L_SHAPE, CardFactory.REVERSEL_SHAPE, CardFactory.SKEW_SHAPE, CardFactory.REVERSESKEW_SHAPE, CardFactory.SQUARE_SHAPE, CardFactory.I_SHAPE, CardFactory.T_SHAPE]
 const CardElements: Array[Elements.Id] = [Elements.Id.RED, Elements.Id.BLUE, Elements.Id.GREEN, Elements.Id.YELLOW]
-const Materials: Array[MaterialData] = [CardFactory.BASIC_MATERIAL]
+const Materials: Array[MaterialData] = [preload("res://data/materials/basic_material.tres"), preload("res://data/materials/brick_material.tres"), preload("res://data/materials/glass_material.tres"), preload("res://data/materials/grass_material.tres"), preload("res://data/materials/ice_material.tres"), preload("res://data/materials/slime_material.tres")]
 
 var Card_added : CardData
 var Shape_change : ShapeData
@@ -31,3 +31,18 @@ func _init(reward_type : int, number_of_rewards: int):
 		Shape_change = Shapes.pick_random()
 	elif (Type == Types.CHANGE_ELEMENT):
 		Element_change = CardElements.pick_random()
+		
+func equals(b: Reward) -> bool:
+	#used to make sure repeat rewards are not given out
+	if (self.Type == b.Type):
+		if (self.Type == Types.REMOVE):
+			return true
+		elif (self.Type == Types.TRAIT && self.Trait_added == b.Trait_added):
+			return true
+		elif (self.Type == Types.CHANGE_SHAPE && self.Shape_change == b.Shape_change):
+			return true
+		elif (self.Type == Types.CHANGE_ELEMENT && self.Element_change == b.Element_change):
+			return true
+		elif (self.Type == Types.ADD && self.Card_added.element == b.Card_added.element && self.Card_added.element == b.Card_added.element && self.Card_added.shape == b.Card_added.shape):
+			return true
+	return false

@@ -27,10 +27,11 @@ var _active_card_index: int = 1000 #because the player will never have more than
 var _active_cursor: Node2D = null
 var _open_viewer: Control = null
 
-#Reward Handling
+#Reward Handling. The signal is emitted only when the reward is successfully applied, not when the viewer is closed
 var reward_to_apply: Reward = null
 var _reward_chosen: bool = false #checks if the player has selected a reward
-var cards_affected : Array[CardData] = []
+var cards_affected : Array[Control] = []
+signal reward_applied
 
 # Turn Handling
 var turn_number: int = 1
@@ -226,6 +227,10 @@ func open_pile_viewer(pile: CardPile, title: String, num_cards_displayed: int = 
 		_open_viewer.get_child(1).pressed.connect(apply_rewards)
 
 func _close_pile_viewer() -> void:
+	#this is for the rewards screen.
+	if (cards_affected != []):
+		cards_affected = []
+	
 	if _open_viewer == null:
 		return
 	_open_viewer.queue_free()
@@ -234,15 +239,15 @@ func _close_pile_viewer() -> void:
 #applies the reward to the card. Horrible way of doing this, but it's a game jam, so have to make compromises
 func _on_card_chosen(card_affected: Control) -> void:
 	#if no reward is chosen, do this. Adding cards is already handled in rewards_screen script
-	if (_reward_chosen == false or reward_to_apply == null):
+	if (_reward_chosen == false || reward_to_apply == null):
 		return
 	
-	if (card_affected.card_data in cards_affected):
-		cards_affected.erase(card_affected.card_data)
+	if (card_affected in cards_affected):
+		cards_affected.erase(card_affected)
 		card_affected.unlock()
 		
 	elif (reward_to_apply.amount > len(cards_affected)):
-		cards_affected.append(card_affected.card_data)
+		cards_affected.append(card_affected)
 		card_affected.lock()
 	
 	#this is the accept rewards button
@@ -250,11 +255,14 @@ func _on_card_chosen(card_affected: Control) -> void:
 	_open_viewer.get_child(1).disabled = false
 	
 func apply_rewards() -> void:
+	var cards_affected_data : Array[CardData]
+	cards_affected_data.assign(cards_affected.map(func(card): return card.card_data))
+	
 	#removing these cards from the deck
-	deck.remove_all(cards_affected)
+	deck.remove_all(cards_affected_data)
 	
 	#add them back in changed if its one of the other rewards
-	for single_card in cards_affected:
+	for single_card in cards_affected_data:
 		if (reward_to_apply.Type == Reward.Types.TRAIT):
 			single_card.material = reward_to_apply.Trait_added
 			
@@ -265,11 +273,12 @@ func apply_rewards() -> void:
 			single_card.shape = reward_to_apply.Shape_change
 	
 	if (reward_to_apply.Type != Reward.Types.REMOVE):
-		deck.add_all(cards_affected)
+		deck.add_all(cards_affected_data)
 	
 	_open_viewer.get_child(1).visible = false
 	_open_viewer.get_child(1).disabled = true
 	_open_viewer.close_requested.emit()
+	reward_applied.emit()
 	cards_affected = []
 	
 func _phase_discard_hand() -> void:
