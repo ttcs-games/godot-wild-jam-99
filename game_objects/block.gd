@@ -6,7 +6,10 @@ extends Sprite2D
 @export var element: Elements.Id = Elements.Id.RED
 # todo: material, sprite assignment
 
+@onready  var mat: MaterialData = preload("res://data/materials/basic_material.tres")	
+
 # When created, set shift the hue equal to its assigned element
 func _ready() -> void:
-	var mat := material as ShaderMaterial
-	mat.set_shader_parameter("shift_amount", Elements.color(element))
+	var shader := material as ShaderMaterial
+	shader.set_shader_parameter("shift_amount", Elements.color(element))
+	texture=mat.sprite

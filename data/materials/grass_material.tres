@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MaterialData" format=3 uid="uid://cq7wxwv375gnr"]
+
+[ext_resource type="Script" uid="uid://kl16elp5u6du" path="res://data/material_data.gd" id="1_rlchb"]
+[ext_resource type="Texture2D" uid="uid://6battpn7teek" path="res://assets/sprites/Block Grass.png" id="2_c50ns"]
+
+[resource]
+script = ExtResource("1_rlchb")
+display_name = "Grass"
+description = "When placed, if there is at least 1 basic card in hand - turn it into Grass and draw 1 cardCannot be replaced with new Material"
+sprite = ExtResource("2_c50ns")
+metadata/_custom_type_script = "uid://kl16elp5u6du"

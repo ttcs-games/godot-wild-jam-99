@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://w0up11rrrrqh"]
+[gd_scene format=3 uid="uid://cqfhq5gsgm80q"]
 
 [ext_resource type="Texture2D" uid="uid://ce37i6u16p5fd" path="res://assets/sprites/Hand Asset.png" id="1_nlkc0"]
 [ext_resource type="Script" uid="uid://cmartf22gy06p" path="res://cursor.gd" id="2_fqu3v"]
@@ -115,6 +115,11 @@ animations = [{
 "name": &"idle",
 "speed": 5.0
 }, {
+"frames": [],
+"loop": 1,
+"name": &"new_animation",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_s1m11")
@@ -136,7 +141,7 @@ animations = [{
 [node name="Cursor" type="AnimatedSprite2D" unique_id=1383289649]
 scale = Vector2(0.41393444, 0.3506711)
 sprite_frames = SubResource("SpriteFrames_34yac")
-animation = &"hover_exit"
+animation = &"hover"
 script = ExtResource("2_fqu3v")
 
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

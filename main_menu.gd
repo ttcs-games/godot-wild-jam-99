@@ -36,7 +36,7 @@ func getAudio(busName):
 func changeAudio (busName:String, value:float):
 	var busIndex = AudioServer.get_bus_index(busName)
 	AudioServer.set_bus_volume_db(busIndex, linear_to_db(value) )
-	AudioServer.set_bus_mute(busIndex, value<0.5)
+	AudioServer.set_bus_mute(busIndex, value<0.01)
 
 func _on_master_slider_value_changed(value: float) -> void:
 	changeAudio("Master",value)
