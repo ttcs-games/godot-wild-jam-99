@@ -123,8 +123,8 @@ func discard_card(card: CardData) -> void:
 func select_card(card: Control, card_index: int) -> void:
 	if is_end_turn_in_progress or is_level_won:
 		return
-	
-	cursorAnimation.play("grab")
+	if _active_card != card:
+		cursorAnimation.play("grab")
 	# If you already have a selected card - cancel previous selection
 	if _active_card != null:
 		_active_card.unlock()
