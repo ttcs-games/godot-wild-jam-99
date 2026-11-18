@@ -10,8 +10,9 @@ const SQUARE_SHAPE = preload("res://data/shapes/square_shape.tres")
 const I_SHAPE = preload("res://data/shapes/I_shape.tres")
 const T_SHAPE = preload("res://data/shapes/T_shape.tres")
 
-
 const BASIC_MATERIAL = preload("res://data/materials/basic_material.tres")
+
+const shape_dict = {"L-shape": L_SHAPE, "Reverse L-shape": REVERSEL_SHAPE, "Skew-shape": SKEW_SHAPE, "Reverse Skew-shape": REVERSESKEW_SHAPE, "Square": SQUARE_SHAPE, "I-shape": I_SHAPE, "T-Shape": T_SHAPE}
 
 static func make(shape: ShapeData, element: Elements.Id, material: MaterialData) -> CardData:
 	var card := CardData.new()
@@ -58,3 +59,6 @@ static func standard_deck() -> Array[CardData]:
 	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.GREEN, BASIC_MATERIAL))
 	deck.append(make(SQUARE_SHAPE.duplicate(), Elements.Id.YELLOW, BASIC_MATERIAL))
 	return deck
+
+static func return_original_shape(card: CardData):
+	card.shape = shape_dict[card.shape.display_name]

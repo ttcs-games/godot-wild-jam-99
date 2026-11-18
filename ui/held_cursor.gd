@@ -32,6 +32,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		GameManager.remove_card()
 		get_viewport().set_input_as_handled()
 		
+		#playing the idle animation once a card is let go of
+		GameManager.cursorAnimation.play("idle")
+		
 
 # Set shape's center to be located at the mouse's location
 func _center_shape_on_mouse() -> void:
