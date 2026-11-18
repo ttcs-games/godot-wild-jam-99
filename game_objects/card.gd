@@ -90,6 +90,7 @@ func _build_visuals(data: CardData) -> void:
 	var shape := SHAPE.instantiate()
 	shape.offsets = data.shape.offsets
 	shape.element = data.element
+	shape.mat = data.material
 	preview_area.add_child(shape)
 	_current_shape = shape
 	_current_offsets = data.shape.offsets

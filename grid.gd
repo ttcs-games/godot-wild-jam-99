@@ -132,7 +132,7 @@ func _neighbors(c: Vector2i) -> Array[Vector2i]:
 	]
 
 # Try placing an array of blocks (shape) to the grid. Returns false if failed
-func place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id) -> bool:
+func place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id, mat :MaterialData) -> bool:
 	if is_animating:
 		return false
 	
@@ -150,7 +150,7 @@ func place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id) -> 
 	
 	# Signal for each new block that is has been placed on a certain cell
 	for cell in placed:
-		block_placed.emit(cell, element)
+		block_placed.emit(cell, element, mat)
 	
 	shape_placed.emit(placed, element)
 	queue_redraw()
@@ -212,10 +212,11 @@ func _process(delta: float) -> void:
 		lava_overlay.queue_redraw()
 	
 # Processor for "block placed" signal: actually spawns the block node
-func _on_block_placed(cell: Vector2i, element: Elements.Id) -> void:
+func _on_block_placed(cell: Vector2i, element: Elements.Id, mat : MaterialData) -> void:
 	var b := BLOCK.instantiate()
 	b.position = cell_to_coords(cell)
 	b.element = element
+	b.mat = mat
 	# todo: setup the material
 	block_root.add_child(b)
 	cell_to_block[cell] = b
@@ -246,7 +247,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and GameManager._active_card != null:
 		var test_offsets: Array[Vector2i] = GameManager._active_card.card_data.shape.offsets
-		var ok := place(test_offsets, hovered_cell, GameManager._active_card.card_data.element)
+		var ok := place(test_offsets, hovered_cell, GameManager._active_card.card_data.element, GameManager._active_card.card_data.material)
 		
 		if not ok:
 			placement_rejected.emit(test_offsets)

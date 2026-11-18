@@ -14,6 +14,7 @@ func setup(data: CardData) -> void:
 	_shape = SHAPE.instantiate()
 	_shape.offsets = data.shape.offsets
 	_shape.element = data.element
+	_shape.mat = data.material
 	add_child(_shape)
 	_center_shape_on_mouse()
 
