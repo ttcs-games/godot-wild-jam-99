@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MaterialData" format=3 uid="uid://cioenvsm7t806"]
+
+[ext_resource type="Script" uid="uid://kl16elp5u6du" path="res://data/material_data.gd" id="1_oei48"]
+[ext_resource type="Texture2D" uid="uid://c1tnjq1ulep6t" path="res://assets/sprites/Block Slime.png" id="2_e6bqk"]
+
+[resource]
+script = ExtResource("1_oei48")
+display_name = "Slime"
+description = "Can be placed without foundation Shapes placed next to it dont need foundation Single play for this round"
+sprite = ExtResource("2_e6bqk")
+metadata/_custom_type_script = "uid://kl16elp5u6du"
