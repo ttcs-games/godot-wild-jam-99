@@ -35,6 +35,7 @@ var cards_affected : Array[CardData] = []
 # Turn Handling
 var turn_number: int = 1
 var lava_per_turn: int = 1
+var lava_delay: int = 0
 var draw_per_turn := 10
 var is_end_turn_in_progress: bool = false
 signal turn_changed(new_turn: int)
@@ -44,6 +45,7 @@ var is_level_won: bool = false
 var current_level_data: LevelData = null
 
 func start_run() -> void:
+	current_level_data = null
 	init_deck()
 	MusicManager.switch_track()
 	get_tree().change_scene_to_file(SCENE_LEVEL_DESCRIPTION)
@@ -82,9 +84,11 @@ func start_level() -> void:
 	if current_level_data != null:
 		lava_per_turn = current_level_data.lava_per_turn
 		draw_per_turn = current_level_data.draw_per_turn
+		lava_delay = current_level_data.lava_delay
 	else:
 		lava_per_turn = 1
 		draw_per_turn = 10
+		lava_delay = 0
 	
 	deck.shuffle()
 	get_tree().change_scene_to_file(SCENE_GAME_ZONE)
@@ -276,6 +280,8 @@ func _phase_discard_hand() -> void:
 	await get_tree().create_timer(0.15).timeout
 
 func _phase_rise_lava() -> void:
+	if turn_number <= lava_delay:
+		return
 	await grid.rise_lava(lava_per_turn)
 
 func _phase_bump_turn(turn_label: Label) -> void:
