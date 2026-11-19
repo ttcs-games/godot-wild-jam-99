@@ -12,5 +12,8 @@ func _process(_delta):
 		
 
 func _on_animation_finished() -> void:
-	if animation == "hover_exit" || animation == "throw":
+	if animation == "hover_exit":
+		play("idle")
+	elif animation == "throw":
+		await get_tree().create_timer(0.2).timeout
 		play("idle")

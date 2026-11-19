@@ -228,6 +228,7 @@ func cursor_Hover_exit() -> void:
 
 func open_pile_viewer(pile: CardPile, title: String , num_cards_displayed: int = 1000 ,sort_cards : bool = true, on_card_chosen:Callable = _on_card_chosen ) -> void:
 	remove_card()
+	cursorAnimation.play("idle")
 	if _open_viewer != null:
 		return
 	_open_viewer = DECK_VIEWER_SCENE.instantiate()
