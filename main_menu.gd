@@ -5,6 +5,8 @@ extends Control
 @onready var MusicSlider = $OptionMenu/MarginContainer/VBoxContainer/GridContainer/MusicSlider
 @onready var SFXSlider = $OptionMenu/MarginContainer/VBoxContainer/GridContainer/SFXSlider
 
+func _ready() -> void:
+	GameManager.play_slide_in(self)
 
 func _on_play_button_pressed() -> void:
 	randomize()
