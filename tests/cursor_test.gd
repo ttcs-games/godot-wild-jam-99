@@ -90,6 +90,8 @@ func _on_finish_pressed() -> void:
 
 #redraw button's logic is handled here
 func _on_redraw_button_pressed() -> void:
+	cursor_animation.play("idle")
+	GameManager.remove_card() #remove card so the player doesn't hold onto it
 	if (GameManager.redraws == 0):
 		return
 	
