@@ -28,6 +28,8 @@ var _active_cursor: Node2D = null
 var _open_viewer: Control = null
 var cursor: AnimatedSprite2D = null
 
+signal shape_rotated
+
 #Reward Handling. The signal is emitted only when the reward is successfully applied, not when the viewer is closed
 var reward_to_apply: Reward = null
 var _reward_chosen: bool = false #checks if the player has selected a reward
@@ -151,14 +153,18 @@ func select_card(card: Control, card_index: int) -> void:
 
 func remove_card() -> void:
 	if _active_card != null:
+		#returning it to its original shape if it was rotated
+		CardFactory.return_original_shape(_active_card.card_data)
 		_active_card.unlock()
 		_active_card = null
+		
 	if _active_cursor != null:
 		_active_cursor.queue_free()
 		_active_cursor = null
 	
 
 func rotate_selection() -> void:
+	
 	#squares dont change while rotating
 	if _active_card.card_data.shape.display_name == "Square":
 			return
@@ -209,6 +215,7 @@ func rotate_selection() -> void:
 		rotated_card.card_data.shape.offsets = new_offsets
 		#sending the same card and index, but with a rotated shape
 		select_card(rotated_card, _active_card_index)
+		shape_rotated.emit()
 		return
 
 func cursor_Hover() -> void:

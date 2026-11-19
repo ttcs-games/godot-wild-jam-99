@@ -60,6 +60,7 @@ func in_bounds(c: Vector2i) -> bool:
 func _ready() -> void:
 	block_placed.connect(_on_block_placed)
 	shape_placed.connect(_on_shape_placed)
+	GameManager.shape_rotated.connect(queue_redraw)
 
 # Draw function is used only for aim draw (blocks are drawn by themselves - they are independent nodes)
 func _draw() -> void:
@@ -78,9 +79,14 @@ func _draw() -> void:
 	if in_bounds(hovered_cell):
 		#if there is an active block in the player's hand, it draws that instead.
 		if GameManager._active_card != null:
-			for block in GameManager._active_card.card_data.shape.offsets:
+			var highlight_color = Color.WHITE if can_place(GameManager._active_card.card_data.shape.offsets, hovered_cell, GameManager._active_card.card_data.element) else Color.RED
+			
+			var shape_offsets : Array[Vector2i] 
+			shape_offsets.assign(GameManager._active_card.card_data.shape.offsets.map(func(offset): return offset - Vector2i(1,1)) if GameManager._active_card.card_data.shape.display_name != "I-shape" else GameManager._active_card.card_data.shape.offsets)
+			
+			for block in shape_offsets:
 				var cell_aim := Rect2(cell_to_coords(hovered_cell + block), Vector2(cell_size, cell_size))
-				draw_rect(cell_aim, Color.WHITE, false, 2.0)
+				draw_rect(cell_aim, highlight_color, false, 2.0)
 		else:
 			var cell_aim := Rect2(cell_to_coords(hovered_cell), Vector2(cell_size, cell_size))
 			draw_rect(cell_aim, Color.WHITE, false, 2.0)
@@ -91,7 +97,7 @@ func can_place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id)
 	# Check every block in an array
 	for offset in offsets:
 		# Get coordinates of to-be-placed block
-		var cell := origin + offset
+		var cell := origin + offset - Vector2i(1,1) if GameManager._active_card.card_data.shape.display_name != "I-shape" else origin + offset
 		
 		# Out of grid
 		if not in_bounds(cell):
@@ -144,8 +150,8 @@ func place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id, mat
 	
 	# For each block, register it in the grid
 	var placed: Array[Vector2i] = []
-	for offset in offsets:
-		var cell := origin + offset
+	for offset in offsets: #subtracting this last vector to centre the shape's offsets around 0,0
+		var cell := origin + offset - Vector2i(1,1) if GameManager._active_card.card_data.shape.display_name != "I-shape" else origin + offset
 		placed.append(cell)
 	
 	# Signal for each new block that is has been placed on a certain cell
@@ -203,10 +209,12 @@ func apply_level_data(data: LevelData) -> void:
 func _process(delta: float) -> void:
 	var local_pos := to_local(get_global_mouse_position())
 	var c := coords_to_cell(local_pos)
+	# add this to the line below if you want more leeway in placing the blocks: && local_pos.distance_squared_to(cell_to_coords(c))*1.3 < local_pos.distance_squared_to(cell_to_coords(_last_hovered))
 	if c != _last_hovered:
 		_last_hovered = c
 		hovered_cell = c
 		queue_redraw()
+
 	if _lava_visual_row != _last_lava_row_visual:
 		_last_lava_row_visual = _lava_visual_row
 		lava_overlay.queue_redraw()
