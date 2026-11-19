@@ -41,30 +41,38 @@ func _ready() -> void:
 	
 	var i = 0
 	while i < Reward_amount:
-		#randomly defining what kind of reward and how many cards it can affect
-		var newReward : Reward
-		if len(GameManager.deck._cards) > 10: #if the player has less than ten cards, they shouldn't be allowed to remove more.
-			newReward= Reward.new(_rng.randi_range(0,4),_rng.randi_range(1,3))
-		else:
-			newReward= Reward.new(_rng.randi_range(1,4),_rng.randi_range(1,3))
-		
-		#making sure this reward isn't the same as another reward
-		if (Rewards.any(newReward.equals)):
-			continue
-		
-		#adding text to the button
-		RewardButtons[i].text = RewardText(i,newReward)
-		reward_strings.append(RewardButtons[i].text) #used later when the deck view is created
-		
-		#activating the buttons that are connected to the rewards
-		RewardButtons[i].disabled = false
-		
-		RewardButtons[i].mouse_entered.connect(_on_reward_button_hovered.bind(i))
-		RewardButtons[i].mouse_exited.connect(_on_reward_button_unhovered)
-		Rewards.append(newReward)
-		
+		if (i < 5): #first five rewards all 
+			#randomly defining what kind of reward and how many cards it can affect
+			var newReward : Reward
+			if (i == 0): #first reward is always one that adds a trait to a card
+				newReward= Reward.new(2,1)
+			elif len(GameManager.deck._cards) > 10: #if the player has less than ten cards, they shouldn't be allowed to remove more.
+				newReward= Reward.new(_rng.randi_range(0,4),1)
+			else:
+				newReward= Reward.new(_rng.randi_range(1,4),1)
+			
+			#making sure this reward isn't the same as another reward
+			if (Rewards.any(newReward.equals)):
+				continue
+			
+			#activating the buttons that are connected to the rewards
+			RewardButtons[i].disabled = false
+			
+			RewardButtons[i].mouse_entered.connect(_on_reward_button_hovered.bind(i))
+			RewardButtons[i].mouse_exited.connect(_on_reward_button_unhovered)
+			Rewards.append(newReward)
+			
+		else: #if reward amount is over 5, just increments the number of cards affected for a random previous reward
+			Rewards.pick_random().amount += 1
+			
 		i = i + 1
-		
+	
+	i = 0
+	while (i < len(Rewards)):
+		RewardButtons[i].text = RewardText(i,Rewards[i])
+		reward_strings.append(RewardButtons[i].text) #used later when the deck view is created
+		i = i + 1
+	
 	#creating the list of cards on which each reward can be applied
 	create_sub_decks()
 

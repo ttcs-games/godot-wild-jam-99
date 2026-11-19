@@ -41,7 +41,7 @@ func equals(b: Reward) -> bool:
 			return true
 		elif (self.Type == Types.CHANGE_SHAPE && self.Shape_change == b.Shape_change):
 			return true
-		elif (self.Type == Types.CHANGE_ELEMENT && self.Element_change == b.Element_change):
+		elif (self.Type == Types.CHANGE_ELEMENT): #Only one Change Element Reward will always appear
 			return true
 		elif (self.Type == Types.ADD && self.Card_added.element == b.Card_added.element && self.Card_added.element == b.Card_added.element && self.Card_added.shape == b.Card_added.shape):
 			return true
