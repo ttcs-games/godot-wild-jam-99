@@ -226,13 +226,13 @@ func cursor_Hover_exit() -> void:
 	if cursorAnimation.animation != "grab":
 		cursorAnimation.play("hover_exit")
 
-func open_pile_viewer(pile: CardPile, title: String, num_cards_displayed: int = 1000, sort_cards : bool = true) -> void:
+func open_pile_viewer(pile: CardPile, title: String , num_cards_displayed: int = 1000 ,sort_cards : bool = true, on_card_chosen:Callable = _on_card_chosen ) -> void:
 	remove_card()
 	if _open_viewer != null:
 		return
 	_open_viewer = DECK_VIEWER_SCENE.instantiate()
 	cursor_layer.add_child(_open_viewer)
-	_open_viewer.setup(pile, title, num_cards_displayed, sort_cards)
+	_open_viewer.setup(pile, title, num_cards_displayed, sort_cards,_on_card_chosen)
 	_open_viewer.close_requested.connect(_close_pile_viewer)
 	
 	#configuring accept rewards button to apply rewards
