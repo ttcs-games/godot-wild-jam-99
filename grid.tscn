@@ -1,13 +1,102 @@
 [gd_scene format=3 uid="uid://b3ori8l4rn1g4"]
 
 [ext_resource type="Script" uid="uid://pktsj3mrmb36" path="res://grid.gd" id="1_ebq2e"]
-[ext_resource type="Script" uid="uid://cfhdkf0ucnwhx" path="res://lava.gd" id="2_65i6o"]
+[ext_resource type="Texture2D" uid="uid://bnes1hh0mvx5p" path="res://assets/sprites/black goo/Water Final_00000.png" id="2_mbq38"]
+[ext_resource type="Texture2D" uid="uid://bfhg4wu3p2r7t" path="res://assets/sprites/black goo/Water Final_00001.png" id="3_konqy"]
+[ext_resource type="Texture2D" uid="uid://d3pykvyxdo2oe" path="res://assets/sprites/black goo/Water Final_00002.png" id="4_gayrg"]
+[ext_resource type="Texture2D" uid="uid://ceuwmdluttq3y" path="res://assets/sprites/black goo/Water Final_00003.png" id="5_u6jcp"]
+[ext_resource type="Texture2D" uid="uid://baywi843sp774" path="res://assets/sprites/black goo/Water Final_00004.png" id="6_4bqgu"]
+[ext_resource type="Texture2D" uid="uid://bxe1mxprask6l" path="res://assets/sprites/black goo/Water Final_00005.png" id="7_eilgq"]
+[ext_resource type="Texture2D" uid="uid://ydbqweqicad2" path="res://assets/sprites/black goo/Water Final_00006.png" id="8_bibwd"]
+[ext_resource type="Texture2D" uid="uid://mtteyc61oetf" path="res://assets/sprites/black goo/Water Final_00007.png" id="9_ivji3"]
+[ext_resource type="Texture2D" uid="uid://sgu1snsoe2l6" path="res://assets/sprites/black goo/Water Final_00008.png" id="10_pisw8"]
+[ext_resource type="Texture2D" uid="uid://diauwdch00ja3" path="res://assets/sprites/black goo/Water Final_00009.png" id="11_jpp3n"]
+[ext_resource type="Texture2D" uid="uid://diqi6kyvory43" path="res://assets/sprites/black goo/Water Final_00010.png" id="12_en7xa"]
+[ext_resource type="Texture2D" uid="uid://bp428bya8ohe5" path="res://assets/sprites/black goo/Water Final_00011.png" id="13_8peqv"]
+[ext_resource type="Texture2D" uid="uid://ciyrm71iufcfq" path="res://assets/sprites/black goo/Water Final_00012.png" id="14_673ef"]
+[ext_resource type="Texture2D" uid="uid://cpjkbpbhgk080" path="res://assets/sprites/black goo/Water Final_00013.png" id="15_uar2c"]
+[ext_resource type="Texture2D" uid="uid://c0u8fds440ndo" path="res://assets/sprites/black goo/Water Final_00014.png" id="16_71lej"]
+[ext_resource type="Texture2D" uid="uid://be172oej4836i" path="res://assets/sprites/black goo/Water Final_00015.png" id="17_bwyy2"]
+[ext_resource type="Texture2D" uid="uid://it6uaej6s6yp" path="res://assets/sprites/black goo/Water Final_00016.png" id="18_gv013"]
+[ext_resource type="PackedScene" uid="uid://codrw1qymw8r8" path="res://assets/particles/gpu_particles_2d.tscn" id="19_mbq38"]
+[ext_resource type="Script" uid="uid://qfg7ggp0ue1n" path="res://lines.gd" id="20_konqy"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_mbq38")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_konqy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_gayrg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_u6jcp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_4bqgu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_eilgq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_bibwd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ivji3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_pisw8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_jpp3n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_en7xa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_8peqv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_673ef")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_uar2c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_71lej")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_bwyy2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_gv013")
+}],
+"loop": 1,
+"name": &"lava",
+"speed": 10.0
+}]
 
 [node name="Grid" type="Node2D" unique_id=37737656]
 script = ExtResource("1_ebq2e")
 
 [node name="BlockRoot" type="Node2D" parent="." unique_id=1964372986]
 
-[node name="Lava" type="Node2D" parent="." unique_id=1446942222]
+[node name="Lava" type="AnimatedSprite2D" parent="." unique_id=460958167]
+modulate = Color(1, 1, 1, 0.9019608)
 z_index = 1
-script = ExtResource("2_65i6o")
+sprite_frames = SubResource("SpriteFrames_4kxuq")
+animation = &"lava"
+frame_progress = 0.17558315
+centered = false
+
+[node name="Bubble" parent="Lava" unique_id=993908567 instance=ExtResource("19_mbq38")]
+visible = false
+scale = Vector2(7.535, 1e-05)
+lifetime = 20.0
+
+[node name="Lines" type="Node2D" parent="." unique_id=1623302765]
+script = ExtResource("20_konqy")

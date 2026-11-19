@@ -303,8 +303,6 @@ func _phase_discard_hand() -> void:
 	await get_tree().create_timer(0.15).timeout
 
 func _phase_rise_lava() -> void:
-	if turn_number <= lava_delay:
-		return
 	await grid.rise_lava(lava_per_turn)
 
 func _phase_bump_turn(turn_label: Label) -> void:

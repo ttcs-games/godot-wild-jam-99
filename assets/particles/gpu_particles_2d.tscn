@@ -21,17 +21,20 @@ point_count = 2
 curve = SubResource("Curve_qrkx4")
 
 [sub_resource type="Curve" id="Curve_eaaf3"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0.44943827), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
+metadata/_snap_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_qrkx4"]
+width = 100
 curve = SubResource("Curve_eaaf3")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n4c0y"]
 lifetime_randomness = 0.85
-emission_shape_scale = Vector3(10, 20, 1)
 emission_shape = 3
-emission_box_extents = Vector3(10, 20, 1)
+emission_box_extents = Vector3(300, 4, 1)
+initial_velocity_min = 40.0
+initial_velocity_max = 40.0
 gravity = Vector3(0, -810, 0)
 linear_accel_min = -2.2351742e-06
 linear_accel_max = 85.27
@@ -40,19 +43,22 @@ radial_accel_min = -2.2351742e-06
 radial_accel_max = 17.049997
 damping_min = 0.46500003
 damping_max = 8.217
-scale_min = 0.01
+scale_min = 10.0
+scale_max = 15.0
 scale_curve = SubResource("CurveTexture_qrkx4")
 color_ramp = SubResource("GradientTexture1D_eaaf3")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
 turbulence_enabled = true
 turbulence_noise_strength = 0.02
-turbulence_noise_scale = 4.097
+turbulence_noise_scale = 4.0
 
 [node name="GPUParticles2D" type="GPUParticles2D" unique_id=993908567]
 material = SubResource("CanvasItemMaterial_1xb2t")
-scale = Vector2(5.10168, 2.0800004)
-amount = 100
+amount = 50
 texture = ExtResource("1_qrkx4")
 lifetime = 2.9099999999999997
 preprocess = 1.03
 randomness = 1.0
+visibility_rect = Rect2(-200, -1000, 800, 2000)
 process_material = SubResource("ParticleProcessMaterial_n4c0y")
