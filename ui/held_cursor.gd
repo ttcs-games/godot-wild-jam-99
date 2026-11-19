@@ -28,13 +28,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventKey and event.pressed and event.keycode == KEY_R:
 		GameManager.rotate_selection()
+		get_viewport().set_input_as_handled()
+	elif event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+		GameManager.remove_card()
+		get_viewport().set_input_as_handled()
+		GameManager.cursorAnimation.play("idle")
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		GameManager.remove_card()
 		get_viewport().set_input_as_handled()
-		
-		#playing the idle animation once a card is let go of
 		GameManager.cursorAnimation.play("idle")
-		
 
 # Set shape's center to be located at the mouse's location
 func _center_shape_on_mouse() -> void:
