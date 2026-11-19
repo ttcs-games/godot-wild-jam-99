@@ -13,6 +13,9 @@ var reward_strings : Array[String] = []
 var cards_to_apply_rewards = [[], [], [], [], []]
 var _rng := RandomNumberGenerator.new()
 
+const TOOLTIP_GAP := 12.0
+var _tooltip: PanelContainer = null
+var _tooltip_label: RichTextLabel = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -52,6 +55,9 @@ func _ready() -> void:
 		
 		#activating the buttons that are connected to the rewards
 		RewardButtons[i].disabled = false
+		
+		RewardButtons[i].mouse_entered.connect(_on_reward_button_hovered.bind(i))
+		RewardButtons[i].mouse_exited.connect(_on_reward_button_unhovered)
 		Rewards.append(newReward)
 		
 		i = i + 1
@@ -166,3 +172,124 @@ func create_sub_decks():
 		
 		cards_to_apply_rewards[i] = indexes
 		i = i + 1
+
+func _format_reward_tooltip(reward: Reward) -> String:
+	if reward == null:
+		return ""
+
+	match reward.Type:
+		Reward.Types.REMOVE, Reward.Types.CHANGE_SHAPE:
+			return ""
+
+		Reward.Types.ADD:
+			var data := reward.Card_added
+			if data == null:
+				return ""
+			var element_name := Elements.display_name(data.element)
+			var opposing_id := Elements.opposing(data.element)
+			var opposing_name := Elements.display_name(opposing_id)
+			var mat_name := "?" if data.material == null else data.material.display_name
+			var mat_desc := "" if data.material == null else data.material.description
+			var shape_name := "?" if data.shape == null else data.shape.display_name
+
+			var elem_hex := Elements.tint_hex(data.element, 0.5)
+			var opp_hex := Elements.tint_hex(opposing_id, 0.5)
+
+			var colored_elem := "[color=%s]%s[/color]" % [elem_hex, Utils.escape_bbcode(element_name)]
+			var colored_opp := "[color=%s]%s[/color]" % [opp_hex, Utils.escape_bbcode(opposing_name)]
+
+			return "%s %s %s\nOpposes %s\n%s" % [
+				colored_elem,
+				Utils.escape_bbcode(mat_name),
+				Utils.escape_bbcode(shape_name),
+				colored_opp,
+				Utils.escape_bbcode(mat_desc)
+			]
+
+		Reward.Types.TRAIT:
+			if reward.Trait_added == null:
+				return ""
+			return Utils.escape_bbcode(reward.Trait_added.description)
+
+		Reward.Types.CHANGE_ELEMENT:
+			var opposing_id := Elements.opposing(reward.Element_change)
+			var opposing_name := Elements.display_name(opposing_id)
+			var opp_hex := Elements.tint_hex(opposing_id, 0.5)
+			var colored_opp := "[color=%s]%s[/color]" % [opp_hex, Utils.escape_bbcode(opposing_name)]
+			return "Opposes %s" % [colored_opp]
+
+	return ""
+
+func _on_reward_button_hovered(button_index: int) -> void:
+	if button_index < 0 or button_index >= Rewards.size():
+		return
+	var btn := RewardButtons[button_index]
+	if btn.disabled:
+		return
+
+	var text := _format_reward_tooltip(Rewards[button_index])
+	if text.is_empty():
+		_hide_tooltip()
+		return
+
+	_show_tooltip(btn, text)
+
+func _on_reward_button_unhovered() -> void:
+	_hide_tooltip()
+
+func _exit_tree() -> void:
+	_hide_tooltip()
+
+func _show_tooltip(anchor: Control, bbcode_text: String) -> void:
+	_hide_tooltip()
+
+	var panel := PanelContainer.new()
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.z_index = 2000
+	panel.visible = false
+
+	var margin := MarginContainer.new()
+	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	margin.add_theme_constant_override("margin_left", 10)
+	margin.add_theme_constant_override("margin_right", 10)
+	margin.add_theme_constant_override("margin_top", 8)
+	margin.add_theme_constant_override("margin_bottom", 8)
+
+	var label := RichTextLabel.new()
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.bbcode_enabled = true
+	label.fit_content = true
+	label.scroll_active = false
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size = Vector2(180, 0)
+	label.text = bbcode_text
+
+	margin.add_child(label)
+	panel.add_child(margin)
+	get_tree().root.add_child(panel)
+
+	_tooltip = panel
+	_tooltip_label = label
+
+	await get_tree().process_frame
+	if not is_instance_valid(_tooltip) or not is_instance_valid(anchor):
+		return
+	await get_tree().process_frame
+	if not is_instance_valid(_tooltip) or not is_instance_valid(anchor):
+		return
+
+	var viewport_size := get_viewport().get_visible_rect().size
+	var target_x := anchor.global_position.x + anchor.size.x + TOOLTIP_GAP
+	var target_y := anchor.global_position.y
+
+	# Clamp inside viewport so tall/right-edge tooltips stay visible
+	target_x = minf(target_x, viewport_size.x - _tooltip.size.x - 8.0)
+	target_y = clampf(target_y, 8.0, maxf(8.0, viewport_size.y - _tooltip.size.y - 8.0))
+	_tooltip.global_position = Vector2(maxf(target_x, 8.0), target_y)
+	_tooltip.visible = true
+
+func _hide_tooltip() -> void:
+	if is_instance_valid(_tooltip):
+		_tooltip.queue_free()
+	_tooltip = null
+	_tooltip_label = null
