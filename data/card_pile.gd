@@ -43,6 +43,7 @@ func remove_all(cards: Array[CardData]) -> void:
 func draw_all() -> Array[CardData]:
 	var out = _cards.duplicate(true)
 	_cards.clear()
+	changed.emit()
 	return out
 
 func shuffle() -> void:
@@ -51,6 +52,7 @@ func shuffle() -> void:
 func drawSpecificCard(n:int) -> CardData:
 	var return_card := _cards[n]
 	_cards.remove_at(n) 
+	changed.emit()
 	return return_card
 
 func draw(n: int) -> Array[CardData]:
