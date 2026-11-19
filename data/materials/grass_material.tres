@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_rlchb")
 display_name = "Grass"
-description = "When placed, if there is at least 1 basic card in hand - turn it into Grass and draw 1 cardCannot be replaced with new Material"
+description = "When placed, if there is at least 1 basic card in hand - turn it into Grass and draw 1 card
+Cannot be replaced with new Material"
 sprite = ExtResource("2_c50ns")
 metadata/_custom_type_script = "uid://kl16elp5u6du"

@@ -4,12 +4,12 @@ extends Control
 const PREVIEW_PADDING := 8.0
 const HOVER_SCALE := 1.1
 const HOVER_LIFT := Vector2(0, -24)
+const TOOLTIP_GAP := 12.0
 
 # CONSTANTS
 const SHAPE := preload("res://game_objects/shape.tscn")
 @onready var preview_area: Control = $PreviewArea
 @onready var title_label: Label = $Description/TitleLabel
-@onready var description_label: Label = $Description/DescriptionLabel
 @onready var description_area: TextureRect =$Description
 
 @onready var shader := material as ShaderMaterial
@@ -25,6 +25,9 @@ var _tween: Tween # Object that will represent the card and animate it
 var _locked := false # flag to lock the card when selected
 
 var _hitbox_width: float = 99999.0
+
+var _tooltip: PanelContainer = null
+var _tooltip_label: RichTextLabel = null
 
 # SIGNALS
 # When left click is pressed on the card
@@ -77,11 +80,9 @@ func _build_visuals(data: CardData) -> void:
 	# Form the description from card's material data
 	if data.material.display_name != "Basic" :
 		description_area.visible = true
-		title_label.text = "%s %s %s" % [material_name, element_name, shape_name]
-		description_label.text = data.material.description
+		title_label.text = material_name
 	else:
 		description_area.visible = false
-		description_label.text = ""
 	
 	# Don't draw a shape if card's data doesnt have it
 	if data.shape == null:
@@ -123,10 +124,12 @@ func _fit_shape(shape: Node2D, offsets: Array[Vector2i]) -> void:
 # Signal from mouse entering - make it hover
 func _on_mouse_entered() -> void:
 	_tween_to_hover(true)
+	_show_tooltip()
 	GameManager.cursor_Hover()
 
 # Signal from mouse exiting - make it unhover if not selected
 func _on_mouse_exited() -> void:
+	_hide_tooltip()
 	if _locked:
 		return
 	_tween_to_hover(false)
@@ -173,3 +176,89 @@ func set_hitbox_width(w: float) -> void:
 
 func _has_point(point: Vector2) -> bool:
 	return point.x >= 0.0 and point.x < _hitbox_width and point.y >= 0.0 and point.y < size.y
+
+func _exit_tree() -> void:
+	_hide_tooltip()
+
+func _format_tooltip_text() -> String:
+	if card_data == null:
+		return ""
+	var element_name := Elements.display_name(card_data.element)
+	var opposing_id := Elements.opposing(card_data.element)
+	var opposing_name := Elements.display_name(opposing_id)
+	var mat_name := "?" if card_data.material == null else card_data.material.display_name
+	var mat_desc := "" if card_data.material == null else card_data.material.description
+	var shape_name := "?" if card_data.shape == null else card_data.shape.display_name
+
+	var elem_hex := Elements.tint_hex(card_data.element, 0.5)
+	var opp_hex := Elements.tint_hex(opposing_id, 0.5)
+
+	var colored_elem := "[color=%s]%s[/color]" % [elem_hex, Utils.escape_bbcode(element_name)]
+	var colored_opp := "[color=%s]%s[/color]" % [opp_hex, Utils.escape_bbcode(opposing_name)]
+
+	return "%s\n%s %s\nOpposes %s\n%s" % [
+		Utils.escape_bbcode(shape_name),
+		colored_elem,
+		Utils.escape_bbcode(mat_name),
+		colored_opp,
+		Utils.escape_bbcode(mat_desc)
+	]
+
+func _show_tooltip() -> void:
+	if card_data == null:
+		return
+	_hide_tooltip()
+
+	var panel := PanelContainer.new()
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.1, 0.1, 0.1, 0.8)
+	panel.add_theme_stylebox_override("panel", style)
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.z_index = 2000
+
+	var margin := MarginContainer.new()
+	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	margin.add_theme_constant_override("margin_left", 10)
+	margin.add_theme_constant_override("margin_right", 10)
+	margin.add_theme_constant_override("margin_top", 8)
+	margin.add_theme_constant_override("margin_bottom", 8)
+
+	var label := RichTextLabel.new()
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.bbcode_enabled = true
+	label.fit_content = true
+	label.scroll_active = false
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size = Vector2(180, 0)
+	label.text = _format_tooltip_text()
+
+	margin.add_child(label)
+	panel.add_child(margin)
+	_get_tooltip_parent().add_child(panel)
+
+	_tooltip = panel
+	_tooltip_label = label
+
+	# Wait one frame so PanelContainer calculates its minimum size accurately
+	await get_tree().process_frame
+	if not is_instance_valid(_tooltip):
+		return
+
+	var visual_top_left := global_position + HOVER_LIFT
+	var visual_width := size.x * scale.x
+	var visual_left_x := visual_top_left.x - (visual_width - size.x) * 0.5
+
+	var target_x := visual_left_x - _tooltip.size.x - TOOLTIP_GAP
+	var target_y := visual_top_left.y
+	_tooltip.global_position = Vector2(maxf(target_x, 8.0), maxf(target_y, 8.0))
+
+func _hide_tooltip() -> void:
+	if is_instance_valid(_tooltip):
+		_tooltip.queue_free()
+	_tooltip = null
+	_tooltip_label = null
+
+func _get_tooltip_parent() -> Node:
+	if GameManager != null and is_instance_valid(GameManager.cursor_layer):
+		return GameManager.cursor_layer
+	return get_tree().root

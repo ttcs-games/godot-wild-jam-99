@@ -21,3 +21,7 @@ static func bounding_box(offsets: Array[Vector2i]) -> Rect2i:
 	# form a rectangle which could fit the shape. Add extra (1,1)!
 	# because stored coordinates start at 0: a (0,0) block still needs (1,1) rectangle to fit
 	return Rect2i(min_p, max_p - min_p + Vector2i.ONE)
+
+# Replace [ with a special character (to not confuse rich text with tag start)
+static func escape_bbcode(text: String) -> String:
+	return text.replace("[", "[lb]")

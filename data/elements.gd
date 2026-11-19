@@ -11,9 +11,22 @@ static func color(e: Id) -> float:
 static func display_name(e: Id) -> String:
 	return ["Fire", "Water", "Ground", "Lightning"][e]
 
+static func opposing(e: Id) -> Id:
+	match e:
+		Id.RED:
+			return Id.BLUE
+		Id.BLUE:
+			return Id.RED
+		Id.GREEN:
+			return Id.YELLOW
+		Id.YELLOW:
+			return Id.GREEN
+		_:
+			return Id.RED
+
 static func opposes(a: Id, b: Id) -> bool:
-	#Dirty check here, just making sure the two are opposites
-	if ((a == 0 && b == 1) || (a == 1 && b == 0) || (a == 2 && b == 3) || (a == 3 && b == 2)):
-		return true
-	else:
-		return false
+	return opposing(a) == b
+
+static func tint_hex(e: Id, tint_amount: float = 0.5) -> String:
+	var base := Color.from_hsv(color(e) / 360.0, 0.85, 1.0)
+	return "#" + base.lerp(Color.WHITE, tint_amount).to_html(false)
