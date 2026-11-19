@@ -125,7 +125,9 @@ func _fit_shape(shape: Node2D, offsets: Array[Vector2i]) -> void:
 func _on_mouse_entered() -> void:
 	_tween_to_hover(true)
 	_show_tooltip()
-	GameManager.cursor_Hover()
+	# No animation for pile view
+	if get_parent() is not GridContainer:
+		GameManager.cursor_Hover()
 
 # Signal from mouse exiting - make it unhover if not selected
 func _on_mouse_exited() -> void:
@@ -133,7 +135,9 @@ func _on_mouse_exited() -> void:
 	if _locked:
 		return
 	_tween_to_hover(false)
-	GameManager.cursor_Hover_exit()
+	# No animation for pile view
+	if get_parent() is not GridContainer:
+		GameManager.cursor_Hover_exit()
 
 # Input reading for when card is selected
 func _gui_input(event: InputEvent) -> void:
