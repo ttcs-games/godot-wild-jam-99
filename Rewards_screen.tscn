@@ -3,7 +3,12 @@
 [ext_resource type="Script" uid="uid://n51qvajcaiyd" path="res://rewards_screen.gd" id="1_85wn1"]
 [ext_resource type="PackedScene" uid="uid://cqfhq5gsgm80q" path="res://ui/cursorAnimation.tscn" id="2_1047e"]
 [ext_resource type="Texture2D" uid="uid://ctemlwn8tfb3o" path="res://assets/sprites/redraw.png" id="2_on28u"]
+[ext_resource type="Shader" uid="uid://b0tjrd5ol3ltj" path="res://Scroll.gdshader" id="2_r8ypq"]
 [ext_resource type="PackedScene" uid="uid://cpqylr4csh80v" path="res://ui/pile_view.tscn" id="3_07ys8"]
+[ext_resource type="Texture2D" uid="uid://bwcowqemwhreh" path="res://assets/sprites/Reward_Background.png" id="3_81klb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jgwuc"]
+shader = ExtResource("2_r8ypq")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_on28u"]
 
@@ -11,6 +16,21 @@
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_85wn1")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=571526167]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.0702, 0.09032998, 0.18, 1)
+
+[node name="BackgroundPattern" type="TextureRect" parent="." unique_id=1786086654]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_jgwuc")
+layout_mode = 0
+offset_right = 2275.0
+offset_bottom = 1340.0
+scale = Vector2(0.51, 0.51)
+texture = ExtResource("3_81klb")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=999434374]
 layout_mode = 0
