@@ -6,22 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://cpqylr4csh80v" path="res://ui/pile_view.tscn" id="2_rftav"]
 [ext_resource type="PackedScene" uid="uid://b3ori8l4rn1g4" path="res://grid.tscn" id="3_ob6xn"]
 [ext_resource type="PackedScene" uid="uid://cqfhq5gsgm80q" path="res://ui/cursorAnimation.tscn" id="4_rftav"]
+[ext_resource type="Texture2D" uid="uid://ctemlwn8tfb3o" path="res://assets/sprites/redraw.png" id="6_b88yg"]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1xb2t"]
-blend_mode = 1
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n4c0y"]
-lifetime_randomness = 0.85
-emission_shape_scale = Vector3(10, 20, 1)
-emission_shape = 3
-emission_box_extents = Vector3(10, 20, 1)
-gravity = Vector3(0, -98, 0)
-damping_min = 45.736004
-damping_max = 69.457
-scale_max = 3.75
-turbulence_enabled = true
-turbulence_noise_strength = 0.02
-turbulence_noise_scale = 4.097
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6qcef"]
 
 [node name="Node2D" type="Node2D" unique_id=943336645]
 script = ExtResource("1_7bv3l")
@@ -69,17 +56,27 @@ z_as_relative = false
 position = Vector2(31, 23)
 scale = Vector2(0.41393447, 0.3506711)
 
+[node name="RedrawButton" type="Button" parent="Control" unique_id=1461138492]
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 0
+offset_left = -109.33339
+offset_top = -90.66665
+offset_right = -69.33339
+offset_bottom = -50.66665
+theme_override_styles/normal = SubResource("StyleBoxTexture_6qcef")
+icon = ExtResource("6_b88yg")
+expand_icon = true
+
+[node name="RedrawLabel" type="Label" parent="Control" unique_id=374387525]
+layout_mode = 0
+offset_left = -62.666748
+offset_top = -82.666664
+offset_right = -60.333374
+offset_bottom = -53.33329
+
 [node name="Grid" parent="." unique_id=37737656 instance=ExtResource("3_ob6xn")]
 unique_name_in_owner = true
 position = Vector2(5, 5)
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="Grid" unique_id=1312171708]
-material = SubResource("CanvasItemMaterial_1xb2t")
-position = Vector2(317, 284)
-amount = 100
-preprocess = 1.03
-randomness = 1.0
-process_material = SubResource("ParticleProcessMaterial_n4c0y")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=746581731]
 layer = 0
@@ -182,4 +179,5 @@ size_flags_horizontal = 4
 text = "End run
 (Main menu)"
 
+[connection signal="pressed" from="Control/RedrawButton" to="." method="_on_redraw_button_pressed"]
 [connection signal="shape_placed" from="Grid" to="Control/Hand2" method="_on_grid_shape_placed"]

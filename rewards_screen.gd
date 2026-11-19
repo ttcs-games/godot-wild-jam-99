@@ -3,10 +3,12 @@ extends Control
 @export var Reward_amount : int = 0
 @export var total_cards_choice = 10 #how many cards are displayed when a reward is picked
 
-@onready var RewardButtons : Array[Button] = [$VBoxContainer/Button, $VBoxContainer/Button2, $VBoxContainer/Button3, $VBoxContainer/Button4, $VBoxContainer/Button5]
+@onready var RewardButtons : Array[Button] = [$HBoxContainer/VBoxContainer/Button, $HBoxContainer/VBoxContainer/Button2, $HBoxContainer/VBoxContainer/Button3, $HBoxContainer/VBoxContainer/Button4, $HBoxContainer/VBoxContainer/Button5]
 @onready var ClickableDeck := $DeckView
-@onready var RewardOptionsBox := $VBoxContainer
+@onready var RewardOptionsBox := $HBoxContainer/VBoxContainer
 @onready var NextLevelButton: Button = $NextLevelButton
+@onready var RedrawAmountLabel : Label = $"HBoxContainer/RedrawButtonContainer/Redraws Left"
+
 var Rewards : Array[Reward] = []
 var index_of_reward_applied : int
 var reward_strings : Array[String] = []
@@ -20,7 +22,8 @@ var _tooltip_label: RichTextLabel = null
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Reward_amount = GameManager.REWARD_AMOUNT #REWARD_AMOUNT should be changed before this scene is triggered
-	Reward_amount = 5
+	RedrawAmountLabel.text = "x%d" % [GameManager.redraws] #number of redraws the player has
+	
 	#remove this line later as this scene will always be triggered after the level.
 	if GameManager.deck == null:
 		GameManager.init_deck()
@@ -293,3 +296,36 @@ func _hide_tooltip() -> void:
 		_tooltip.queue_free()
 	_tooltip = null
 	_tooltip_label = null
+
+func _on_redraw_button_pressed(button_index: int) -> void:
+	if (button_index + 1 > Reward_amount || GameManager.redraws == 0 || RewardButtons[button_index].disabled):
+		return
+		
+	GameManager.redraws -= 1
+	RedrawAmountLabel.text = "x%d" % [GameManager.redraws] #number of redraws the player has
+	
+	while (true):
+		var newReward : Reward
+		if len(GameManager.deck._cards) > 10: #if the player has less than ten cards, they shouldn't be allowed to remove more.
+			newReward= Reward.new(_rng.randi_range(0,4),_rng.randi_range(1,3))
+		else:
+			newReward= Reward.new(_rng.randi_range(1,4),_rng.randi_range(1,3))
+		
+		#making sure this reward isn't the same as another reward
+		if (Rewards.any(newReward.equals)):
+			continue
+		
+		#adding text to the button
+		RewardButtons[button_index].text = RewardText(button_index,newReward)
+		reward_strings[button_index] = RewardButtons[button_index].text 
+		
+		#activating the buttons that are connected to the rewards
+		RewardButtons[button_index].disabled = false
+		Rewards[button_index].queue_free()
+		Rewards[button_index] = newReward
+		
+		break
+	
+	
+	
+	

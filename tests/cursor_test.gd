@@ -16,6 +16,7 @@ extends Node2D
 @onready var continue_button: Button = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/ContinueButton
 @onready var finish_button: Button = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/FinishButton
 @onready var cursor: AnimatedSprite2D = %Cursor
+@onready var redraw_label: Label = $Control/RedrawLabel
 
 func _ready() -> void:
 	# Init GameManager with hand and cursor layer
@@ -28,6 +29,9 @@ func _ready() -> void:
 	# Wire hand's signal to be processed by GameManager
 	hand.card_selected.connect(GameManager.select_card)
 	grid.game_over.connect(GameManager.end_run)
+	
+	#Update the redraw button available uses
+	redraw_label.text = "x%d" % [GameManager.redraws]
 	
 	# Set the hand to be filled with the whole deck
 	#GameManager.init_deck()
@@ -82,3 +86,16 @@ func _on_continue_pressed() -> void:
 func _on_finish_pressed() -> void:
 	MusicManager.switch_track()
 	get_tree().change_scene_to_file("res://Main_menu.tscn")
+
+
+#redraw button's logic is handled here
+func _on_redraw_button_pressed() -> void:
+	if (GameManager.redraws == 0):
+		return
+	
+	var cards_discarded_count = len(hand.cards)
+	await GameManager._phase_discard_hand()
+	await GameManager._phase_draw_hand(cards_discarded_count)
+	
+	GameManager.redraws -= 1
+	redraw_label.text = "x%d" % [GameManager.redraws]
