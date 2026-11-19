@@ -20,14 +20,17 @@ func make_Material(card : CardData, material:String):
 func get_path(material:String):
 	print(path)
 	return path[material]
+#When placed, select a Non-Glass card from discard pile to return into hand
 func play_grass(card_deck :CardPile, block : Node2D, card : CardData):
-	#make_Material(card,"grass")
-	#draw 1
+	card.material = path["Grass"]
 	card_deck.draw(1)
-
+#When placed distroyes itself and the same row around it, draw 1 random card for each 2 blocks distroyed
+func playGlass(card_deck: CardPile, grid :Node2D ):
+	card_deck.draw(grid.count_block())
+	grid._break_rows()
 
 func play_glass():
-	pass
+	pass		
 
 
 	

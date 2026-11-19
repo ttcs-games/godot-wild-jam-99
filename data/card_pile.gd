@@ -3,7 +3,7 @@ extends RefCounted
 
 signal changed
 
-var _cards: Array[CardData] = []
+@export var _cards: Array[CardData] = []
 var _rng := RandomNumberGenerator.new()
 
 func size() -> int:
@@ -47,6 +47,11 @@ func draw_all() -> Array[CardData]:
 
 func shuffle() -> void:
 	_cards.shuffle()
+
+func drawSpecificCard(n:int) -> CardData:
+	var return_card := _cards[n]
+	_cards.remove_at(n) 
+	return return_card
 
 func draw(n: int) -> Array[CardData]:
 	var out: Array[CardData] = []
