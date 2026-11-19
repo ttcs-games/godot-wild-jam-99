@@ -17,7 +17,8 @@ extends Node2D
 const BLOCK := preload("res://game_objects/block.tscn")
 @onready var block_root: Node2D = $BlockRoot # node where all the blocks will be stored
 @onready var cursor: AnimatedSprite2D = %Cursor #add cursor in the inspector
-@onready var lava_overlay: Node2D = $Lava
+@onready var lava_overlay: AnimatedSprite2D = $Lava
+@onready var lines: Node2D = $Lines
 
 # SIGNALS
 # todo: placement is yet to be processed
@@ -38,11 +39,12 @@ var hovered_cell := Vector2i (-1, -1)
 var _last_hovered: Vector2i = Vector2i(-999, -999)
 
 var lava_row: int = grid_height
-var _lava_visual_row: float = grid_height
-var _last_lava_row_visual: float = -1.0
 var is_animating: bool = false
 
 var _level_cleared_fired: bool = false
+
+var _bubble_scale_tex: CurveTexture
+var _bubble_fade_tex: GradientTexture1D
 
 # (1, 2) * 32px = (32px, 64px)
 func cell_to_coords(c: Vector2i) -> Vector2:
@@ -60,36 +62,8 @@ func in_bounds(c: Vector2i) -> bool:
 func _ready() -> void:
 	block_placed.connect(_on_block_placed)
 	shape_placed.connect(_on_shape_placed)
-	GameManager.shape_rotated.connect(queue_redraw)
-
-# Draw function is used only for aim draw (blocks are drawn by themselves - they are independent nodes)
-func _draw() -> void:
-	if objective_row >= 0 and objective_row < grid_height:
-		var y := objective_row * cell_size
-		var x0 := 0.0
-		var x1 := grid_width * cell_size
-		draw_line(Vector2(x0, y), Vector2(x1, y), Color(1, 1, 1, 0.15), 6.0)
-		draw_line(Vector2(x0, y), Vector2(x1, y), Color(1, 1, 1, 0.8), 1.5)
-	
-	#drawing the bounds of the grid so it's easier to see
-	var border := Rect2(0.0 - grid_padding,0.0 - grid_padding,grid_width*cell_size + 2*grid_padding, grid_height*cell_size + 2*grid_padding)
-	draw_rect(border, Color.WHITE, false, 2.0)
-	
-	#drawing the shape if the cursor is hovering over it.
-	if in_bounds(hovered_cell):
-		#if there is an active block in the player's hand, it draws that instead.
-		if GameManager._active_card != null:
-			var highlight_color = Color.WHITE if can_place(GameManager._active_card.card_data.shape.offsets, hovered_cell, GameManager._active_card.card_data.element) else Color.RED
-			
-			var shape_offsets : Array[Vector2i] 
-			shape_offsets.assign(GameManager._active_card.card_data.shape.offsets.map(func(offset): return offset - Vector2i(1,1)) if GameManager._active_card.card_data.shape.display_name != "I-shape" else GameManager._active_card.card_data.shape.offsets)
-			
-			for block in shape_offsets:
-				var cell_aim := Rect2(cell_to_coords(hovered_cell + block), Vector2(cell_size, cell_size))
-				draw_rect(cell_aim, highlight_color, false, 2.0)
-		else:
-			var cell_aim := Rect2(cell_to_coords(hovered_cell), Vector2(cell_size, cell_size))
-			draw_rect(cell_aim, Color.WHITE, false, 2.0)
+	GameManager.shape_rotated.connect(lines.queue_redraw)
+	_fit_lava()
 
 # Checker for an array of blocks (a shape) if it can be placed in required cell
 func can_place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id) -> bool:
@@ -159,7 +133,7 @@ func place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id, mat
 		block_placed.emit(cell, element, mat)
 	
 	shape_placed.emit(placed, element)
-	queue_redraw()
+	lines.queue_redraw()
 	return true
 
 func reset_level() -> void:
@@ -168,24 +142,28 @@ func reset_level() -> void:
 	cell_to_block.clear()
 	_level_cleared_fired = false
 	lava_row = grid_height
-	_lava_visual_row = float(grid_height)
-	lava_overlay.queue_redraw()
-	queue_redraw()
+	lava_overlay.position = Vector2(0, float(lava_row) * cell_size)
+	lines.queue_redraw()
 
 func rise_lava(n: int) -> void:
 	if is_animating:
 		return
-	if lava_row <= 0:
-		return
 	
 	var target := maxi(objective_row, lava_row - n)
 	lava_row = target
+	var target_y := float(target) * float(cell_size)
+	var tex := lava_overlay.sprite_frames.get_frame_texture("lava", 0)
+	var sprite_h: float = float(tex.get_height()) * lava_overlay.scale.y if tex != null else 0.0
+	var bottom_target_y := target_y + sprite_h
 	is_animating = true
 	var tw := create_tween()
-	tw.tween_property(self, "_lava_visual_row", float(target), lava_rise_seconds).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_property(lava_overlay, "position:y", target_y, lava_rise_seconds).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	#tw.tween_property(lava_particles, "position:y", bottom_target_y, lava_rise_seconds).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	await tw.finished
+	
 	await _run_cascade()
 	is_animating = false
+	lines.queue_redraw()
 
 func apply_level_data(data: LevelData) -> void:
 	for b in cell_to_block.values():
@@ -196,14 +174,11 @@ func apply_level_data(data: LevelData) -> void:
 	grid_width  = data.grid_width
 	grid_height = data.grid_height
 	objective_row = data.objective_row
-	lava_row = grid_height
-	_lava_visual_row = float(grid_height)
-	_last_lava_row_visual = -1.0
+	lava_row = grid_height + data.lava_delay
 	_level_cleared_fired = false
 	is_animating = false
-	if lava_overlay != null:
-		lava_overlay.queue_redraw()
-	queue_redraw()
+	_fit_lava()
+	lines.queue_redraw()
 
 # Each tick get mouse position to get aimed cell
 func _process(delta: float) -> void:
@@ -213,11 +188,7 @@ func _process(delta: float) -> void:
 	if c != _last_hovered:
 		_last_hovered = c
 		hovered_cell = c
-		queue_redraw()
-
-	if _lava_visual_row != _last_lava_row_visual:
-		_last_lava_row_visual = _lava_visual_row
-		lava_overlay.queue_redraw()
+		lines.queue_redraw()
 	
 # Processor for "block placed" signal: actually spawns the block node
 func _on_block_placed(cell: Vector2i, element: Elements.Id, mat : MaterialData) -> void:
@@ -263,6 +234,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			cursor.play("throw")
 
 func _run_cascade() -> void:
+	if lava_row >= grid_height:
+		return
+	
 	while true:
 		var unfinished := _unfinished_rows_in_lava()
 		if unfinished.is_empty():
@@ -388,3 +362,20 @@ func _is_row_full(y: int) -> bool:
 		if not cell_to_block.has(Vector2i(x, y)):
 			return false
 	return true
+
+func _fit_lava() -> void:
+	if lava_overlay == null or lava_overlay.sprite_frames == null:
+		return
+	
+	var tex := lava_overlay.sprite_frames.get_frame_texture("lava", 0)
+	if tex == null:
+		return
+	
+	var half_cell := float(cell_size) * 0.5
+	var total_lava_w := float(grid_width * cell_size) + float(cell_size)
+	var uniform_scale := total_lava_w / float(tex.get_width())
+	
+	lava_overlay.centered = false
+	lava_overlay.scale = Vector2(uniform_scale, uniform_scale)
+	lava_overlay.position = Vector2(-half_cell, float(lava_row) * float(cell_size))
+	lava_overlay.play("lava")

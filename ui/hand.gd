@@ -40,7 +40,6 @@ func get_cards_data() -> Array[CardData]:
 	return out
 
 func draw_batch(data_array: Array[CardData], from_pos: Vector2 = Vector2(-150, -150)) -> void:
-	print("[draw_batch] CALLED with ", data_array.size(), " cards. cards.size()=", cards.size(), " frame=", Engine.get_frames_drawn())
 	if data_array.is_empty():
 		return
 	_kill_all_tweens()
@@ -225,7 +224,6 @@ func _on_card_clicked(card: Control) -> void:
 	card_selected.emit(card, cards.find(card))
 
 func _on_grid_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
-	print("shape placed")
 	var card: Control = GameManager._active_card
 	if card == null or not cards.has(card):
 		return
