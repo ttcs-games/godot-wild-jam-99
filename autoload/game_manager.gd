@@ -5,6 +5,7 @@
 extends Node
 
 var REWARD_AMOUNT := 3 #Default is 3 rewards for completing a level
+var redraws := 0
 
 var hand: Control
 var grid: Node2D
@@ -81,6 +82,9 @@ func start_turn() -> void:
 	hand.setup(cards)
 
 func start_level() -> void:
+	#Player gains one redraw per level. Maximum they can hold is 9.
+	redraws = min(redraws + 1, 9)
+	
 	turn_number = 1
 	is_end_turn_in_progress = false
 	is_game_over = false
@@ -115,7 +119,7 @@ func end_turn(turn_label: Label) -> void:
 	if is_game_over:
 		return
 	await _phase_bump_turn(turn_label)
-	await _phase_draw_hand()
+	await _phase_draw_hand(draw_per_turn)
 	is_end_turn_in_progress = false
 
 func finish_level() -> void:
@@ -316,10 +320,10 @@ func _phase_bump_turn(turn_label: Label) -> void:
 		tw.tween_property(turn_label, "scale", Vector2.ONE, 0.1)
 	await get_tree().create_timer(0.6).timeout
 
-func _phase_draw_hand() -> void:
-	var cards := deck.draw(draw_per_turn)
+func _phase_draw_hand(cards_drawn: int) -> void:
+	var cards := deck.draw(cards_drawn)
 	await hand.draw_batch(cards)
-	if cards.size() < draw_per_turn:
+	if cards.size() < cards_drawn:
 		await get_tree().create_timer(0.15).timeout
 		deck.add_all(discard.draw_all())
 		deck.shuffle() # TODO: animation of flow: discard -> deck ?

@@ -2,48 +2,100 @@
 
 [ext_resource type="Script" uid="uid://n51qvajcaiyd" path="res://rewards_screen.gd" id="1_85wn1"]
 [ext_resource type="PackedScene" uid="uid://cqfhq5gsgm80q" path="res://ui/cursorAnimation.tscn" id="2_1047e"]
+[ext_resource type="Texture2D" uid="uid://ctemlwn8tfb3o" path="res://assets/sprites/redraw.png" id="2_on28u"]
 [ext_resource type="PackedScene" uid="uid://cpqylr4csh80v" path="res://ui/pile_view.tscn" id="3_07ys8"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_on28u"]
 
 [node name="RewardsScreen" type="Control" unique_id=1251849727]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_85wn1")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1923518730]
-layout_mode = 1
-offset_left = 25.0
-offset_top = 200.0
-offset_right = 198.0
-offset_bottom = 283.0
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=999434374]
+layout_mode = 0
+offset_left = 43.0
+offset_top = 172.0
+offset_right = 250.0
+offset_bottom = 370.0
 
-[node name="Label" type="Label" parent="VBoxContainer" unique_id=1339415900]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1923518730]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1339415900]
 layout_mode = 2
 text = "Choose Your Rewards!"
 
-[node name="Button" type="Button" parent="VBoxContainer" unique_id=1647886577]
+[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1647886577]
 layout_mode = 2
 disabled = true
 text = "                  "
 
-[node name="Button2" type="Button" parent="VBoxContainer" unique_id=113340963]
+[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=113340963]
 layout_mode = 2
 disabled = true
 text = "                  "
 
-[node name="Button3" type="Button" parent="VBoxContainer" unique_id=1561160007]
+[node name="Button3" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1561160007]
 layout_mode = 2
 disabled = true
 text = "                  "
 
-[node name="Button4" type="Button" parent="VBoxContainer" unique_id=819166901]
+[node name="Button4" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=819166901]
 layout_mode = 2
 disabled = true
 text = "                  "
 
-[node name="Button5" type="Button" parent="VBoxContainer" unique_id=428628121]
+[node name="Button5" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=428628121]
 layout_mode = 2
 disabled = true
 text = "                  "
+
+[node name="RedrawButtonContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1013870584]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/RedrawButtonContainer" unique_id=1294767074]
+layout_mode = 2
+text = " "
+
+[node name="TextureButton" type="Button" parent="HBoxContainer/RedrawButtonContainer" unique_id=642681960]
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
+icon = ExtResource("2_on28u")
+expand_icon = true
+
+[node name="TextureButton2" type="Button" parent="HBoxContainer/RedrawButtonContainer" unique_id=229137030]
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
+icon = ExtResource("2_on28u")
+expand_icon = true
+
+[node name="TextureButton3" type="Button" parent="HBoxContainer/RedrawButtonContainer" unique_id=2039012856]
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
+icon = ExtResource("2_on28u")
+expand_icon = true
+
+[node name="TextureButton4" type="Button" parent="HBoxContainer/RedrawButtonContainer" unique_id=58439769]
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
+icon = ExtResource("2_on28u")
+expand_icon = true
+
+[node name="TextureButton5" type="Button" parent="HBoxContainer/RedrawButtonContainer" unique_id=1121293987]
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
+icon = ExtResource("2_on28u")
+expand_icon = true
+
+[node name="Redraws Left" type="Label" parent="HBoxContainer/RedrawButtonContainer" unique_id=1312171218]
+layout_mode = 2
+horizontal_alignment = 1
 
 [node name="CursorLayer2" type="CanvasLayer" parent="." unique_id=1040749862]
 
@@ -69,8 +121,13 @@ offset_top = 440.0
 offset_right = 168.0
 offset_bottom = 500.0
 
-[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed" binds= [0]]
-[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_button_pressed" binds= [1]]
-[connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_button_pressed" binds= [2]]
-[connection signal="pressed" from="VBoxContainer/Button4" to="." method="_on_button_pressed" binds= [3]]
-[connection signal="pressed" from="VBoxContainer/Button5" to="." method="_on_button_pressed" binds= [4]]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Button" to="." method="_on_button_pressed" binds= [0]]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Button2" to="." method="_on_button_pressed" binds= [1]]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Button3" to="." method="_on_button_pressed" binds= [2]]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Button4" to="." method="_on_button_pressed" binds= [3]]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Button5" to="." method="_on_button_pressed" binds= [4]]
+[connection signal="pressed" from="HBoxContainer/RedrawButtonContainer/TextureButton" to="." method="_on_redraw_button_pressed" binds= [0]]
+[connection signal="pressed" from="HBoxContainer/RedrawButtonContainer/TextureButton2" to="." method="_on_redraw_button_pressed" binds= [1]]
+[connection signal="pressed" from="HBoxContainer/RedrawButtonContainer/TextureButton3" to="." method="_on_redraw_button_pressed" binds= [2]]
+[connection signal="pressed" from="HBoxContainer/RedrawButtonContainer/TextureButton4" to="." method="_on_redraw_button_pressed" binds= [3]]
+[connection signal="pressed" from="HBoxContainer/RedrawButtonContainer/TextureButton5" to="." method="_on_redraw_button_pressed" binds= [4]]
