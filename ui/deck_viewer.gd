@@ -18,7 +18,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		close_requested.emit()
 		get_viewport().set_input_as_handled()
 
-func setup(pile: CardPile, title: String, num_cards_displayed: int, sort_cards: bool) -> void:
+func setup(pile: CardPile, title: String, num_cards_displayed: int, sort_cards: bool, on_card_chosen:Callable) -> void:
 	title_label.text = title
 	
 	var cards := pile.get_cards_copy()
@@ -34,9 +34,10 @@ func setup(pile: CardPile, title: String, num_cards_displayed: int, sort_cards: 
 		child.queue_free()
 	
 	var length_of_loop = min(num_cards_displayed, len(cards))
+		
 	for i in range(length_of_loop):
 		var card: Control = CARD.instantiate()
-		card.clicked.connect(GameManager._on_card_chosen) #connecting to game manager, which will apply the reward.
+		card.clicked.connect(on_card_chosen) #connecting to game manager, which will apply the reward.
 		card.setup(cards[i])
 		card_grid.add_child(card)
 
