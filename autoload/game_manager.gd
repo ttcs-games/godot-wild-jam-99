@@ -28,6 +28,7 @@ var _active_card_index: int = 1000 #because the player will never have more than
 var _active_cursor: Node2D = null
 var _open_viewer: Control = null
 var cursor: AnimatedSprite2D = null
+var last_screen_texture: ImageTexture = null
 
 signal shape_rotated
 
@@ -53,15 +54,15 @@ func start_run() -> void:
 	current_level_data = null
 	init_deck()
 	MusicManager.switch_track()
-	get_tree().change_scene_to_file(SCENE_LEVEL_DESCRIPTION)
+	transition_to_scene(SCENE_LEVEL_DESCRIPTION)
 
 func finish_rewards() -> void:
-	get_tree().change_scene_to_file(SCENE_LEVEL_DESCRIPTION)
+	transition_to_scene(SCENE_LEVEL_DESCRIPTION)
 
 func end_run() -> void:
 	is_game_over = true
 	MusicManager.switch_track()
-	get_tree().change_scene_to_file(SCENE_GAME_OVER)
+	transition_to_scene(SCENE_GAME_OVER)
 
 # Creates the piles and a initial deck
 func init_deck() -> void:
@@ -99,7 +100,7 @@ func start_level() -> void:
 		lava_delay = 0
 	
 	deck.shuffle()
-	get_tree().change_scene_to_file(SCENE_GAME_ZONE)
+	transition_to_scene(SCENE_GAME_ZONE)
 	
 # Puts all the cards from hand to discard pile
 func end_turn(turn_label: Label) -> void:
@@ -127,7 +128,7 @@ func finish_level() -> void:
 	deck.add_all(exhume.draw_all())
 	deck.add_all(hand.get_cards_data())
 	deck.shuffle()
-	get_tree().change_scene_to_file(SCENE_REWARDS)
+	transition_to_scene(SCENE_REWARDS)
 
 func discard_card(card: CardData) -> void:
 	discard.add(card)
@@ -271,7 +272,38 @@ func _on_card_chosen(card_affected: Control) -> void:
 	#this is the accept rewards button
 	_open_viewer.get_child(1).visible = true
 	_open_viewer.get_child(1).disabled = false
+
+func transition_to_scene(scene_path: String) -> void:
+	await RenderingServer.frame_post_draw
+	var img: Image = get_viewport().get_texture().get_image()
+	last_screen_texture = ImageTexture.create_from_image(img)
+	get_tree().change_scene_to_file(scene_path)
+
+func play_slide_in(root_node: CanvasItem) -> void:
+	if last_screen_texture == null:
+		return
 	
+	var transition_duration: float = 0.45
+		
+	var screen_width: float = get_viewport().get_visible_rect().size.x
+	root_node.position.x = screen_width
+	var snap_sprite := Sprite2D.new()
+	snap_sprite.texture = last_screen_texture
+	snap_sprite.centered = false
+	snap_sprite.position = Vector2.ZERO
+	root_node.get_parent().add_child(snap_sprite)
+	
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(root_node, "position:x", 0.0, transition_duration)
+	tween.tween_property(snap_sprite, "position:x", -screen_width, transition_duration)
+	
+	await tween.finished
+	snap_sprite.queue_free()
+	last_screen_texture = null
+
 func apply_rewards() -> void:
 	var cards_affected_data : Array[CardData]
 	cards_affected_data.assign(cards_affected.map(func(card): return card.card_data))

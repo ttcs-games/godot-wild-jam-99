@@ -8,6 +8,7 @@ extends Control
 @onready var cursor_animation: AnimatedSprite2D = $CanvasLayer/Cursor
 
 func _ready() -> void:
+	GameManager.play_slide_in(self)
 	if GameManager.deck == null:
 		GameManager.init_deck()
 	

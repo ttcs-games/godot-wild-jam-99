@@ -21,6 +21,7 @@ var _tooltip_label: RichTextLabel = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	GameManager.play_slide_in(self)
 	Reward_amount = GameManager.REWARD_AMOUNT #REWARD_AMOUNT should be changed before this scene is triggered
 	RedrawAmountLabel.text = "x%d" % [GameManager.redraws] #number of redraws the player has
 	

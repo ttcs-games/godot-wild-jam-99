@@ -19,6 +19,7 @@ extends Node2D
 @onready var redraw_label: Label = $Control/RedrawLabel
 
 func _ready() -> void:
+	GameManager.play_slide_in(self)
 	# Init GameManager with hand and cursor layer
 	GameManager.hand = hand
 	GameManager.cursor_layer = cursor_layer
@@ -85,7 +86,7 @@ func _on_continue_pressed() -> void:
 
 func _on_finish_pressed() -> void:
 	MusicManager.switch_track()
-	get_tree().change_scene_to_file("res://Main_menu.tscn")
+	GameManager.transition_to_scene("res://Main_menu.tscn")
 
 
 #redraw button's logic is handled here
