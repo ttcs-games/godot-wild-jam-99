@@ -3,18 +3,23 @@
 [ext_resource type="Texture2D" uid="uid://e6e86cxsnjfr" path="res://assets/sprites/Ellipse 1.png" id="1_qrkx4"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1xb2t"]
+resource_local_to_scene = true
 blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = true
 
 [sub_resource type="Gradient" id="Gradient_qrkx4"]
 offsets = PackedFloat32Array(0, 0.508, 0.984)
-colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0)
+colors = PackedColorArray(1, 1, 1, 0.5137255, 1, 1, 1, 1, 1, 1, 1, 0.38431373)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_eaaf3"]
 gradient = SubResource("Gradient_qrkx4")
 
 [sub_resource type="Curve" id="Curve_qrkx4"]
 _limits = [-200.0, 200.0, 0.0, 1.0]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.9963768, 29.213501), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 87.37863), 0.0, 0.0, 0, 0, Vector2(0.9963768, 1.941742), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_l46lv"]
@@ -31,11 +36,12 @@ curve = SubResource("Curve_eaaf3")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n4c0y"]
 lifetime_randomness = 0.85
+emission_shape_scale = Vector3(10, 500, 1)
 emission_shape = 3
-emission_box_extents = Vector3(300, 4, 1)
+emission_box_extents = Vector3(100, 4, 1)
 initial_velocity_min = 40.0
 initial_velocity_max = 40.0
-gravity = Vector3(0, -810, 0)
+gravity = Vector3(0, -5810, 0)
 linear_accel_min = -2.2351742e-06
 linear_accel_max = 85.27
 linear_accel_curve = SubResource("CurveTexture_l46lv")
@@ -43,8 +49,7 @@ radial_accel_min = -2.2351742e-06
 radial_accel_max = 17.049997
 damping_min = 0.46500003
 damping_max = 8.217
-scale_min = 10.0
-scale_max = 15.0
+scale_min = 0.0
 scale_curve = SubResource("CurveTexture_qrkx4")
 color_ramp = SubResource("GradientTexture1D_eaaf3")
 anim_speed_min = 1.0
@@ -55,7 +60,8 @@ turbulence_noise_scale = 4.0
 
 [node name="GPUParticles2D" type="GPUParticles2D" unique_id=993908567]
 material = SubResource("CanvasItemMaterial_1xb2t")
-amount = 50
+scale = Vector2(1, 1.440001)
+amount = 100
 texture = ExtResource("1_qrkx4")
 lifetime = 2.9099999999999997
 preprocess = 1.03

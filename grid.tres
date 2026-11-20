@@ -1,0 +1,15 @@
+[gd_resource type="VisualShader" format=3 uid="uid://bpp22hld873e4"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_l2y8o"]
+source = 1
+
+[sub_resource type="VisualShaderNodeVectorFunc" id="VisualShaderNodeVectorFunc_xb5ts"]
+function = 32
+
+[resource]
+nodes/vertex/0/position = Vector2(520, 120)
+nodes/vertex/2/node = SubResource("VisualShaderNodeTexture_l2y8o")
+nodes/vertex/2/position = Vector2(-40, 220)
+nodes/vertex/3/node = SubResource("VisualShaderNodeVectorFunc_xb5ts")
+nodes/vertex/3/position = Vector2(240, 140)
+nodes/vertex/connections = PackedInt32Array(2, 0, 3, 0)

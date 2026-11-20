@@ -15,11 +15,13 @@
 [ext_resource type="Texture2D" uid="uid://bp428bya8ohe5" path="res://assets/sprites/black goo/Water Final_00011.png" id="13_8peqv"]
 [ext_resource type="Texture2D" uid="uid://ciyrm71iufcfq" path="res://assets/sprites/black goo/Water Final_00012.png" id="14_673ef"]
 [ext_resource type="Texture2D" uid="uid://cpjkbpbhgk080" path="res://assets/sprites/black goo/Water Final_00013.png" id="15_uar2c"]
-[ext_resource type="Texture2D" uid="uid://c0u8fds440ndo" path="res://assets/sprites/black goo/Water Final_00014.png" id="16_71lej"]
-[ext_resource type="Texture2D" uid="uid://be172oej4836i" path="res://assets/sprites/black goo/Water Final_00015.png" id="17_bwyy2"]
-[ext_resource type="Texture2D" uid="uid://it6uaej6s6yp" path="res://assets/sprites/black goo/Water Final_00016.png" id="18_gv013"]
+[ext_resource type="Script" uid="uid://bfd7qcsprg1fh" path="res://lava_chilldren_visiblilty.gd" id="16_konqy"]
+[ext_resource type="Shader" uid="uid://qk1qiibnp43v" path="res://lava.gdshader" id="16_mbq38"]
 [ext_resource type="PackedScene" uid="uid://codrw1qymw8r8" path="res://assets/particles/gpu_particles_2d.tscn" id="19_mbq38"]
 [ext_resource type="Script" uid="uid://qfg7ggp0ue1n" path="res://lines.gd" id="20_konqy"]
+[ext_resource type="Shader" uid="uid://njyxfk6a27a3" path="res://grid.gdshader" id="21_u6jcp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_konqy"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
 animations = [{
@@ -65,38 +67,104 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("15_uar2c")
-}, {
-"duration": 1.0,
-"texture": ExtResource("16_71lej")
-}, {
-"duration": 1.0,
-"texture": ExtResource("17_bwyy2")
-}, {
-"duration": 1.0,
-"texture": ExtResource("18_gv013")
 }],
 "loop": 1,
 "name": &"lava",
-"speed": 10.0
+"speed": 20.0
 }]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_njo5y"]
+resource_local_to_scene = true
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ivji3"]
+shader = ExtResource("21_u6jcp")
+shader_parameter/bubble_alpha = 0.7
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iam3h"]
+shader = ExtResource("21_u6jcp")
+shader_parameter/bubble_alpha = 0.7
+
+[sub_resource type="QuadMesh" id="QuadMesh_iwbtr"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_iam3h")
+size = Vector2(10, 10)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_njo5y"]
+shader = ExtResource("16_mbq38")
+shader_parameter/inv_x = Vector2(0, 0)
+shader_parameter/inv_y = Vector2(0, 0)
+shader_parameter/inv_o = Vector2(0, 0)
+shader_parameter/rect_pos = Vector2(0, 0)
+shader_parameter/rect_size = Vector2(0, 0)
+shader_parameter/uv_pos = Vector2(0, 0)
+shader_parameter/uv_size = Vector2(1, 1)
+shader_parameter/flip = Vector2(0, 0)
+shader_parameter/alpha_threshold = 0.05
 
 [node name="Grid" type="Node2D" unique_id=37737656]
 script = ExtResource("1_ebq2e")
 
 [node name="BlockRoot" type="Node2D" parent="." unique_id=1964372986]
 
-[node name="Lava" type="AnimatedSprite2D" parent="." unique_id=460958167]
+[node name="Lava" type="AnimatedSprite2D" parent="." unique_id=460958167 node_paths=PackedStringArray("children_to_hide")]
 modulate = Color(1, 1, 1, 0.9019608)
 z_index = 1
+material = SubResource("ShaderMaterial_konqy")
+position = Vector2(21, 0)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
 animation = &"lava"
-frame_progress = 0.17558315
+frame_progress = 0.7878099
 centered = false
+script = ExtResource("16_konqy")
+children_to_hide = [NodePath("Lava2")]
 
-[node name="Bubble" parent="Lava" unique_id=993908567 instance=ExtResource("19_mbq38")]
-visible = false
-scale = Vector2(7.535, 1e-05)
-lifetime = 20.0
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Lava" unique_id=514117733]
+offset_left = -21.0
+offset_top = -1291.0
+offset_right = 510.0
+offset_bottom = 1033.0
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Lava/SubViewportContainer" unique_id=1133276989]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(531, 2324)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="Bubble" parent="Lava/SubViewportContainer/SubViewport" unique_id=993908567 instance=ExtResource("19_mbq38")]
+material = SubResource("CanvasItemMaterial_njo5y")
+position = Vector2(243, 1929.0001)
+scale = Vector2(0.21590975, 0.27897307)
+amount = 50
+lifetime = 0.67
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Lava/SubViewportContainer/SubViewport" unique_id=624987127]
+top_level = true
+z_index = 1000
+material = SubResource("ShaderMaterial_ivji3")
+position = Vector2(277.00006, 680.00006)
+rotation = 3.1415925
+scale = Vector2(54.57405, -144.35063)
+mesh = SubResource("QuadMesh_iwbtr")
+
+[node name="Lava2" type="AnimatedSprite2D" parent="Lava" unique_id=280554597]
+modulate = Color(0.8151441, 0.8151441, 0.8151441, 0.6156863)
+clip_children = 2
+z_index = 1
+material = SubResource("ShaderMaterial_njo5y")
+position = Vector2(535, 53)
+rotation = 1.5423595
+scale = Vector2(1.8704754, 0.480994)
+sprite_frames = SubResource("SpriteFrames_4kxuq")
+animation = &"lava"
+frame_progress = 0.113323644
+centered = false
 
 [node name="Lines" type="Node2D" parent="." unique_id=1623302765]
 script = ExtResource("20_konqy")
