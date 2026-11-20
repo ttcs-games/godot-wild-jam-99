@@ -199,7 +199,7 @@ func apply_level_data(data: LevelData) -> void:
 	var total_cells = grid_height * grid_width - (objective_row * grid_width) #getting total number of cells
 	var i = 0
 	for modifier in level_modifiers:
-		var num_of_tiles: int = total_cells * 0.1 * modifier.intensity_level
+		var num_of_tiles: int = total_cells * 0.05 * modifier.intensity_level
 		i = 0
 		while i <= num_of_tiles:
 			var random_tile = Vector2i(_rng.randi_range(0,grid_width - 1), _rng.randi_range(objective_row,grid_height - 1))
@@ -231,6 +231,11 @@ func _on_block_placed(cell: Vector2i, element: Elements.Id, mat : MaterialData) 
 	# todo: setup the material
 	block_root.add_child(b)
 	cell_to_block[cell] = b
+	
+	#todo: remove the sprite of the mine once its triggered.
+	if (cell in tiles_to_block.keys() && tiles_to_block[cell].Type == Modifier.Types.FASTER_LAVA):
+		await GameManager._phase_rise_lava()
+		tiles_to_block.erase(cell)
 
 func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
 	SFX.place()
