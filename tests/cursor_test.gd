@@ -101,8 +101,8 @@ func _on_redraw_button_pressed() -> void:
 	
 	SFX.button()
 	var cards_discarded_count = len(hand.cards)
+	GameManager.redraws -= 1
 	await GameManager._phase_discard_hand()
 	await GameManager._phase_draw_hand(cards_discarded_count)
-	
-	GameManager.redraws -= 1
+
 	redraw_label.text = "x%d" % [GameManager.redraws]
