@@ -82,6 +82,7 @@ text = " "
 custom_minimum_size = Vector2(31, 31)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
+disabled = true
 icon = ExtResource("2_on28u")
 expand_icon = true
 
@@ -89,6 +90,7 @@ expand_icon = true
 custom_minimum_size = Vector2(31, 31)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
+disabled = true
 icon = ExtResource("2_on28u")
 expand_icon = true
 
@@ -96,6 +98,7 @@ expand_icon = true
 custom_minimum_size = Vector2(31, 31)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
+disabled = true
 icon = ExtResource("2_on28u")
 expand_icon = true
 
@@ -103,6 +106,7 @@ expand_icon = true
 custom_minimum_size = Vector2(31, 31)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
+disabled = true
 icon = ExtResource("2_on28u")
 expand_icon = true
 
@@ -110,6 +114,7 @@ expand_icon = true
 custom_minimum_size = Vector2(31, 31)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
+disabled = true
 icon = ExtResource("2_on28u")
 expand_icon = true
 
