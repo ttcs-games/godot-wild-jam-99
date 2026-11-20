@@ -1,0 +1,182 @@
+[gd_scene format=3 uid="uid://b3ori8l4rn1g4"]
+
+[ext_resource type="Script" uid="uid://pktsj3mrmb36" path="res://grid.gd" id="1_ebq2e"]
+[ext_resource type="Texture2D" uid="uid://bnes1hh0mvx5p" path="res://assets/sprites/black goo/Water Final_00000.png" id="2_mbq38"]
+[ext_resource type="Texture2D" uid="uid://bfhg4wu3p2r7t" path="res://assets/sprites/black goo/Water Final_00001.png" id="3_konqy"]
+[ext_resource type="Texture2D" uid="uid://d3pykvyxdo2oe" path="res://assets/sprites/black goo/Water Final_00002.png" id="4_gayrg"]
+[ext_resource type="Texture2D" uid="uid://ceuwmdluttq3y" path="res://assets/sprites/black goo/Water Final_00003.png" id="5_u6jcp"]
+[ext_resource type="Texture2D" uid="uid://baywi843sp774" path="res://assets/sprites/black goo/Water Final_00004.png" id="6_4bqgu"]
+[ext_resource type="Texture2D" uid="uid://bxe1mxprask6l" path="res://assets/sprites/black goo/Water Final_00005.png" id="7_eilgq"]
+[ext_resource type="Texture2D" uid="uid://ydbqweqicad2" path="res://assets/sprites/black goo/Water Final_00006.png" id="8_bibwd"]
+[ext_resource type="Texture2D" uid="uid://mtteyc61oetf" path="res://assets/sprites/black goo/Water Final_00007.png" id="9_ivji3"]
+[ext_resource type="Texture2D" uid="uid://sgu1snsoe2l6" path="res://assets/sprites/black goo/Water Final_00008.png" id="10_pisw8"]
+[ext_resource type="Texture2D" uid="uid://diauwdch00ja3" path="res://assets/sprites/black goo/Water Final_00009.png" id="11_jpp3n"]
+[ext_resource type="Texture2D" uid="uid://diqi6kyvory43" path="res://assets/sprites/black goo/Water Final_00010.png" id="12_en7xa"]
+[ext_resource type="Texture2D" uid="uid://bp428bya8ohe5" path="res://assets/sprites/black goo/Water Final_00011.png" id="13_8peqv"]
+[ext_resource type="Texture2D" uid="uid://ciyrm71iufcfq" path="res://assets/sprites/black goo/Water Final_00012.png" id="14_673ef"]
+[ext_resource type="Texture2D" uid="uid://cpjkbpbhgk080" path="res://assets/sprites/black goo/Water Final_00013.png" id="15_uar2c"]
+[ext_resource type="Script" uid="uid://bfd7qcsprg1fh" path="res://lava_chilldren_visiblilty.gd" id="16_konqy"]
+[ext_resource type="Shader" uid="uid://qk1qiibnp43v" path="res://lava.gdshader" id="16_mbq38"]
+[ext_resource type="PackedScene" uid="uid://codrw1qymw8r8" path="res://assets/particles/gpu_particles_2d.tscn" id="19_mbq38"]
+[ext_resource type="Script" uid="uid://qfg7ggp0ue1n" path="res://lines.gd" id="20_konqy"]
+[ext_resource type="Shader" uid="uid://njyxfk6a27a3" path="res://grid.gdshader" id="21_u6jcp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_konqy"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4kxuq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_mbq38")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_konqy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_gayrg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_u6jcp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_4bqgu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_eilgq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_bibwd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ivji3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_pisw8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_jpp3n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_en7xa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_8peqv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_673ef")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_uar2c")
+}],
+"loop": 1,
+"name": &"lava",
+"speed": 20.0
+}]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_njo5y"]
+resource_local_to_scene = true
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ivji3"]
+shader = ExtResource("21_u6jcp")
+shader_parameter/bubble_alpha = 0.7
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iam3h"]
+shader = ExtResource("21_u6jcp")
+shader_parameter/bubble_alpha = 0.7
+
+[sub_resource type="QuadMesh" id="QuadMesh_iwbtr"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_iam3h")
+size = Vector2(10, 10)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mbq38"]
+shader = ExtResource("16_mbq38")
+shader_parameter/poly = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/poly_count = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_njo5y"]
+shader = ExtResource("16_mbq38")
+shader_parameter/poly = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/poly_count = 0
+
+[node name="Grid" type="Node2D" unique_id=37737656]
+script = ExtResource("1_ebq2e")
+
+[node name="BlockRoot" type="Node2D" parent="." unique_id=1964372986]
+
+[node name="Lava" type="AnimatedSprite2D" parent="." unique_id=460958167 node_paths=PackedStringArray("children_to_hide")]
+modulate = Color(1, 1, 1, 0.9019608)
+z_index = 1
+material = SubResource("ShaderMaterial_konqy")
+position = Vector2(21, 0)
+sprite_frames = SubResource("SpriteFrames_4kxuq")
+animation = &"lava"
+frame_progress = 0.57810336
+centered = false
+script = ExtResource("16_konqy")
+children_to_hide = [NodePath("Lava2"), NodePath("Lava3")]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Lava" unique_id=514117733]
+offset_left = -21.0
+offset_top = -1291.0
+offset_right = 510.0
+offset_bottom = 1033.0
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Lava/SubViewportContainer" unique_id=1133276989]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(531, 2324)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="Bubble" parent="Lava/SubViewportContainer/SubViewport" unique_id=993908567 instance=ExtResource("19_mbq38")]
+material = SubResource("CanvasItemMaterial_njo5y")
+position = Vector2(243, 1929.0001)
+scale = Vector2(0.21590975, 0.27897307)
+amount = 50
+lifetime = 0.67
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Lava/SubViewportContainer/SubViewport" unique_id=624987127]
+top_level = true
+z_index = 1000
+material = SubResource("ShaderMaterial_ivji3")
+position = Vector2(277.00006, 680.00006)
+rotation = 3.1415925
+scale = Vector2(54.57405, -144.35063)
+mesh = SubResource("QuadMesh_iwbtr")
+
+[node name="Lava2" type="AnimatedSprite2D" parent="Lava" unique_id=759189492]
+modulate = Color(1, 1, 1, 0.9019608)
+clip_children = 2
+z_index = 1
+material = SubResource("ShaderMaterial_mbq38")
+position = Vector2(467.19766, 50.031937)
+rotation = 1.6131613
+scale = Vector2(1.896, 0.4825135)
+sprite_frames = SubResource("SpriteFrames_4kxuq")
+animation = &"lava"
+frame_progress = 0.19076757
+centered = false
+flip_v = true
+
+[node name="Lava3" type="AnimatedSprite2D" parent="Lava" unique_id=280554597]
+modulate = Color(0.8151441, 0.8151441, 0.8151441, 0.6156863)
+clip_children = 2
+z_index = 1
+material = SubResource("ShaderMaterial_njo5y")
+position = Vector2(512, 42)
+rotation = 1.5165976
+scale = Vector2(1.8704754, 0.480994)
+sprite_frames = SubResource("SpriteFrames_4kxuq")
+animation = &"lava"
+frame_progress = 0.6614981
+centered = false
+
+[node name="Lines" type="Node2D" parent="." unique_id=1623302765]
+script = ExtResource("20_konqy")

@@ -18,6 +18,8 @@ const BLOCK := preload("res://game_objects/block.tscn")
 @onready var block_root: Node2D = $BlockRoot # node where all the blocks will be stored
 @onready var cursor: AnimatedSprite2D = %Cursor #add cursor in the inspector
 @onready var lava_overlay: AnimatedSprite2D = $Lava
+@onready var lava2_overlay: AnimatedSprite2D = $Lava/Lava2
+@onready var lava3_overlay: AnimatedSprite2D = $Lava/Lava3
 @onready var lines: Node2D = $Lines
 
 # SIGNALS
@@ -382,4 +384,9 @@ func _fit_lava() -> void:
 	lava_overlay.centered = false
 	lava_overlay.scale = Vector2(uniform_scale, uniform_scale)
 	lava_overlay.position = Vector2(-half_cell, float(lava_row) * float(cell_size))
+	lava2_overlay.position.x = lava2_overlay.position.x+5
+	#lava2_overlay.rotate()
+	#lava2_overlay.position.y = lava_overlay.position.y-100
 	lava_overlay.play("lava")
+	lava2_overlay.play_backwards("lava")
+	

@@ -78,8 +78,18 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_q6cpm"]
+resource_local_to_scene = true
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
 [node name="black_goo" type="AnimatedSprite2D" unique_id=1775467366]
+clip_children = 2
 sprite_frames = SubResource("SpriteFrames_rlchb")
 
 [node name="GPUParticles2D" parent="." unique_id=993908567 instance=ExtResource("18_m7blq")]
-scale = Vector2(25.661678, 2.0800004)
+material = SubResource("CanvasItemMaterial_q6cpm")
+scale = Vector2(-0.09832269, 0.23999989)
