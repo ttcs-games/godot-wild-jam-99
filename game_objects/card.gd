@@ -123,6 +123,8 @@ func _fit_shape(shape: Node2D, offsets: Array[Vector2i]) -> void:
 
 # Signal from mouse entering - make it hover
 func _on_mouse_entered() -> void:
+	if not _locked:
+		SFX.hover()
 	_tween_to_hover(true)
 	_show_tooltip()
 	# No animation for pile view

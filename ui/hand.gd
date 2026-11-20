@@ -221,6 +221,7 @@ func _compute_targets(list: Array[Control]) -> Array[Vector2]:
 # Process card's signal - signal it to GameManager
 # Not doing it directly from Card to GameManager because GameManager can't access Card's signal directly 
 func _on_card_clicked(card: Control) -> void:
+	SFX.select()
 	card_selected.emit(card, cards.find(card))
 
 func _on_grid_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
