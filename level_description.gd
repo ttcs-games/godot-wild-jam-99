@@ -17,6 +17,13 @@ func _ready() -> void:
 	
 	var level_number = GameManager.current_level_data.level_number + 1  if GameManager.current_level_data != null else 1 
 	var data = LevelFactory.generate(level_number)
+	
+	#the Faster Lava modifier is applied here, so that it appears on the level description
+	if data.level_modifiers.any(func(x): return x.Type == Modifier.Types.FASTER_LAVA):
+		data.lava_delay += 2 #if lava modifier exists, the lava is delayed by 2 turns
+		data.lava_per_turn *= 2 #if lava modifier exists, lava speed is doubles	
+		data.level_modifiers = data.level_modifiers.filter(func (x): return x.Type != Modifier.Types.FASTER_LAVA)
+	
 	deck_view.bind(GameManager.deck)
 	deck_view.clicked.connect(func(pile): GameManager.open_pile_viewer(pile, "Deck"))
 	play_button.pressed.connect(_on_play_pressed)
@@ -31,6 +38,15 @@ func _populate(data: LevelData) -> void:
 	var rows_from_bottom := data.grid_height - data.objective_row
 	var first_visible_turn := data.lava_delay + 2
 	_add_row("Grid Size", "%d x %d" % [data.grid_width, data.grid_height])
+	
+	var level_modifier_string = ""
+	if (len(data.level_modifiers) > 0):
+		level_modifier_string += "   ("
+		for modifier in data.level_modifiers:
+			level_modifier_string += " * " + modifier.get_display_name()
+		level_modifier_string += " * )"
+	_add_row("Modifiers", "%d" % [len(data.level_modifiers)] + level_modifier_string)
+	
 	_add_row("Objective", "Full layer at %d (from bottom) or higher" % [rows_from_bottom])
 	if data.lava_delay > 0:
 		_add_row("Acid begins", "Turn %d (%d safe turn%s)" % [
@@ -41,6 +57,7 @@ func _populate(data: LevelData) -> void:
 	
 	_add_row("Acid per turn", "%d layer%s" % [data.lava_per_turn, "" if data.lava_per_turn == 1 else "s"])
 	_add_row("Draw per turn", "%d card%s" % [data.draw_per_turn, "" if data.draw_per_turn == 1 else "s"])
+	
 
 func _add_row(label_text: String, value_text: String) -> void:
 	var l := Label.new()

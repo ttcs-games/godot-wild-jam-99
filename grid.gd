@@ -22,6 +22,10 @@ const BLOCK := preload("res://game_objects/block.tscn")
 @onready var lava3_overlay: AnimatedSprite2D = $Lava/Lava3
 @onready var lines: Node2D = $Lines
 
+# MODIFIERS
+var level_modifiers : Array[Modifier] = []
+var _rng = RandomNumberGenerator.new() #used for randomly spreading modifiers among tiles
+
 # SIGNALS
 # todo: placement is yet to be processed
 # When a block is placed (L shape = 4 calls)
@@ -183,6 +187,15 @@ func apply_level_data(data: LevelData) -> void:
 	lava_row = grid_height + data.lava_delay
 	_level_cleared_fired = false
 	is_animating = false
+	
+	#allocating tiles to each modifier
+	level_modifiers = data.level_modifiers
+	for modifier in level_modifiers:
+		var total_cells = grid_height * grid_width - (objective_row * grid_width) #getting total number of cells
+		
+		pass
+	
+	
 	_fit_lava()
 	lines.queue_redraw()
 
