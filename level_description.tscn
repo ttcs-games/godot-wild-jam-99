@@ -39,37 +39,31 @@ offset_bottom = 220.0
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("3_duva7")
 
-[node name="Background2" type="TextureRect" parent="." unique_id=768044609]
+[node name="Background2" type="TextureRect" parent="Background1" unique_id=768044609]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_tiyxm")
 layout_mode = 0
-offset_left = -141.0
-offset_top = 143.0
-offset_right = 1907.0
-offset_bottom = 399.0
-scale = Vector2(0.7, 0.7)
+offset_top = 255.71426
+offset_right = 2048.0
+offset_bottom = 511.71426
 texture = ExtResource("5_14hyy")
 
-[node name="Background3" type="TextureRect" parent="." unique_id=1436658884]
+[node name="Background3" type="TextureRect" parent="Background1" unique_id=1436658884]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_0op48")
 layout_mode = 0
-offset_left = -141.0
-offset_top = 322.0
-offset_right = 1907.0
-offset_bottom = 578.0
-scale = Vector2(0.7, 0.7)
+offset_top = 511.42853
+offset_right = 2048.0
+offset_bottom = 767.4285
 texture = ExtResource("6_32iek")
 
-[node name="Background4" type="TextureRect" parent="." unique_id=1199280677]
+[node name="Background4" type="TextureRect" parent="Background1" unique_id=1199280677]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_32iek")
 layout_mode = 0
-offset_left = -141.0
-offset_top = 501.0
-offset_right = 1907.0
-offset_bottom = 757.0
-scale = Vector2(0.7, 0.7)
+offset_top = 767.1428
+offset_right = 2048.0
+offset_bottom = 1023.1428
 texture = ExtResource("7_3vu2x")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1576344280]
@@ -132,3 +126,5 @@ size_flags_horizontal = 0
 [node name="Cursor" parent="CanvasLayer" unique_id=1383289649 instance=ExtResource("3_yp1oy")]
 z_index = 1001
 z_as_relative = false
+
+[node name="Node" type="Node" parent="." unique_id=1914462100]
