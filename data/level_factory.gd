@@ -1,5 +1,9 @@
 class_name LevelFactory
 
+const WIDTH_CAP = 14
+const HEIGHT_CAP = 21
+const LAVA_SPEED_CAP = 10 
+
 static func generate(level_number: int) -> LevelData:
 	var d := LevelData.new()
 	d.level_number = level_number
@@ -11,9 +15,9 @@ static func generate(level_number: int) -> LevelData:
 		d.display_name = "Level %d" % level_number
 
 	d.is_boss_level = boss
-	d.grid_width   = 8 + level_number/2
-	d.grid_height  = 14 + level_number
-	d.lava_per_turn = 1 + int((level_number - 1) / 3)
+	d.grid_width = mini(WIDTH_CAP, 8 + level_number/2)
+	d.grid_height = mini(HEIGHT_CAP, 14 + level_number)
+	d.lava_per_turn = mini(LAVA_SPEED_CAP, 1 + int((level_number - 1) / 3))
 	d.lava_delay = maxi(0, 3-level_number)
 	d.draw_per_turn = 8 - int(level_number / 3)
 	d.objective_row = maxi(1, d.grid_height - 5 - (level_number - 1))

@@ -19,7 +19,24 @@
 [ext_resource type="Shader" uid="uid://qk1qiibnp43v" path="res://lava.gdshader" id="16_mbq38"]
 [ext_resource type="PackedScene" uid="uid://codrw1qymw8r8" path="res://assets/particles/gpu_particles_2d.tscn" id="19_mbq38"]
 [ext_resource type="Script" uid="uid://qfg7ggp0ue1n" path="res://lines.gd" id="20_konqy"]
+[ext_resource type="Texture2D" uid="uid://bi2pwx0tt0rab" path="res://assets/sprites/Water Final 2/Water Final 2_00000.png" id="20_ynbf5"]
+[ext_resource type="Texture2D" uid="uid://burjlsmyml5lp" path="res://assets/sprites/Water Final 2/Water Final 2_00001.png" id="21_ml3ic"]
 [ext_resource type="Shader" uid="uid://njyxfk6a27a3" path="res://grid.gdshader" id="21_u6jcp"]
+[ext_resource type="Texture2D" uid="uid://xqkgur2ry1w2" path="res://assets/sprites/Water Final 2/Water Final 2_00002.png" id="22_d4cvs"]
+[ext_resource type="Texture2D" uid="uid://cph0frn4v3n5k" path="res://assets/sprites/Water Final 2/Water Final 2_00003.png" id="23_3rhb0"]
+[ext_resource type="Texture2D" uid="uid://bnt7xvdoh62sc" path="res://assets/sprites/Water Final 2/Water Final 2_00004.png" id="24_t6xps"]
+[ext_resource type="Texture2D" uid="uid://pw5q8k2pjjwc" path="res://assets/sprites/Water Final 2/Water Final 2_00005.png" id="25_k0a6o"]
+[ext_resource type="Texture2D" uid="uid://j5bkotvjg84i" path="res://assets/sprites/Water Final 2/Water Final 2_00006.png" id="26_cnl6k"]
+[ext_resource type="Texture2D" uid="uid://dkctl2of4xqe3" path="res://assets/sprites/Water Final 2/Water Final 2_00007.png" id="27_68vuv"]
+[ext_resource type="Texture2D" uid="uid://caul7qysbak1d" path="res://assets/sprites/Water Final 2/Water Final 2_00008.png" id="28_o037o"]
+[ext_resource type="Texture2D" uid="uid://76irn3a1jgm4" path="res://assets/sprites/Water Final 2/Water Final 2_00009.png" id="29_334k8"]
+[ext_resource type="Texture2D" uid="uid://jqvhmwe8vkpb" path="res://assets/sprites/Water Final 2/Water Final 2_00010.png" id="30_8ye1c"]
+[ext_resource type="Texture2D" uid="uid://3c316s4y6bed" path="res://assets/sprites/Water Final 2/Water Final 2_00011.png" id="31_3elr2"]
+[ext_resource type="Texture2D" uid="uid://dehw5ubqpkae3" path="res://assets/sprites/Water Final 2/Water Final 2_00012.png" id="32_hmbc7"]
+[ext_resource type="Texture2D" uid="uid://105on3j0gsxx" path="res://assets/sprites/Water Final 2/Water Final 2_00013.png" id="33_qbawj"]
+[ext_resource type="Texture2D" uid="uid://co62jr7ra5i66" path="res://assets/sprites/Water Final 2/Water Final 2_00014.png" id="34_hwqb7"]
+[ext_resource type="Texture2D" uid="uid://dx7bkp7f6fk8b" path="res://assets/sprites/Water Final 2/Water Final 2_00015.png" id="35_gjd66"]
+[ext_resource type="Texture2D" uid="uid://gmtujdx7oshr" path="res://assets/sprites/Water Final 2/Water Final 2_00016.png" id="36_jx4k7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_konqy"]
 
@@ -73,7 +90,7 @@ animations = [{
 "speed": 20.0
 }]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_njo5y"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_lok5o"]
 resource_local_to_scene = true
 blend_mode = 1
 particles_animation = true
@@ -106,6 +123,65 @@ shader_parameter/uv_size = Vector2(1, 1)
 shader_parameter/flip = Vector2(0, 0)
 shader_parameter/alpha_threshold = 0.05
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_mti6b"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_ynbf5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_ml3ic")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_d4cvs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_3rhb0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_t6xps")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_k0a6o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_cnl6k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_68vuv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_o037o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_334k8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_8ye1c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_3elr2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_hmbc7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_qbawj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_hwqb7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_gjd66")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_jx4k7")
+}],
+"loop": 1,
+"name": &"lava",
+"speed": 20.0
+}]
+
 [node name="Grid" type="Node2D" unique_id=37737656]
 script = ExtResource("1_ebq2e")
 
@@ -118,7 +194,7 @@ material = SubResource("ShaderMaterial_konqy")
 position = Vector2(21, 0)
 sprite_frames = SubResource("SpriteFrames_4kxuq")
 animation = &"lava"
-frame_progress = 0.7878099
+frame_progress = 0.20862122
 centered = false
 script = ExtResource("16_konqy")
 children_to_hide = [NodePath("Lava2")]
@@ -138,7 +214,7 @@ size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="Bubble" parent="Lava/SubViewportContainer/SubViewport" unique_id=993908567 instance=ExtResource("19_mbq38")]
-material = SubResource("CanvasItemMaterial_njo5y")
+material = SubResource("CanvasItemMaterial_lok5o")
 position = Vector2(243, 1929.0001)
 scale = Vector2(0.21590975, 0.27897307)
 amount = 50
@@ -154,17 +230,33 @@ scale = Vector2(54.57405, -144.35063)
 mesh = SubResource("QuadMesh_iwbtr")
 
 [node name="Lava2" type="AnimatedSprite2D" parent="Lava" unique_id=280554597]
-modulate = Color(0.8151441, 0.8151441, 0.8151441, 0.6156863)
+modulate = Color(0.8156863, 0.8156863, 0.8156863, 0.9019608)
 clip_children = 2
 z_index = 1
 material = SubResource("ShaderMaterial_njo5y")
-position = Vector2(535, 53)
-rotation = 1.5423595
-scale = Vector2(1.8704754, 0.480994)
-sprite_frames = SubResource("SpriteFrames_4kxuq")
+position = Vector2(977.64606, 1027.2921)
+rotation = 3.1415927
+scale = Vector2(0.94852746, 0.94852746)
+sprite_frames = SubResource("SpriteFrames_mti6b")
 animation = &"lava"
-frame_progress = 0.113323644
+frame_progress = 0.8555239
 centered = false
+flip_h = true
+flip_v = true
+
+[node name="Lava3" type="AnimatedSprite2D" parent="Lava" unique_id=2041437968]
+modulate = Color(0.8156863, 0.8156863, 0.8156863, 0.9019608)
+clip_children = 2
+z_index = 1
+material = SubResource("ShaderMaterial_njo5y")
+position = Vector2(18.000006, 1021.436)
+rotation = 3.1415927
+scale = Vector2(0.94280857, 0.94280857)
+sprite_frames = SubResource("SpriteFrames_mti6b")
+animation = &"lava"
+frame_progress = 0.22791052
+centered = false
+flip_v = true
 
 [node name="Lines" type="Node2D" parent="." unique_id=1623302765]
 script = ExtResource("20_konqy")

@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://cpqylr4csh80v"]
 
 [ext_resource type="Script" uid="uid://cqqyvyoaq3r2k" path="res://ui/pile_view.gd" id="1_wiejd"]
-[ext_resource type="Texture2D" uid="uid://cahscb3n0lj1p" path="res://assets/sprites/deck.png" id="2_qi8at"]
 
 [node name="PileView" type="Control" unique_id=321091678]
 custom_minimum_size = Vector2(75, 60)
@@ -9,6 +8,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 75.0
 offset_bottom = 60.0
+scale = Vector2(2, 2)
 script = ExtResource("1_wiejd")
 
 [node name="Icon" type="TextureRect" parent="." unique_id=266802121]
@@ -17,7 +17,6 @@ layout_mode = 0
 offset_right = 51.0
 offset_bottom = 60.0
 mouse_filter = 2
-texture = ExtResource("2_qi8at")
 expand_mode = 3
 
 [node name="CountLabel" type="Label" parent="." unique_id=729962061]

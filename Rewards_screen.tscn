@@ -6,6 +6,7 @@
 [ext_resource type="Shader" uid="uid://b0tjrd5ol3ltj" path="res://Scroll.gdshader" id="2_r8ypq"]
 [ext_resource type="PackedScene" uid="uid://cpqylr4csh80v" path="res://ui/pile_view.tscn" id="3_07ys8"]
 [ext_resource type="Texture2D" uid="uid://bwcowqemwhreh" path="res://assets/sprites/Reward_Background.png" id="3_81klb"]
+[ext_resource type="Texture2D" uid="uid://cahscb3n0lj1p" path="res://assets/sprites/deck.png" id="7_81klb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jgwuc"]
 shader = ExtResource("2_r8ypq")
@@ -19,31 +20,42 @@ script = ExtResource("1_85wn1")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=571526167]
 layout_mode = 0
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 1624.8889
+offset_bottom = 914.0
 color = Color(0.0702, 0.09032998, 0.18, 1)
 
 [node name="BackgroundPattern" type="TextureRect" parent="." unique_id=1786086654]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_jgwuc")
 layout_mode = 0
-offset_right = 2275.0
-offset_bottom = 1340.0
+offset_right = 3152.5098
+offset_bottom = 1856.8629
 scale = Vector2(0.51, 0.51)
 texture = ExtResource("3_81klb")
+expand_mode = 2
+stretch_mode = 1
+
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=1234192214]
+layout_mode = 0
+offset_left = 318.0
+offset_top = 139.0
+offset_right = 1292.0
+offset_bottom = 723.0
+color = Color(0, 0, 0, 0.50980395)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=999434374]
 layout_mode = 0
-offset_left = 43.0
-offset_top = 172.0
-offset_right = 250.0
-offset_bottom = 370.0
+offset_left = 400.0
+offset_top = 300.0
+offset_right = 693.0
+offset_bottom = 548.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1923518730]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1339415900]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
 text = "Choose Your Rewards!"
 
 [node name="Button" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1647886577]
@@ -73,6 +85,7 @@ text = "                  "
 
 [node name="RedrawButtonContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1013870584]
 layout_mode = 2
+alignment = 1
 
 [node name="Label" type="Label" parent="HBoxContainer/RedrawButtonContainer" unique_id=1294767074]
 layout_mode = 2
@@ -133,18 +146,21 @@ scale = Vector2(0.41393447, 0.3506711)
 
 [node name="NextLevelButton" type="Button" parent="." unique_id=2094615753]
 layout_mode = 0
-offset_left = 50.0
-offset_top = 546.0
-offset_right = 185.0
-offset_bottom = 577.0
-text = "Go to Next Level"
+offset_left = 1078.0
+offset_top = 466.0
+offset_right = 1218.0
+offset_bottom = 510.0
+theme_override_font_sizes/font_size = 26
+text = "Next Level"
 
 [node name="DeckView" parent="." unique_id=321091678 instance=ExtResource("3_07ys8")]
 layout_mode = 0
-offset_left = 93.0
-offset_top = 440.0
-offset_right = 168.0
-offset_bottom = 500.0
+offset_left = 1098.9999
+offset_top = 333.0
+offset_right = 1173.9999
+offset_bottom = 393.0
+scale = Vector2(1.7, 1.7)
+icon_texture = ExtResource("7_81klb")
 
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Button" to="." method="_on_button_pressed" binds= [0]]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Button2" to="." method="_on_button_pressed" binds= [1]]

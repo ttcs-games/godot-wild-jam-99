@@ -8,15 +8,15 @@ extends Node2D
 @onready var cursor_animation: AnimatedSprite2D = $Control/CursorLayer2/Cursor
 @onready var deck_view: Control = $Control/DeckView
 @onready var discard_view: Control = $Control/DiscardView
-@onready var turn_label: Label = $HUD/VBoxContainer/TurnLabel
-@onready var end_turn_button: Button = $HUD/VBoxContainer/EndTurnButton
+@onready var turn_label: Label = $EndTurnButton/TurnLabel
+@onready var end_turn_button: Button = $EndTurnButton
 @onready var victory_panel: Control = $VictoryLayer/VictoryPanel
 @onready var title_label: Label = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/TitleLabel
 @onready var buffer_line: Label = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/BufferLabel
 @onready var continue_button: Button = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/ContinueButton
 @onready var finish_button: Button = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/FinishButton
 @onready var cursor: AnimatedSprite2D = %Cursor
-@onready var redraw_label: Label = $Control/RedrawLabel
+@onready var redraw_label: Label = $Control/RedrawButton/RedrawLabel
 
 func _ready() -> void:
 	GameManager.play_slide_in(self)
