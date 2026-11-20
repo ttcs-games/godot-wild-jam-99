@@ -23,8 +23,7 @@ var _tooltip_label: RichTextLabel = null
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	GameManager.play_slide_in(self)
-	GameManager.redraws = 10
-	Reward_amount = GameManager.REWARD_AMOUNT + 10 #REWARD_AMOUNT should be changed before this scene is triggered
+	Reward_amount = GameManager.REWARD_AMOUNT #REWARD_AMOUNT should be changed before this scene is triggered
 	RedrawAmountLabel.text = "x%d" % [GameManager.redraws] #number of redraws the player has
 	
 	#remove this line later as this scene will always be triggered after the level.
@@ -85,6 +84,7 @@ func _ready() -> void:
 
 #all five buttons are connected to the same function, just giving different indexes
 func _on_button_pressed(button_index: int) -> void:
+	SFX.button()
 	index_of_reward_applied = button_index
 	var Reward_Given := Rewards[button_index]
 	var cards_affected := GameManager.deck
@@ -244,7 +244,8 @@ func _on_reward_button_hovered(button_index: int) -> void:
 	var btn := RewardButtons[button_index]
 	if btn.disabled:
 		return
-
+	
+	SFX.hover()
 	var text := _format_reward_tooltip(Rewards[button_index])
 	if text.is_empty():
 		_hide_tooltip()
@@ -318,6 +319,7 @@ func _on_redraw_button_pressed(button_index: int) -> void:
 		
 	GameManager.redraws -= 1
 	RedrawAmountLabel.text = "x%d" % [GameManager.redraws] #number of redraws the player has
+	SFX.button()
 	
 	while (true):
 		var newReward : Reward

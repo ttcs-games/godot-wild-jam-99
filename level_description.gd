@@ -54,4 +54,5 @@ func _add_row(label_text: String, value_text: String) -> void:
 	stats_grid.add_child(v)
 
 func _on_play_pressed() -> void:
+	SFX.button()
 	GameManager.start_level()

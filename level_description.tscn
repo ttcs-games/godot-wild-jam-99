@@ -66,6 +66,7 @@ text = "Play"
 
 [node name="DeckView" parent="MarginContainer/VBoxContainer" unique_id=321091678 instance=ExtResource("2_oul27")]
 layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2058082307]
 

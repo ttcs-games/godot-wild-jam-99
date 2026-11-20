@@ -10,9 +10,11 @@ func _ready() -> void:
 
 func _on_play_button_pressed() -> void:
 	randomize()
+	SFX.button()
 	GameManager.start_run()
 
 func _on_options_button_pressed() -> void:
+	SFX.button()
 	Mainmenu.visible = false
 	OptionMenu.visible = true
 	MasterSlider.value = getAudio("Master")
@@ -21,11 +23,13 @@ func _on_options_button_pressed() -> void:
 	print(getAudio("Master"))
 
 func _on_quit_button_pressed() -> void:
+	SFX.button()
 	get_tree().quit()
 
 #Option Menu
 
 func _on_back_button_pressed() -> void:
+	SFX.button()
 	Mainmenu.visible = true
 	OptionMenu.visible = false
 

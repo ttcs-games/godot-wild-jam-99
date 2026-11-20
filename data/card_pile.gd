@@ -2,6 +2,7 @@ class_name CardPile
 extends RefCounted
 
 signal changed
+signal show_change
 
 @export var _cards: Array[CardData] = []
 var _rng := RandomNumberGenerator.new()
@@ -27,6 +28,7 @@ func add_all(cards: Array[CardData]) -> void:
 	for card in cards:
 		_cards.append(card)
 	changed.emit()
+	show_change.emit()
 	
 func remove(card: CardData) -> void:
 	if card == null:
@@ -44,6 +46,7 @@ func draw_all() -> Array[CardData]:
 	var out = _cards.duplicate(true)
 	_cards.clear()
 	changed.emit()
+	show_change.emit()
 	return out
 
 func shuffle() -> void:
@@ -62,6 +65,8 @@ func draw(n: int) -> Array[CardData]:
 		out.append(_cards.pop_back())
 	if count > 0:
 		changed.emit()
+	if count > 1:
+		show_change.emit()
 	return out
 
 func get_cards_copy() -> Array[CardData]:

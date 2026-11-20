@@ -8,10 +8,10 @@ extends Node2D
 @export var cell_size: int = 32
 @export var grid_padding: int = 3
 @export var objective_row: int = 6
-@export var lava_rise_seconds: float = 0.5
-@export var flash_seconds: float = 0.75
+@export var lava_rise_seconds: float = 0.75
+@export var flash_seconds: float = 0.25
 @export var flash_hold_seconds: float = 0.25
-@export var delay_per_destruction: float = 0.25
+@export var delay_per_destruction: float = 0.01
 
 # CONSTANTS
 const BLOCK := preload("res://game_objects/block.tscn")
@@ -201,6 +201,7 @@ func _on_block_placed(cell: Vector2i, element: Elements.Id, mat : MaterialData) 
 	cell_to_block[cell] = b
 
 func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
+	SFX.place()
 	# Send the win singal once ever, if any placed cell turned the line into finished line above the objective
 	if not _level_cleared_fired and objective_row >= 0 and objective_row < grid_height:
 		var checked_rows := {}
@@ -229,6 +230,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var ok := place(test_offsets, hovered_cell, GameManager._active_card.card_data.element, GameManager._active_card.card_data.material)
 		
 		if not ok:
+			SFX.denied()
 			placement_rejected.emit(test_offsets)
 		else: 
 			cursor.play("throw")
@@ -243,6 +245,8 @@ func _run_cascade() -> void:
 			break
 		
 		await _flash_rows(unfinished)
+		if (len(unfinished) > 0):
+			SFX.layer_break()
 		_break_rows(unfinished)
 		await _shift_above_lowest(unfinished.max(), unfinished)
 		await get_tree().create_timer(delay_per_destruction).timeout

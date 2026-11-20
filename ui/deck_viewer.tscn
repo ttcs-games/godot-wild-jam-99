@@ -52,18 +52,20 @@ layout_mode = 2
 [node name="TitleLabel" type="Label" parent="ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer/TopBar" unique_id=1863209137]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
 text = "Deck"
 horizontal_alignment = 1
 
 [node name="CloseButton" type="Button" parent="ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer/TopBar" unique_id=261257983]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
-text = "X"
+theme_override_font_sizes/font_size = 24
+text = "  X  "
 
 [node name="HintLabel" type="Label" parent="ColorRect/CenterContainer/Panel/MarginContainer/VBoxContainer" unique_id=251841771]
 visible = false
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 16
 text = "Ordered by element, then material, then shape"
 horizontal_alignment = 1
 

@@ -53,15 +53,15 @@ var current_level_data: LevelData = null
 func start_run() -> void:
 	current_level_data = null
 	init_deck()
-	MusicManager.switch_track()
+	redraws = 0
 	transition_to_scene(SCENE_LEVEL_DESCRIPTION)
 
 func finish_rewards() -> void:
+	SFX.button()
 	transition_to_scene(SCENE_LEVEL_DESCRIPTION)
 
 func end_run() -> void:
 	is_game_over = true
-	MusicManager.switch_track()
 	transition_to_scene(SCENE_GAME_OVER)
 
 # Creates the piles and a initial deck
@@ -75,6 +75,7 @@ func init_deck() -> void:
 # Draws cards from deck into hand
 # Reshuffles discard pile into deck if there is not enough to draw
 func start_turn() -> void:
+	MusicManager.switch_track()
 	var cards := deck.draw(draw_per_turn)
 	if cards.size() < draw_per_turn:
 		deck.add_all(discard.draw_all())
@@ -103,7 +104,7 @@ func start_level() -> void:
 	transition_to_scene(SCENE_GAME_ZONE)
 	
 # Puts all the cards from hand to discard pile
-func end_turn(turn_label: Label) -> void:
+func end_turn(turn_label: Label, button: Button) -> void:
 	if grid.is_animating or hand._is_animating:
 		return
 	if is_end_turn_in_progress or is_level_won:
@@ -111,6 +112,8 @@ func end_turn(turn_label: Label) -> void:
 	if grid.is_animating:
 		return
 	
+	SFX.button()
+	button.disabled = true
 	is_end_turn_in_progress = true
 	if cursor.animation == "grab":
 		cursor.play("idle")
@@ -122,6 +125,7 @@ func end_turn(turn_label: Label) -> void:
 	await _phase_bump_turn(turn_label)
 	await _phase_draw_hand(draw_per_turn)
 	is_end_turn_in_progress = false
+	button.disabled = false
 
 func finish_level() -> void:
 	deck.add_all(discard.draw_all())
@@ -169,7 +173,7 @@ func remove_card() -> void:
 	
 
 func rotate_selection() -> void:
-	
+	SFX.rotate()
 	#squares dont change while rotating
 	if _active_card.card_data.shape.display_name == "Square":
 			return
@@ -236,6 +240,7 @@ func open_pile_viewer(pile: CardPile, title: String , num_cards_displayed: int =
 	cursorAnimation.play("idle")
 	if _open_viewer != null:
 		return
+	SFX.button()
 	_open_viewer = DECK_VIEWER_SCENE.instantiate()
 	cursor_layer.add_child(_open_viewer)
 	_open_viewer.setup(pile, title, num_cards_displayed, sort_cards,_on_card_chosen)
@@ -248,6 +253,7 @@ func open_pile_viewer(pile: CardPile, title: String , num_cards_displayed: int =
 func _close_pile_viewer() -> void:
 	#this is for the rewards screen.
 	if (cards_affected != []):
+		SFX.upgrade()
 		cards_affected = []
 	
 	if _open_viewer == null:
@@ -262,16 +268,22 @@ func _on_card_chosen(card_affected: Control) -> void:
 		return
 	
 	if (card_affected in cards_affected):
+		SFX.place()
 		cards_affected.erase(card_affected)
 		card_affected.unlock()
-		
+	
 	elif (reward_to_apply.amount > len(cards_affected)):
+		SFX.select()
 		cards_affected.append(card_affected)
 		card_affected.lock()
 	
 	#this is the accept rewards button
-	_open_viewer.get_child(1).visible = true
-	_open_viewer.get_child(1).disabled = false
+	if len(cards_affected) == 0:
+		_open_viewer.get_child(1).visible = false
+		_open_viewer.get_child(1).disabled = true
+	else:
+		_open_viewer.get_child(1).visible = true
+		_open_viewer.get_child(1).disabled = false
 
 func transition_to_scene(scene_path: String) -> void:
 	await RenderingServer.frame_post_draw
@@ -336,8 +348,10 @@ func _phase_discard_hand() -> void:
 	await get_tree().create_timer(0.15).timeout
 	var hand_data: Array[CardData] = hand.get_cards_data()
 	discard.add_all(hand_data)
+	if (len(hand.cards) > 0):
+		SFX.many_discard()
 	await hand.discard_batch(hand.cards.duplicate())
-	await get_tree().create_timer(0.15).timeout
+	await get_tree().create_timer(0.3).timeout
 
 func _phase_rise_lava() -> void:
 	await grid.rise_lava(lava_per_turn)
@@ -354,12 +368,16 @@ func _phase_bump_turn(turn_label: Label) -> void:
 
 func _phase_draw_hand(cards_drawn: int) -> void:
 	var cards := deck.draw(cards_drawn)
+	if (len(cards) > 0):
+		SFX.many_draw()
 	await hand.draw_batch(cards)
-	if cards.size() < cards_drawn:
+	if cards.size() < cards_drawn and discard.size() > 0:
 		await get_tree().create_timer(0.15).timeout
 		deck.add_all(discard.draw_all())
 		deck.shuffle() # TODO: animation of flow: discard -> deck ?
 		await get_tree().create_timer(0.15).timeout
 		var extra_cards := deck.draw(cards_drawn - cards.size())
+		if (len(extra_cards) > 0):
+			SFX.many_draw()
 		await hand.draw_batch(extra_cards)
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().create_timer(0.3).timeout

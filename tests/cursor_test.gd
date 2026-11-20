@@ -42,9 +42,9 @@ func _ready() -> void:
 	deck_view.clicked.connect(func(pile): GameManager.open_pile_viewer(pile, "Deck"))
 	
 	discard_view.bind(GameManager.discard)
-	discard_view.clicked.connect(func(pile): GameManager.open_pile_viewer(pile, "Discarded"))
+	discard_view.clicked.connect(func(pile): GameManager.open_pile_viewer(pile, "Discarded", 1000, false))
 	
-	end_turn_button.pressed.connect(func(): GameManager.end_turn(turn_label))
+	end_turn_button.pressed.connect(func(): GameManager.end_turn(turn_label, end_turn_button))
 	
 	turn_label.text = "Turn %d" % GameManager.turn_number
 	grid.apply_level_data(GameManager.current_level_data)
@@ -77,14 +77,17 @@ func _on_level_cleared(buffer: int) -> void:
 		finish_button.visible = false
 	
 	var plural := "" if buffer == 1 else "s"
-	buffer_line.text = "Built %d full layer%s above lava  +%d reward%s" % [
+	buffer_line.text = "Built %d full layer%s above lava | +%d reward%s" % [
 		buffer, plural, buffer, plural
 	]
+	MusicManager.play_victory()
 
 func _on_continue_pressed() -> void:
+	SFX.button()
 	GameManager.finish_level()
 
 func _on_finish_pressed() -> void:
+	SFX.button()
 	MusicManager.switch_track()
 	GameManager.transition_to_scene("res://Main_menu.tscn")
 
@@ -96,6 +99,7 @@ func _on_redraw_button_pressed() -> void:
 	if (GameManager.redraws == 0):
 		return
 	
+	SFX.button()
 	var cards_discarded_count = len(hand.cards)
 	await GameManager._phase_discard_hand()
 	await GameManager._phase_draw_hand(cards_discarded_count)
