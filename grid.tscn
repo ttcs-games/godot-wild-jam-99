@@ -73,7 +73,7 @@ animations = [{
 "speed": 20.0
 }]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_njo5y"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_konqy"]
 resource_local_to_scene = true
 blend_mode = 1
 particles_animation = true
@@ -109,6 +109,8 @@ shader_parameter/alpha_threshold = 0.05
 [node name="Grid" type="Node2D" unique_id=37737656]
 script = ExtResource("1_ebq2e")
 
+[node name="TileRoot" type="Node2D" parent="." unique_id=1656135128]
+
 [node name="BlockRoot" type="Node2D" parent="." unique_id=1964372986]
 
 [node name="Lava" type="AnimatedSprite2D" parent="." unique_id=460958167 node_paths=PackedStringArray("children_to_hide")]
@@ -138,7 +140,7 @@ size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="Bubble" parent="Lava/SubViewportContainer/SubViewport" unique_id=993908567 instance=ExtResource("19_mbq38")]
-material = SubResource("CanvasItemMaterial_njo5y")
+material = SubResource("CanvasItemMaterial_konqy")
 position = Vector2(243, 1929.0001)
 scale = Vector2(0.21590975, 0.27897307)
 amount = 50
@@ -168,3 +170,5 @@ centered = false
 
 [node name="Lines" type="Node2D" parent="." unique_id=1623302765]
 script = ExtResource("20_konqy")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1622808897]
