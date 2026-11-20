@@ -6,7 +6,7 @@ extends Control
 @onready var RewardButtons : Array[Button] = [$HBoxContainer/VBoxContainer/Button, $HBoxContainer/VBoxContainer/Button2, $HBoxContainer/VBoxContainer/Button3, $HBoxContainer/VBoxContainer/Button4, $HBoxContainer/VBoxContainer/Button5]
 @onready var RedrawButtons : Array[Button] = [$HBoxContainer/RedrawButtonContainer/TextureButton, $HBoxContainer/RedrawButtonContainer/TextureButton2, $HBoxContainer/RedrawButtonContainer/TextureButton3, $HBoxContainer/RedrawButtonContainer/TextureButton4, $HBoxContainer/RedrawButtonContainer/TextureButton5]
 @onready var ClickableDeck := $DeckView
-@onready var RewardOptionsBox := $HBoxContainer/VBoxContainer
+@onready var RewardOptionsBox := $HBoxContainer
 @onready var NextLevelButton: Button = $NextLevelButton
 @onready var RedrawAmountLabel : Label = $"HBoxContainer/RedrawButtonContainer/Redraws Left"
 
