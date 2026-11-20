@@ -1,7 +1,7 @@
 extends Control
 
 @export var Reward_amount : int = 0
-@export var total_cards_choice = 10 #how many cards are displayed when a reward is picked
+@export var total_cards_choice = 12 #how many cards are displayed when a reward is picked
 
 @onready var RewardButtons : Array[Button] = [$HBoxContainer/VBoxContainer/Button, $HBoxContainer/VBoxContainer/Button2, $HBoxContainer/VBoxContainer/Button3, $HBoxContainer/VBoxContainer/Button4, $HBoxContainer/VBoxContainer/Button5]
 @onready var RedrawButtons : Array[Button] = [$HBoxContainer/RedrawButtonContainer/TextureButton, $HBoxContainer/RedrawButtonContainer/TextureButton2, $HBoxContainer/RedrawButtonContainer/TextureButton3, $HBoxContainer/RedrawButtonContainer/TextureButton4, $HBoxContainer/RedrawButtonContainer/TextureButton5]

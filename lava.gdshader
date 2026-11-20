@@ -11,6 +11,10 @@ uniform vec2 uv_size = vec2(1.0);
 uniform vec2 flip;         // x = flip_h, y = flip_v
 uniform float alpha_threshold : hint_range(0.0, 1.0) = 0.05;
 
+// Global-X clip (only active when keep_left == true)
+uniform float clip_global_x = 100.0;
+uniform bool keep_left = false;
+
 varying vec2 world_pos;
 
 void vertex() {
@@ -18,6 +22,11 @@ void vertex() {
 }
 
 void fragment() {
+	// Keep pixels to the left of clip_global_x; do nothing when keep_left is false.
+	if (keep_left && world_pos.x > clip_global_x) {
+		discard;
+	}
+
 	vec2 local = inv_x * world_pos.x + inv_y * world_pos.y + inv_o;
 	vec2 t = (local - rect_pos) / rect_size;
 
