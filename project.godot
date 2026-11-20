@@ -31,6 +31,10 @@ window/size/viewport_height=900
 window/stretch/mode="canvas_items"
 mouse_cursor/custom_image="uid://qiaitkxbv255"
 
+[gui]
+
+theme/custom_font="uid://bxqesen8omclc"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
