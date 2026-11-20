@@ -390,16 +390,15 @@ func _fit_lava() -> void:
 	if tex == null:
 		return
 	
-	var half_cell := float(cell_size) * 0.5
-	var total_lava_w := float(grid_width * cell_size) + float(cell_size)
+	var total_lava_w := float(grid_width * cell_size)
 	var uniform_scale := total_lava_w / float(tex.get_width())
 	
 	lava_overlay.centered = false
 	lava_overlay.scale = Vector2(uniform_scale, uniform_scale)
-	lava_overlay.position = Vector2(-half_cell, float(lava_row) * float(cell_size))
+	lava_overlay.position = Vector2(0, float(lava_row) * float(cell_size))
 	
-	#lava2_overlay.rotate()
-	#lava2_overlay.position.y = lava_overlay.position.y-100
+	lava2_overlay.material.set_shader_parameter("clip_global_x", 620.0)
+	lava2_overlay.material.set_shader_parameter("keep_left", true)
 	lava_overlay.play("lava")
 	lava2_overlay.play("lava")
 	lava3_overlay.play("lava")
