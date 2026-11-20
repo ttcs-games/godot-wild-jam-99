@@ -360,6 +360,6 @@ func _phase_draw_hand(cards_drawn: int) -> void:
 		deck.add_all(discard.draw_all())
 		deck.shuffle() # TODO: animation of flow: discard -> deck ?
 		await get_tree().create_timer(0.15).timeout
-		var extra_cards := deck.draw(draw_per_turn - cards.size())
+		var extra_cards := deck.draw(cards_drawn - cards.size())
 		await hand.draw_batch(extra_cards)
 	await get_tree().create_timer(0.2).timeout
