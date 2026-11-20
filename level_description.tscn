@@ -4,6 +4,7 @@
 [ext_resource type="Shader" uid="uid://dv6vypmed4tbm" path="res://level_description_bg.gdshader" id="2_66c5p"]
 [ext_resource type="PackedScene" uid="uid://cpqylr4csh80v" path="res://ui/pile_view.tscn" id="2_oul27"]
 [ext_resource type="Texture2D" uid="uid://do6nt7mnlpqmg" path="res://assets/sprites/Line1.png" id="3_duva7"]
+[ext_resource type="Texture2D" uid="uid://cahscb3n0lj1p" path="res://assets/sprites/deck.png" id="3_h0lew"]
 [ext_resource type="PackedScene" uid="uid://cqfhq5gsgm80q" path="res://ui/cursorAnimation.tscn" id="3_yp1oy"]
 [ext_resource type="Shader" uid="uid://dtap8xng5c8rn" path="res://level_description_bg2.gdshader" id="4_3uot4"]
 [ext_resource type="Texture2D" uid="uid://cokdwglyc3key" path="res://assets/sprites/Line2.png" id="5_14hyy"]
@@ -32,39 +33,72 @@ script = ExtResource("1_2cslj")
 texture_repeat = 2
 material = SubResource("ShaderMaterial_0op48")
 layout_mode = 0
-offset_left = -141.0
-offset_top = -35.999996
-offset_right = 1907.0
-offset_bottom = 220.0
+offset_left = -140.00002
+offset_top = -87.999985
+offset_right = 2615.714
+offset_bottom = 168.00002
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("3_duva7")
+stretch_mode = 1
 
 [node name="Background2" type="TextureRect" parent="Background1" unique_id=768044609]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_tiyxm")
 layout_mode = 0
 offset_top = 255.71426
-offset_right = 2048.0
+offset_right = 2768.5713
 offset_bottom = 511.71426
 texture = ExtResource("5_14hyy")
+stretch_mode = 1
 
 [node name="Background3" type="TextureRect" parent="Background1" unique_id=1436658884]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_0op48")
 layout_mode = 0
 offset_top = 511.42853
-offset_right = 2048.0
+offset_right = 2768.5713
 offset_bottom = 767.4285
 texture = ExtResource("6_32iek")
+stretch_mode = 1
 
 [node name="Background4" type="TextureRect" parent="Background1" unique_id=1199280677]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_32iek")
 layout_mode = 0
 offset_top = 767.1428
-offset_right = 2048.0
+offset_right = 2768.5713
 offset_bottom = 1023.1428
 texture = ExtResource("7_3vu2x")
+stretch_mode = 1
+
+[node name="Background1" type="TextureRect" parent="Background1" unique_id=1313021267]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_0op48")
+layout_mode = 0
+offset_top = 1022.857
+offset_right = 2768.5713
+offset_bottom = 1278.8569
+texture = ExtResource("3_duva7")
+stretch_mode = 1
+
+[node name="Background6" type="TextureRect" parent="Background1" unique_id=1496466215]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_tiyxm")
+layout_mode = 0
+offset_top = 1278.571
+offset_right = 2768.5713
+offset_bottom = 1534.571
+texture = ExtResource("5_14hyy")
+stretch_mode = 1
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1643909178]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5647059)
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1576344280]
 layout_mode = 1
@@ -120,6 +154,7 @@ text = "Play"
 [node name="DeckView" parent="MarginContainer/VBoxContainer" unique_id=321091678 instance=ExtResource("2_oul27")]
 layout_mode = 2
 size_flags_horizontal = 0
+icon_texture = ExtResource("3_h0lew")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2058082307]
 

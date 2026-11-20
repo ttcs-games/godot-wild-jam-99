@@ -1,11 +1,17 @@
 [gd_resource type="Resource" script_class="MaterialData" format=3 uid="uid://dry2k1v63v8hg"]
 
 [ext_resource type="Script" uid="uid://kl16elp5u6du" path="res://data/material_data.gd" id="1_nufi3"]
+[ext_resource type="Script" uid="uid://cavxpo2o4aw0s" path="res://data/materials/GlassHandler.gd" id="1_stnpg"]
 [ext_resource type="Texture2D" uid="uid://5vamtc1a6ibs" path="res://assets/sprites/Block Glass.png" id="2_hhs0m"]
+
+[sub_resource type="Resource" id="Resource_6qcef"]
+script = ExtResource("1_stnpg")
+metadata/_custom_type_script = "uid://cavxpo2o4aw0s"
 
 [resource]
 script = ExtResource("1_nufi3")
 display_name = "Glass"
 description = "When placed, select a Non-Glass card from discard pile to return into hand"
 sprite = ExtResource("2_hhs0m")
+handler = SubResource("Resource_6qcef")
 metadata/_custom_type_script = "uid://kl16elp5u6du"

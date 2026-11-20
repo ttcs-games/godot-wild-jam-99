@@ -5,7 +5,7 @@ extends Node2D
 # SETTINGS
 @export var grid_width: int = 10
 @export var grid_height: int = 20
-@export var cell_size: int = 32
+@export var cell_size: int = 40
 @export var grid_padding: int = 3
 @export var objective_row: int = 6
 @export var lava_rise_seconds: float = 0.75
@@ -66,6 +66,9 @@ func _ready() -> void:
 	shape_placed.connect(_on_shape_placed)
 	GameManager.shape_rotated.connect(lines.queue_redraw)
 	_fit_lava()
+	await get_tree().process_frame
+	_update_grid_position()
+	get_viewport().size_changed.connect(_update_grid_position)
 
 # Checker for an array of blocks (a shape) if it can be placed in required cell
 func can_place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id) -> bool:
@@ -135,6 +138,7 @@ func place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id, mat
 		block_placed.emit(cell, element, mat)
 	
 	shape_placed.emit(placed, element)
+	mat.handler.play()
 	lines.queue_redraw()
 	return true
 
@@ -191,7 +195,16 @@ func _process(delta: float) -> void:
 		_last_hovered = c
 		hovered_cell = c
 		lines.queue_redraw()
-	
+
+func _draw() -> void:
+	var grid_area := Rect2(
+		0.0 - grid_padding,
+		0.0 - grid_padding,
+		grid_width * cell_size + 2 * grid_padding,
+		grid_height * cell_size + 2 * grid_padding
+	)
+	draw_rect(grid_area, Color(0, 0, 0, 0.5))
+
 # Processor for "block placed" signal: actually spawns the block node
 func _on_block_placed(cell: Vector2i, element: Elements.Id, mat : MaterialData) -> void:
 	var b := BLOCK.instantiate()
@@ -384,9 +397,17 @@ func _fit_lava() -> void:
 	lava_overlay.centered = false
 	lava_overlay.scale = Vector2(uniform_scale, uniform_scale)
 	lava_overlay.position = Vector2(-half_cell, float(lava_row) * float(cell_size))
-	lava2_overlay.position.x = lava2_overlay.position.x+5
+	
 	#lava2_overlay.rotate()
 	#lava2_overlay.position.y = lava_overlay.position.y-100
 	lava_overlay.play("lava")
-	lava2_overlay.play_backwards("lava")
-	
+	lava2_overlay.play("lava")
+	lava3_overlay.play("lava")
+
+func _update_grid_position() -> void:
+	var grid_px := Vector2(grid_width * cell_size, grid_height * cell_size)
+	var vp_size := get_viewport_rect().size
+	position = Vector2(
+		300 - grid_px.x * 0.5,
+		vp_size.y * 0.5 - grid_px.y * 0.5
+	)

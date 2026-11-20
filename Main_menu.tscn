@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://lwwwqq1ynapw"]
 
 [ext_resource type="Script" uid="uid://d1yb632y687dc" path="res://main_menu.gd" id="1_b07fi"]
+[ext_resource type="SpriteFrames" uid="uid://bfbfbvel3sd1f" path="res://assets/sprites/background.tres" id="2_x2ps0"]
 [ext_resource type="PackedScene" uid="uid://cqfhq5gsgm80q" path="res://ui/cursorAnimation.tscn" id="2_x6lt7"]
 
 [node name="Main_menu" type="Control" unique_id=1114249464]
@@ -12,13 +13,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_b07fi")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1705336590]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="TextureRect" type="AnimatedSprite2D" parent="." unique_id=1719365661]
+sprite_frames = ExtResource("2_x2ps0")
+autoplay = "default"
+centered = false
+flip_h = true
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1174200878]
 layout_mode = 1
@@ -33,18 +32,28 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1371258587]
 layout_mode = 2
-text = "Main Menu"
+theme_override_font_sizes/font_size = 32
+text = "Untitled
+Tetris Game"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="CenterContainer/VBoxContainer" unique_id=1434798825]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
 
 [node name="Play_button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=611992399]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
 text = "Play"
 
 [node name="Options_button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1878614623]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
 text = "Options"
 
 [node name="Quit_button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1645413478]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
 text = "Quit"
 
 [node name="OptionMenu" type="Panel" parent="." unique_id=218056790]
@@ -67,7 +76,9 @@ theme_override_constants/margin_left = 256
 theme_override_constants/margin_right = 256
 
 [node name="VBoxContainer" type="VBoxContainer" parent="OptionMenu/MarginContainer" unique_id=694511785]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 alignment = 1
 
 [node name="GridContainer" type="GridContainer" parent="OptionMenu/MarginContainer/VBoxContainer" unique_id=2083377633]
@@ -76,6 +87,7 @@ size_flags_vertical = 4
 
 [node name="Master" type="Label" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1391019597]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
 text = "Master"
 
 [node name="MasterSlider" type="HSlider" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1280937076]
@@ -87,6 +99,7 @@ value = 1.0
 
 [node name="Music" type="Label" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=846907563]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
 text = "Music"
 
 [node name="MusicSlider" type="HSlider" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=45054037]
@@ -97,6 +110,7 @@ value = 1.0
 
 [node name="SFX" type="Label" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1053575366]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
 text = "SFX"
 
 [node name="SFXSlider" type="HSlider" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1821693499]
@@ -105,10 +119,16 @@ max_value = 1.0
 step = 0.01
 value = 1.0
 
+[node name="Control" type="Control" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1939428727]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 2
+
 [node name="BackButton" type="Button" parent="OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=562756014]
+custom_minimum_size = Vector2(185, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_font_sizes/font_size = 24
 text = "Back"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1092190396]

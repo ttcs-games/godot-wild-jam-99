@@ -1,6 +1,7 @@
 class_name GrassHandler extends BaseHandler
 
-func play_grass(card_deck :CardPile, block : Node2D, card : CardData):
+func play():
 	var path = load("res://data/materials/grass_material.tres")
-	card_deck._cards.pick_random().material = path
-	card_deck.draw(1)
+	GameManager.hand.cards.pick_random().card_data.material = path
+	await GameManager.hand.draw_one(GameManager.deck.draw(1).get(0))
+	GameManager.hand._layout()

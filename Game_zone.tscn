@@ -2,10 +2,13 @@
 
 [ext_resource type="Script" uid="uid://bcim5heihwsh6" path="res://tests/cursor_test.gd" id="1_7bv3l"]
 [ext_resource type="PackedScene" uid="uid://bcvw2o3gjdmh7" path="res://tests/cursor_test.tscn" id="1_mhji2"]
+[ext_resource type="SpriteFrames" uid="uid://bfbfbvel3sd1f" path="res://assets/sprites/background.tres" id="2_fxueq"]
 [ext_resource type="PackedScene" uid="uid://bcyiquvaivsql" path="res://ui/hand.tscn" id="2_ob6xn"]
 [ext_resource type="PackedScene" uid="uid://cpqylr4csh80v" path="res://ui/pile_view.tscn" id="2_rftav"]
 [ext_resource type="PackedScene" uid="uid://b3ori8l4rn1g4" path="res://grid.tscn" id="3_ob6xn"]
 [ext_resource type="PackedScene" uid="uid://cqfhq5gsgm80q" path="res://ui/cursorAnimation.tscn" id="4_rftav"]
+[ext_resource type="Texture2D" uid="uid://cahscb3n0lj1p" path="res://assets/sprites/deck.png" id="5_fxueq"]
+[ext_resource type="Texture2D" uid="uid://cfnqp2308nkmp" path="res://assets/sprites/card_icons.png" id="6_2l2xc"]
 [ext_resource type="Texture2D" uid="uid://ctemlwn8tfb3o" path="res://assets/sprites/redraw.png" id="6_b88yg"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6qcef"]
@@ -13,38 +16,52 @@
 [node name="Node2D" type="Node2D" unique_id=943336645]
 script = ExtResource("1_7bv3l")
 
+[node name="TextureRect" type="AnimatedSprite2D" parent="." unique_id=685231869]
+sprite_frames = ExtResource("2_fxueq")
+autoplay = "default"
+centered = false
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=661627492]
+custom_minimum_size = Vector2(1600, 300)
+offset_top = -19.0
+offset_right = 1600.0
+offset_bottom = 900.0
+color = Color(0, 0, 0, 0.27450982)
+
 [node name="Control" parent="." unique_id=600854760 instance=ExtResource("1_mhji2")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 449.00003
-offset_top = 554.0
-offset_right = 1343.6667
-offset_bottom = 852.6666
+offset_left = 800.0
+offset_top = 555.0
+offset_right = 1694.6667
+offset_bottom = 853.6666
 grow_horizontal = 1
 grow_vertical = 1
 scale = Vector2(0.75, 0.75)
 
 [node name="DeckView" parent="Control" unique_id=321091678 instance=ExtResource("2_rftav")]
 layout_mode = 0
-offset_left = -114.666565
-offset_top = -33.333435
-offset_right = -39.666565
-offset_bottom = 26.666565
+offset_left = -239.99997
+offset_top = 277.3333
+offset_right = -164.99997
+offset_bottom = 337.3333
+icon_texture = ExtResource("5_fxueq")
 
 [node name="Hand2" parent="Control" unique_id=435155043 instance=ExtResource("2_ob6xn")]
 layout_mode = 1
-offset_left = -40.0
-offset_top = -180.0
-offset_right = -40.0
-offset_bottom = -180.0
+offset_left = -110.66669
+offset_top = 102.66672
+offset_right = -40.00006
+offset_bottom = 160.00003
 
 [node name="DiscardView" parent="Control" unique_id=1190251829 instance=ExtResource("2_rftav")]
 layout_mode = 0
-offset_left = 874.6667
-offset_top = -26.666647
-offset_right = 949.6667
-offset_bottom = 33.33335
+offset_left = 875.99963
+offset_top = 277.333
+offset_right = 950.9997
+offset_bottom = 337.333
+icon_texture = ExtResource("6_2l2xc")
 
 [node name="CursorLayer2" type="CanvasLayer" parent="Control" unique_id=2095042195]
 layer = 2
@@ -59,24 +76,46 @@ scale = Vector2(0.41393447, 0.3506711)
 [node name="RedrawButton" type="Button" parent="Control" unique_id=1461138492]
 custom_minimum_size = Vector2(31, 31)
 layout_mode = 0
-offset_left = -109.33339
-offset_top = -90.66665
-offset_right = -69.33339
-offset_bottom = -50.66665
+offset_left = -222.66667
+offset_top = 138.66667
+offset_right = -182.66667
+offset_bottom = 178.66667
+scale = Vector2(2, 2)
 theme_override_styles/normal = SubResource("StyleBoxTexture_6qcef")
 icon = ExtResource("6_b88yg")
 expand_icon = true
 
-[node name="RedrawLabel" type="Label" parent="Control" unique_id=374387525]
+[node name="RedrawLabel" type="Label" parent="Control/RedrawButton" unique_id=374387525]
 layout_mode = 0
-offset_left = -62.666748
-offset_top = -82.666664
-offset_right = -60.333374
-offset_bottom = -53.33329
+offset_left = 6.2222023
+offset_top = 32.88888
+offset_right = 33.222202
+offset_bottom = 66.888885
+theme_override_font_sizes/font_size = 24
+text = "00"
 
 [node name="Grid" parent="." unique_id=37737656 instance=ExtResource("3_ob6xn")]
 unique_name_in_owner = true
 position = Vector2(5, 5)
+
+[node name="EndTurnButton" type="Button" parent="." unique_id=640759790]
+custom_minimum_size = Vector2(120, 56)
+offset_left = 1448.0
+offset_top = 693.667
+offset_right = 1568.0
+offset_bottom = 749.667
+theme_override_font_sizes/font_size = 24
+text = "End Turn"
+
+[node name="TurnLabel" type="Label" parent="EndTurnButton" unique_id=1372030579]
+layout_mode = 0
+offset_top = -52.0
+offset_right = 120.0
+offset_bottom = -7.0
+theme_override_font_sizes/font_size = 32
+text = "Turn 1"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=746581731]
 layer = 0
@@ -88,18 +127,6 @@ anchor_right = 1.0
 offset_left = -40.0
 offset_bottom = 40.0
 grow_horizontal = 0
-
-[node name="TurnLabel" type="Label" parent="HUD/VBoxContainer" unique_id=1372030579]
-layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "Turn 1"
-horizontal_alignment = 1
-
-[node name="EndTurnButton" type="Button" parent="HUD/VBoxContainer" unique_id=640759790]
-custom_minimum_size = Vector2(120, 56)
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "End Turn"
 
 [node name="VictoryLayer" type="CanvasLayer" parent="." unique_id=1737966951]
 

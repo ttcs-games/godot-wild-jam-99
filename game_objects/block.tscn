@@ -11,7 +11,7 @@ shader_parameter/shift_amount = 250.0
 
 [node name="Block" type="Sprite2D" unique_id=388570225]
 material = SubResource("ShaderMaterial_5npld")
-scale = Vector2(0.063, 0.063)
+scale = Vector2(0.079, 0.079)
 texture = ExtResource("2_i00o8")
 centered = false
 region_rect = Rect2(0, 0, 32, 32)

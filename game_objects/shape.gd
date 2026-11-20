@@ -6,7 +6,7 @@ extends Node2D
 const BLOCK := preload("res://game_objects/block.tscn")
 @export var offsets: Array[Vector2i] # All coordinates of the blocks, needed to make a shape 
 @export var element: Elements.Id = Elements.Id.GREEN
-@export var cell_size: int = 32
+@export var cell_size: int = 40
 @export var mat: MaterialData
 
 func _ready() -> void:
