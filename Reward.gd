@@ -7,7 +7,7 @@ extends Node
 enum Types { REMOVE, ADD, TRAIT, CHANGE_SHAPE, CHANGE_ELEMENT }
 const Shapes: Array[ShapeData] = [CardFactory.L_SHAPE, CardFactory.REVERSEL_SHAPE, CardFactory.SKEW_SHAPE, CardFactory.REVERSESKEW_SHAPE, CardFactory.SQUARE_SHAPE, CardFactory.I_SHAPE, CardFactory.T_SHAPE]
 const CardElements: Array[Elements.Id] = [Elements.Id.RED, Elements.Id.BLUE, Elements.Id.GREEN, Elements.Id.YELLOW]
-const Materials: Array[MaterialData] = [preload("res://data/materials/basic_material.tres"), preload("res://data/materials/brick_material.tres"), preload("res://data/materials/glass_material.tres"), preload("res://data/materials/grass_material.tres"), preload("res://data/materials/ice_material.tres"), preload("res://data/materials/slime_material.tres")]
+const Materials: Array[MaterialData] = [preload("res://data/materials/brick_material.tres"), preload("res://data/materials/glass_material.tres"), preload("res://data/materials/grass_material.tres"), preload("res://data/materials/ice_material.tres"), preload("res://data/materials/slime_material.tres")]
 
 var Card_added : CardData
 var Shape_change : ShapeData
@@ -32,6 +32,11 @@ func _init(reward_type : int, number_of_rewards: int):
 	elif (Type == Types.CHANGE_ELEMENT):
 		Element_change = CardElements.pick_random()
 		
+func simple_equals (b: Reward) -> bool:
+	if (self.Type == b.Type):
+		return true
+	return false
+
 func equals(b: Reward) -> bool:
 	#used to make sure repeat rewards are not given out
 	if (self.Type == b.Type):
@@ -41,7 +46,7 @@ func equals(b: Reward) -> bool:
 			return true
 		elif (self.Type == Types.CHANGE_SHAPE && self.Shape_change == b.Shape_change):
 			return true
-		elif (self.Type == Types.CHANGE_ELEMENT): #Only one Change Element Reward will always appear
+		elif (self.Type == Types.CHANGE_ELEMENT && self.Element_change == b.Element_change):
 			return true
 		elif (self.Type == Types.ADD && self.Card_added.element == b.Card_added.element && self.Card_added.element == b.Card_added.element && self.Card_added.shape == b.Card_added.shape):
 			return true
