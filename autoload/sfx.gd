@@ -13,6 +13,7 @@ const FAN_UP := preload("res://assets/sfx/card-fan-1.wav")
 const FAN_DOWN := preload("res://assets/sfx/card-fan-2.wav")
 
 const BREAK := preload("res://assets/sfx/lava.wav")
+const RISE := preload("res://assets/sfx/rise.wav")
 
 const POOL_SIZE := 10
 var _pool: Array[AudioStreamPlayer] = []
@@ -68,3 +69,6 @@ func many_discard() -> void:
 
 func layer_break() -> void:
 	play(BREAK)
+
+func rise() -> void:
+	play(RISE)

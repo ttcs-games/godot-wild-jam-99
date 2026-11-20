@@ -26,6 +26,7 @@ custom_minimum_size = Vector2(1600, 300)
 offset_top = -19.0
 offset_right = 1600.0
 offset_bottom = 900.0
+mouse_filter = 2
 color = Color(0, 0, 0, 0.27450982)
 
 [node name="Control" parent="." unique_id=600854760 instance=ExtResource("1_mhji2")]
@@ -76,10 +77,10 @@ scale = Vector2(0.41393447, 0.3506711)
 [node name="RedrawButton" type="Button" parent="Control" unique_id=1461138492]
 custom_minimum_size = Vector2(31, 31)
 layout_mode = 0
-offset_left = -222.66667
-offset_top = 138.66667
-offset_right = -182.66667
-offset_bottom = 178.66667
+offset_left = -222.667
+offset_top = 130.0
+offset_right = -182.667
+offset_bottom = 170.0
 scale = Vector2(2, 2)
 theme_override_styles/normal = SubResource("StyleBoxTexture_6qcef")
 icon = ExtResource("6_b88yg")
@@ -87,10 +88,10 @@ expand_icon = true
 
 [node name="RedrawLabel" type="Label" parent="Control/RedrawButton" unique_id=374387525]
 layout_mode = 0
-offset_left = 6.2222023
-offset_top = 32.88888
-offset_right = 33.222202
-offset_bottom = 66.888885
+offset_left = 6.222
+offset_top = 40.0
+offset_right = 42.222
+offset_bottom = 74.0
 theme_override_font_sizes/font_size = 24
 text = "00"
 
@@ -110,7 +111,7 @@ text = "End Turn"
 [node name="TurnLabel" type="Label" parent="EndTurnButton" unique_id=1372030579]
 layout_mode = 0
 offset_top = -52.0
-offset_right = 120.0
+offset_right = 134.0
 offset_bottom = -7.0
 theme_override_font_sizes/font_size = 32
 text = "Turn 1"

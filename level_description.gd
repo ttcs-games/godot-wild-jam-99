@@ -30,16 +30,16 @@ func _populate(data: LevelData) -> void:
 	
 	var rows_from_bottom := data.grid_height - data.objective_row
 	var first_visible_turn := data.lava_delay + 2
-	_add_row("Grid Size", "%d × %d" % [data.grid_width, data.grid_height])
-	_add_row("Objective", "Layer %d from top (%d from bottom)" % [data.objective_row, rows_from_bottom])
+	_add_row("Grid Size", "%d x %d" % [data.grid_width, data.grid_height])
+	_add_row("Objective", "Full layer at %d (from bottom) or higher" % [rows_from_bottom])
 	if data.lava_delay > 0:
-		_add_row("Lava begins", "Turn %d (%d safe turn%s)" % [
+		_add_row("Acid begins", "Turn %d (%d safe turn%s)" % [
 			first_visible_turn, data.lava_delay, "" if data.lava_delay == 1 else "s"
 		])
 	else:
-		_add_row("Lava begins", "Turn 2 (no delay)")
+		_add_row("Acid begins", "Turn 2 (no delay)")
 	
-	_add_row("Lava per turn", "%d layer%s" % [data.lava_per_turn, "" if data.lava_per_turn == 1 else "s"])
+	_add_row("Acid per turn", "%d layer%s" % [data.lava_per_turn, "" if data.lava_per_turn == 1 else "s"])
 	_add_row("Draw per turn", "%d card%s" % [data.draw_per_turn, "" if data.draw_per_turn == 1 else "s"])
 
 func _add_row(label_text: String, value_text: String) -> void:

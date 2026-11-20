@@ -164,7 +164,7 @@ func rise_lava(n: int) -> void:
 	is_animating = true
 	var tw := create_tween()
 	tw.tween_property(lava_overlay, "position:y", target_y, lava_rise_seconds).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	#tw.tween_property(lava_particles, "position:y", bottom_target_y, lava_rise_seconds).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	SFX.rise()
 	await tw.finished
 	
 	await _run_cascade()
