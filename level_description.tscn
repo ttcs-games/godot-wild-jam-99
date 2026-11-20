@@ -1,8 +1,23 @@
 [gd_scene format=3 uid="uid://dgxfotsd7jlul"]
 
 [ext_resource type="Script" uid="uid://byhvwyya0f3dg" path="res://level_description.gd" id="1_2cslj"]
+[ext_resource type="Shader" uid="uid://dv6vypmed4tbm" path="res://level_description_bg.gdshader" id="2_66c5p"]
 [ext_resource type="PackedScene" uid="uid://cpqylr4csh80v" path="res://ui/pile_view.tscn" id="2_oul27"]
+[ext_resource type="Texture2D" uid="uid://do6nt7mnlpqmg" path="res://assets/sprites/Line1.png" id="3_duva7"]
 [ext_resource type="PackedScene" uid="uid://cqfhq5gsgm80q" path="res://ui/cursorAnimation.tscn" id="3_yp1oy"]
+[ext_resource type="Shader" uid="uid://dtap8xng5c8rn" path="res://level_description_bg2.gdshader" id="4_3uot4"]
+[ext_resource type="Texture2D" uid="uid://cokdwglyc3key" path="res://assets/sprites/Line2.png" id="5_14hyy"]
+[ext_resource type="Texture2D" uid="uid://decfl07elieym" path="res://assets/sprites/Line3.png" id="6_32iek"]
+[ext_resource type="Texture2D" uid="uid://yrrpfbr4e8uj" path="res://assets/sprites/Line4.png" id="7_3vu2x"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0op48"]
+shader = ExtResource("2_66c5p")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tiyxm"]
+shader = ExtResource("4_3uot4")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_32iek"]
+shader = ExtResource("4_3uot4")
 
 [node name="LevelDescription" type="Control" unique_id=204050947]
 layout_mode = 3
@@ -12,6 +27,50 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_2cslj")
+
+[node name="Background1" type="TextureRect" parent="." unique_id=1706533609]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_0op48")
+layout_mode = 0
+offset_left = -141.0
+offset_top = -35.999996
+offset_right = 1907.0
+offset_bottom = 220.0
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_duva7")
+
+[node name="Background2" type="TextureRect" parent="." unique_id=768044609]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_tiyxm")
+layout_mode = 0
+offset_left = -141.0
+offset_top = 143.0
+offset_right = 1907.0
+offset_bottom = 399.0
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("5_14hyy")
+
+[node name="Background3" type="TextureRect" parent="." unique_id=1436658884]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_0op48")
+layout_mode = 0
+offset_left = -141.0
+offset_top = 322.0
+offset_right = 1907.0
+offset_bottom = 578.0
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("6_32iek")
+
+[node name="Background4" type="TextureRect" parent="." unique_id=1199280677]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_32iek")
+layout_mode = 0
+offset_left = -141.0
+offset_top = 501.0
+offset_right = 1907.0
+offset_bottom = 757.0
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("7_3vu2x")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1576344280]
 layout_mode = 1
