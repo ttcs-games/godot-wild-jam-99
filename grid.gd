@@ -22,9 +22,11 @@ const BLOCK := preload("res://game_objects/block.tscn")
 @onready var lava3_overlay: AnimatedSprite2D = $Lava/Lava3
 @onready var lines: Node2D = $Lines
 
-# MODIFIERS
+# MODIFIER VARIABLES
 var level_modifiers : Array[Modifier] = []
 var _rng = RandomNumberGenerator.new() #used for randomly spreading modifiers among tiles
+@onready var tile_root: Node2D = $TileRoot # node where all the blocks will be stored
+
 
 # SIGNALS
 # todo: placement is yet to be processed
@@ -38,8 +40,9 @@ signal level_cleared(delta: int)
 signal game_over()
 
 # VARIABLES
-# Stores the occupied cells
+# Stores the occupied cells for blocks and tile modifiers both
 var cell_to_block: = {} # key: Vector2i, value: Block
+var tiles_to_block: = {} # key: Vector2i, value: Modifier
 # Keeps track of cell that is aimed at
 var hovered_cell := Vector2i (-1, -1) 
 var _last_hovered: Vector2i = Vector2i(-999, -999)
@@ -101,6 +104,13 @@ func can_place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id)
 		# Is block standing on existing one (below it)
 		if cell_to_block.has(cell+Vector2i(0,1)):
 			has_foundation = true
+		
+		#check if the tile modifier will allow it
+		if (cell in tiles_to_block.keys()):
+			if (tiles_to_block[cell].Type == 0 && tiles_to_block[cell].element != element):
+				return false
+			if (tiles_to_block[cell].Type == 1 && tiles_to_block[cell].element == element):
+				return false
 		
 		# Check every side
 		for neighbor in _neighbors(cell):
@@ -190,12 +200,19 @@ func apply_level_data(data: LevelData) -> void:
 	
 	#allocating tiles to each modifier
 	level_modifiers = data.level_modifiers
+	var total_cells = grid_height * grid_width - (objective_row * grid_width) #getting total number of cells
+	var i = 0
 	for modifier in level_modifiers:
-		var total_cells = grid_height * grid_width - (objective_row * grid_width) #getting total number of cells
-		
-		pass
-	
-	
+		var num_of_tiles: int = total_cells * 0.1 * modifier.intensity_level
+		i = 0
+		while i <= num_of_tiles:
+			var random_tile = Vector2i(_rng.randi_range(0,grid_width - 1), _rng.randi_range(objective_row,grid_height - 1))
+			if (random_tile in tiles_to_block.keys()): #reroll tile if it's already being used
+				continue
+			tiles_to_block[random_tile] = modifier.Type
+			place_tile(random_tile, modifier)
+			i = i + 1
+			
 	_fit_lava()
 	lines.queue_redraw()
 
@@ -423,3 +440,23 @@ func _update_grid_position() -> void:
 		300 - grid_px.x * 0.5,
 		vp_size.y * 0.5 - grid_px.y * 0.5
 	)
+func place_tile(cell: Vector2i, modifier: Modifier) -> void:
+	var b := Sprite2D.new()
+	b.centered = false
+	#another really dumb way to do this, but its the only one
+	#var element_lookup = [Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW_GREEN]
+	if (modifier.Type == 0): #as in, its an "exclusive element" tile
+		b.texture = load("res://assets/sprites/Exclusive.png")
+	elif (modifier.Type == 1): #as in, its an "anti element" tile
+		b.texture = load("res://assets/sprites/Anti.png")
+	else: #if its an Acid Mine tile
+		b.texture = load("res://assets/sprites/Mine.png")
+	
+	b.scale = Vector2(0.5,0.5)
+	#if (modifier.Type < 2):
+	#	b.modulate = Color(element_lookup[modifier.element])
+	
+	b.position = cell_to_coords(cell)
+	# todo: setup the material
+	tile_root.add_child(b)
+	tiles_to_block[cell] = modifier

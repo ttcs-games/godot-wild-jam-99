@@ -22,8 +22,7 @@ func _ready() -> void:
 	if data.level_modifiers.any(func(x): return x.Type == Modifier.Types.FASTER_LAVA):
 		data.lava_delay += 2 #if lava modifier exists, the lava is delayed by 2 turns
 		data.lava_per_turn *= 2 #if lava modifier exists, lava speed is doubles	
-		data.level_modifiers = data.level_modifiers.filter(func (x): return x.Type != Modifier.Types.FASTER_LAVA)
-	
+
 	deck_view.bind(GameManager.deck)
 	deck_view.clicked.connect(func(pile): GameManager.open_pile_viewer(pile, "Deck"))
 	play_button.pressed.connect(_on_play_pressed)

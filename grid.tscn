@@ -187,6 +187,8 @@ animations = [{
 [node name="Grid" type="Node2D" unique_id=37737656]
 script = ExtResource("1_ebq2e")
 
+[node name="TileRoot" type="Node2D" parent="." unique_id=1656135128]
+
 [node name="BlockRoot" type="Node2D" parent="." unique_id=1964372986]
 
 [node name="Lava" type="AnimatedSprite2D" parent="." unique_id=460958167 node_paths=PackedStringArray("children_to_hide")]
@@ -262,3 +264,5 @@ flip_v = true
 
 [node name="Lines" type="Node2D" parent="." unique_id=1623302765]
 script = ExtResource("20_konqy")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1622808897]
