@@ -17,11 +17,12 @@ func _init(new_type: int, elm: Elements.Id, level: int) -> void:
 	intensity_level = level
 	
 func get_display_name() -> String:
-	if Type < 2:
+	if Type < 2: #Exclusive and Anti Tiles
 		return "%s %s - Intensity Level %d" % [type_name[Type], elements[element], intensity_level]
-	else:
+	elif Type == 2: #Acid Mines
 		return "%s - Intensity Level %d" % [type_name[Type], intensity_level]
-	
+	else: #Quicker Acid
+		return "Quicker Acid, but Delayed"
 
 func assign_tiles(tiles: Array[Vector2i]) -> void:
 	tiles_affected.assign(tiles)

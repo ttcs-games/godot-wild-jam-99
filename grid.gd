@@ -205,17 +205,28 @@ func apply_level_data(data: LevelData) -> void:
 	
 	#allocating tiles to each modifier
 	level_modifiers = data.level_modifiers
-	var total_cells = grid_height * grid_width - (objective_row * grid_width) #getting total number of cells
 	var i = 0
 	for modifier in level_modifiers:
+		var total_cells = grid_height * grid_width - (objective_row * grid_width) #getting total number of cells
 		var num_of_tiles: int = total_cells * 0.05 * modifier.intensity_level
+		var bottom_of_grid: int = grid_height - 1
+		
+		#Lava Mines will not appear on first or second rows
+		if (modifier.Type == Modifier.Types.LAVA_MINE):
+			num_of_tiles -= 2 * grid_width * 0.05 * modifier.intensity_level
+			bottom_of_grid -= 2
+		
 		i = 0
 		while i <= num_of_tiles:
-			var random_tile = Vector2i(_rng.randi_range(0,grid_width - 1), _rng.randi_range(objective_row,grid_height - 1))
-			if (random_tile in tiles_to_block.keys()): #reroll tile if it's already being used
+			var random_tile = Vector2i(_rng.randi_range(0,grid_width - 1), _rng.randi_range(objective_row,bottom_of_grid))
+			if (random_tile in tiles_to_block.keys() && total_cells > 0): #reroll tile if it's already being used
+				total_cells = total_cells - 1
 				continue
+			if (total_cells <= 0): #no more places to put tiles
+				break
 			tiles_to_block[random_tile] = modifier.Type
 			place_tile(random_tile, modifier)
+			total_cells = total_cells - 1
 			i = i + 1
 			
 	_fit_lava()
@@ -254,15 +265,16 @@ func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
 	SFX.place()
 	
 	#todo: remove the sprite of the mine once its triggered.
-	var mine_count := cells.filter(func (cell): return cell in tiles_to_block.keys() && tiles_to_block[cell].Type == Modifier.Types.LAVA_MINE)
+	var mine_count : Array[Vector2i] = cells.filter(func (cell): return cell in tiles_to_block.keys() && tiles_to_block[cell].Type == Modifier.Types.LAVA_MINE)
 	if (len(mine_count) > 0):
 		GameManager.is_end_turn_in_progress = true
 		await rise_lava(len(mine_count))
 		GameManager.is_end_turn_in_progress = false
 		for mine in mine_count:
 			tiles_to_block.erase(mine)
-			tiles_to_block_nodes[mine].queue_free()
-			tiles_to_block_nodes.erase(mine)
+			if (mine in tiles_to_block_nodes.keys()):
+				tiles_to_block_nodes[mine].queue_free()
+				tiles_to_block_nodes.erase(mine)
 	
 	# Send the win singal once ever, if any placed cell turned the line into finished line above the objective
 	if not _level_cleared_fired and objective_row >= 0 and objective_row < grid_height:

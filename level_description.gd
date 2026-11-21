@@ -49,13 +49,12 @@ func _populate(data: LevelData) -> void:
 	var first_visible_turn := data.lava_delay + 2
 	_add_row("Grid Size", "%d x %d" % [data.grid_width, data.grid_height])
 	
-	var level_modifier_string = ""
+	var level_modifier_string = "None " #need that extra space
 	if (len(data.level_modifiers) > 0):
-		level_modifier_string += "   ("
+		level_modifier_string = ""
 		for modifier in data.level_modifiers:
-			level_modifier_string += " * " + modifier.get_display_name()
-		level_modifier_string += " * )"
-	_add_row("Modifiers", "%d" % [len(data.level_modifiers)] + level_modifier_string)
+			level_modifier_string += " " + modifier.get_display_name() + "\n"
+	_add_row("Modifiers", level_modifier_string.left(-1))
 	
 	_add_row("Objective", "Full layer at %d (from bottom) or higher" % [rows_from_bottom])
 	if data.lava_delay > 0:
