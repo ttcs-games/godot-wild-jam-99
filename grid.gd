@@ -24,6 +24,10 @@ const BLOCK := preload("res://game_objects/block.tscn")
 @onready var lava2_overlay: AnimatedSprite2D = $Lava/Lava2
 @onready var lava3_overlay: AnimatedSprite2D = $Lava/Lava3
 @onready var lines: Node2D = $Lines
+const TILE_TOOLTIP_GAP := 8.0
+var _tile_tooltip: PanelContainer
+var _tile_tooltip_label: RichTextLabel
+var _tile_tooltip_cell: Vector2i = Vector2i(-999, -999)
 
 # MODIFIER VARIABLES
 var level_modifiers : Array[Modifier] = []
@@ -247,6 +251,7 @@ func _process(delta: float) -> void:
 		_last_hovered = c
 		hovered_cell = c
 		lines.queue_redraw()
+	_update_tile_hover()
 
 func _draw() -> void:
 	var grid_area := Rect2(
@@ -585,3 +590,104 @@ func _make_white_image_texture(img: Image) -> ImageTexture:
 			var v := maxf(c.r, maxf(c.g, c.b))
 			out.set_pixel(x, y, Color(v, v, v, c.a))
 	return ImageTexture.create_from_image(out)
+
+func _update_tile_hover() -> void:
+	# Don't show tooltips while the board is busy / game is transitioning
+	if is_animating or GameManager.is_end_turn_in_progress:
+		if _tile_tooltip_cell != Vector2i(-999, -999):
+			_tile_tooltip_cell = Vector2i(-999, -999)
+			_hide_tile_tooltip()
+		return
+
+	var found_cell := Vector2i(-999, -999)
+	if tiles_to_block_nodes.has(hovered_cell):
+		var sprite: Sprite2D = tiles_to_block_nodes[hovered_cell]
+		if is_instance_valid(sprite) and sprite.texture != null:
+			if _sprite_screen_rect(sprite).has_point(get_global_mouse_position()):
+				found_cell = hovered_cell
+	
+	if found_cell == _tile_tooltip_cell:
+		return
+	
+	_tile_tooltip_cell = found_cell
+	if found_cell == Vector2i(-999, -999):
+		_hide_tile_tooltip()
+	else:
+		_show_tile_tooltip(found_cell)
+
+func _sprite_screen_rect(sprite: Sprite2D) -> Rect2:
+	# get_global_transform_with_canvas() maps the sprite's local space -> screen space,
+	# so this works whether or not there's a Camera2D in the scene.
+	var xform := sprite.get_global_transform_with_canvas()
+	var top_left := xform.origin
+	var size := Vector2(sprite.texture.get_size()) * sprite.scale
+	return Rect2(top_left, size)
+
+func _show_tile_tooltip(cell: Vector2i) -> void:
+	_hide_tile_tooltip()
+	if not tiles_to_block.has(cell) or not tiles_to_block_nodes.has(cell):
+		return
+	var modifier: Modifier = tiles_to_block[cell]
+	var sprite: Sprite2D = tiles_to_block_nodes[cell]
+	if modifier == null or not is_instance_valid(sprite) or sprite.texture == null:
+		return
+	
+	var panel := PanelContainer.new()
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.1, 0.1, 0.1, 0.85)
+	panel.add_theme_stylebox_override("panel", style)
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.z_index = 2000
+	
+	var margin := MarginContainer.new()
+	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	margin.add_theme_constant_override("margin_left", 10)
+	margin.add_theme_constant_override("margin_right", 10)
+	margin.add_theme_constant_override("margin_top", 8)
+	margin.add_theme_constant_override("margin_bottom", 8)
+	
+	var label := RichTextLabel.new()
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.bbcode_enabled = true
+	label.fit_content = true
+	label.scroll_active = false
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size = Vector2(180, 0)
+	label.text = modifier.get_tooltip_name()
+	
+	margin.add_child(label)
+	panel.add_child(margin)
+	_get_tooltip_parent().add_child(panel)
+	
+	panel.visible = false
+	_tile_tooltip = panel
+	_tile_tooltip_label = label
+	
+	# Wait one frame so the PanelContainer reports its final minimum size
+	await get_tree().process_frame
+	
+	# Bail if the tooltip was hidden or the tile was destroyed during the await
+	if not is_instance_valid(_tile_tooltip) or _tile_tooltip_cell != cell:
+		return
+	if not is_instance_valid(sprite) or sprite.texture == null:
+		_hide_tile_tooltip()
+		_tile_tooltip_cell = Vector2i(-999, -999)
+		return
+	
+	var rect := _sprite_screen_rect(sprite)
+	# Anchor to the RIGHT edge of the sprite, aligned with its top
+	var target_x := rect.end.x + TILE_TOOLTIP_GAP
+	var target_y := rect.position.y
+	_tile_tooltip.global_position = Vector2(maxf(target_x, 8.0), maxf(target_y, 8.0))
+	_tile_tooltip.visible = true
+
+func _hide_tile_tooltip() -> void:
+	if is_instance_valid(_tile_tooltip):
+		_tile_tooltip.queue_free()
+	_tile_tooltip = null
+	_tile_tooltip_label = null
+
+func _get_tooltip_parent() -> Node:
+	if GameManager != null and is_instance_valid(GameManager.cursor_layer):
+		return GameManager.cursor_layer
+	return get_tree().root
