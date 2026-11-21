@@ -1,18 +1,18 @@
 [gd_scene format=3 uid="uid://bxukgnaigpkq7"]
 
 [ext_resource type="Script" uid="uid://d4kovxcv760j7" path="res://autoload/music_manager.gd" id="1_efffc"]
-[ext_resource type="AudioStream" uid="uid://cidgwn0gr5djh" path="res://assets/Game-Menu_Looping_LoFi.ogg" id="2_behsq"]
-[ext_resource type="AudioStream" uid="uid://cu108lt1wd1he" path="res://assets/Game-Menu_Looping.ogg" id="3_hq5dr"]
+[ext_resource type="AudioStream" uid="uid://ccxlnhw2dk7d2" path="res://assets/Mind-Bender_LoFi.ogg" id="2_efffc"]
+[ext_resource type="AudioStream" uid="uid://y1eg6geskhbh" path="res://assets/Mind-Bender.ogg" id="3_efffc"]
 
 [node name="Node" type="Node" unique_id=398219014]
 script = ExtResource("1_efffc")
 
 [node name="ChillPlayer" type="AudioStreamPlayer" parent="." unique_id=115546216]
-stream = ExtResource("2_behsq")
+stream = ExtResource("2_efffc")
 bus = &"Music"
 parameters/looping = true
 
 [node name="GamePlayer" type="AudioStreamPlayer" parent="." unique_id=932813438]
-stream = ExtResource("3_hq5dr")
+stream = ExtResource("3_efffc")
 bus = &"Music"
 parameters/looping = true

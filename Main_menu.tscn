@@ -54,7 +54,7 @@ text = "Options"
 [node name="Quit_button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1645413478]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "Quit"
+text = "Credits"
 
 [node name="OptionMenu" type="Panel" parent="." unique_id=218056790]
 visible = false
@@ -131,6 +131,151 @@ size_flags_vertical = 4
 theme_override_font_sizes/font_size = 24
 text = "Back"
 
+[node name="Credits" type="Panel" parent="." unique_id=1591523749]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Credits" unique_id=2102890676]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="CenterContainer" type="CenterContainer" parent="Credits/MarginContainer" unique_id=1295250729]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Credits/MarginContainer/CenterContainer" unique_id=1096486083]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Credits/MarginContainer/CenterContainer/HBoxContainer" unique_id=243892798]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Label8" type="Label" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer" unique_id=1719096298]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Developed by TTCS Games"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer" unique_id=75503159]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/h_separation = 32
+theme_override_constants/v_separation = 32
+columns = 2
+
+[node name="Label" type="Label" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer/GridContainer" unique_id=1579133380]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Game Design
+/ Coding by "
+
+[node name="Label2" type="Label" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer/GridContainer" unique_id=1864779878]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Samoylow maxim
+Taimoor Azam
+Hussain bin Inam"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer/GridContainer" unique_id=245862440]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Art by"
+
+[node name="Label4" type="Label" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer/GridContainer" unique_id=75002525]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Maida binte Inam"
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer" unique_id=1403087250]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "Back"
+
+[node name="Control" type="Control" parent="Credits/MarginContainer/CenterContainer/HBoxContainer" unique_id=1088316273]
+custom_minimum_size = Vector2(125, 0)
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Credits/MarginContainer/CenterContainer/HBoxContainer" unique_id=1990322346]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Label7" type="Label" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer2" unique_id=1980311711]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Assets used"
+horizontal_alignment = 1
+
+[node name="GridContainer2" type="GridContainer" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer2" unique_id=1895881226]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 32
+theme_override_constants/v_separation = 32
+columns = 2
+
+[node name="Label" type="Label" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer2/GridContainer2" unique_id=1426706776]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Music by"
+
+[node name="Label2" type="Label" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer2/GridContainer2" unique_id=1427544765]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Eric Matyas
+www.soundimage.org"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer2/GridContainer2" unique_id=918856560]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Sound effects by"
+
+[node name="Label4" type="Label" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer2/GridContainer2" unique_id=1996929373]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "- freesound.org/people/... -
+caphonic 
+Bertrof
+Scrampunk
+Marevnik
+ErikCruzDev
+Leszek_Szary
+Tony_Cannoli
+EminYILDIRIM
+InspectorJ
+ - kenney.nl/ -"
+horizontal_alignment = 1
+
+[node name="Label5" type="Label" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer2/GridContainer2" unique_id=2119969390]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Font used"
+
+[node name="Label6" type="Label" parent="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer2/GridContainer2" unique_id=1832808458]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Green Matcha
+dafont.com/green-matcha.font
+"
+horizontal_alignment = 1
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1092190396]
 
 [node name="Cursor" parent="CanvasLayer" unique_id=1383289649 instance=ExtResource("2_x6lt7")]
@@ -144,3 +289,4 @@ position = Vector2(158.31297, 173.49744)
 [connection signal="value_changed" from="OptionMenu/MarginContainer/VBoxContainer/GridContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
 [connection signal="value_changed" from="OptionMenu/MarginContainer/VBoxContainer/GridContainer/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
 [connection signal="pressed" from="OptionMenu/MarginContainer/VBoxContainer/GridContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Credits/MarginContainer/CenterContainer/HBoxContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
