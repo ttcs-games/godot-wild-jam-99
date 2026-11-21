@@ -45,7 +45,7 @@ static func generate(level_number: int) -> LevelData:
 	d.grid_height = mini(HEIGHT_CAP, 14 + level_number)
 	d.lava_per_turn = mini(LAVA_SPEED_CAP, 1 + int((level_number - 1) / 3))
 	d.lava_delay = maxi(0, 3-level_number)
-	d.draw_per_turn = 8 - int(level_number / 3)
+	d.draw_per_turn = 8 - level_number/10
 	d.objective_row = maxi(1, d.grid_height - 5 - (level_number - 1))
 	return d
 

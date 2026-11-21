@@ -12,6 +12,9 @@ extends Node2D
 @export var flash_seconds: float = 0.25
 @export var flash_hold_seconds: float = 0.25
 @export var delay_per_destruction: float = 0.01
+@export var border_source_texture: Texture2D = preload("res://assets/sprites/Blocks.tres")
+@export var border_target_block_size: float = 20.0
+@export var border_tint: Color = Color.WHITE
 
 # CONSTANTS
 const BLOCK := preload("res://game_objects/block.tscn")
@@ -55,6 +58,8 @@ var _level_cleared_fired: bool = false
 
 var _bubble_scale_tex: CurveTexture
 var _bubble_fade_tex: GradientTexture1D
+var _border_root: Node2D
+var _border_white_tex: ImageTexture
 
 # (1, 2) * 32px = (32px, 64px)
 func cell_to_coords(c: Vector2i) -> Vector2:
@@ -196,10 +201,10 @@ func apply_level_data(data: LevelData) -> void:
 			b.queue_free()
 	cell_to_block.clear()
 	
-	grid_width  = data.grid_width
+	grid_width = data.grid_width
 	grid_height = data.grid_height
 	objective_row = data.objective_row
-	lava_row = grid_height + data.lava_delay
+	lava_row = grid_height + data.lava_delay * data.lava_per_turn
 	_level_cleared_fired = false
 	is_animating = false
 	
@@ -231,6 +236,7 @@ func apply_level_data(data: LevelData) -> void:
 			
 	_fit_lava()
 	lines.queue_redraw()
+	_build_border()
 
 # Each tick get mouse position to get aimed cell
 func _process(delta: float) -> void:
@@ -458,6 +464,7 @@ func _fit_lava() -> void:
 	
 	lava2_overlay.material.set_shader_parameter("clip_global_x", 620.0)
 	lava2_overlay.material.set_shader_parameter("keep_left", true)
+	lava2_overlay.material.set_shader_parameter("keep_left", false)
 	lava_overlay.play("lava")
 	lava2_overlay.play("lava")
 	lava3_overlay.play("lava")
@@ -489,3 +496,92 @@ func place_tile(cell: Vector2i, modifier: Modifier) -> void:
 	tile_root.add_child(b)
 	tiles_to_block[cell] = modifier
 	tiles_to_block_nodes[cell] = b #adding node to dict so we can remove it later.
+
+func _build_border() -> void:
+	if _border_root and is_instance_valid(_border_root):
+		_border_root.queue_free()
+		_border_root = null
+	
+	if border_source_texture == null:
+		return
+	
+	if _border_white_tex == null:
+		var region_img := _extract_region_image(border_source_texture)
+		if region_img == null:
+			return
+		_border_white_tex = _make_white_image_texture(region_img)
+		if _border_white_tex == null:
+			return
+		
+		_border_root = Node2D.new()
+		_border_root.name = "BorderRoot"
+		add_child(_border_root)
+		
+		# Find size in px
+		var pad      := float(grid_padding)
+		var inner_x  := -pad
+		var inner_y  := -pad
+		var inner_w  := float(grid_width  * cell_size) + 2.0 * pad
+		var inner_h  := float(grid_height * cell_size) + 2.0 * pad
+		
+		# Find size in amount of blocks
+		var n_h := maxi(1, int(round(inner_w / border_target_block_size)))
+		var n_v := maxi(1, int(round(inner_h / border_target_block_size)))
+		var bw  := inner_w / float(n_h)
+		var bh  := inner_h / float(n_v)
+		
+		# Texture size
+		var tw := float(_border_white_tex.get_width())
+		var th := float(_border_white_tex.get_height())
+		
+		# Up
+		for i in n_h + 2:
+			_spawn_border_block(Vector2(inner_x - bw + i * bw, inner_y - bh), Vector2(bw, bh), tw, th)
+		# Bottom
+		for i in n_h + 2:
+			_spawn_border_block(Vector2(inner_x - bw + i * bw, inner_y + inner_h), Vector2(bw, bh), tw, th)
+		# Left
+		for i in n_v:
+			_spawn_border_block(Vector2(inner_x - bw, inner_y + i * bh), Vector2(bw, bh), tw, th)
+		# Right
+		for i in n_v:
+			_spawn_border_block(Vector2(inner_x + inner_w, inner_y + i * bh), Vector2(bw, bh), tw, th)
+
+func _spawn_border_block(pos: Vector2, size: Vector2, tex_w: float, tex_h: float) -> void:
+	var s := Sprite2D.new()
+	s.texture = _border_white_tex
+	s.centered = false
+	s.position = pos
+	s.scale = Vector2(size.x / tex_w, size.y / tex_h)
+	s.modulate = border_tint
+	_border_root.add_child(s)
+
+func _extract_region_image(src: Texture2D) -> Image:
+	if src == null:
+		return null
+	if src is AtlasTexture:
+		var at := src as AtlasTexture
+		if at.atlas == null:
+			return null
+		var base := at.atlas.get_image()
+		if base == null:
+			return null
+		var r := at.region
+		var ix := clampi(int(r.position.x), 0, base.get_width())
+		var iy := clampi(int(r.position.y), 0, base.get_height())
+		var iw := clampi(int(r.size.x), 0, base.get_width()  - ix)
+		var ih := clampi(int(r.size.y), 0, base.get_height() - iy)
+		if iw <= 0 or ih <= 0:
+			return null
+		return base.get_region(Rect2i(ix, iy, iw, ih))
+	return src.get_image()
+
+func _make_white_image_texture(img: Image) -> ImageTexture:
+	var out := img.duplicate()
+	out.convert(Image.FORMAT_RGBA8)
+	for y in out.get_height():
+		for x in out.get_width():
+			var c = out.get_pixel(x, y)
+			var v := maxf(c.r, maxf(c.g, c.b))
+			out.set_pixel(x, y, Color(v, v, v, c.a))
+	return ImageTexture.create_from_image(out)
