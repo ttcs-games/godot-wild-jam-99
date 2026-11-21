@@ -27,6 +27,9 @@ static func opposing(e: Id) -> Id:
 static func opposes(a: Id, b: Id) -> bool:
 	return opposing(a) == b
 
+static func isSame(a:Id, b:Id)->bool:
+	return a == b
+
 static func tint_hex(e: Id, tint_amount: float = 0.5) -> String:
 	var base := Color.from_hsv(color(e) / 360.0, 0.85, 1.0)
 	return "#" + base.lerp(Color.WHITE, tint_amount).to_html(false)

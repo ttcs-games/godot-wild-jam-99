@@ -8,7 +8,7 @@ func _init() -> void:
 	"Brick": preload("res://data/materials/brick_material.tres"),
 	"Grass": preload("res://data/materials/grass_material.tres"),
 	"Glass": preload("res://data/materials/glass_material.tres"),
-	"Ice": preload("res://data/materials/ice_material.tres"),
+	"Ice": preload("res://data/materials/CLOUD_MATERIAL.tres"),
 	"Slime": preload("res://data/materials/slime_material.tres"),
 }
 #used to make material 

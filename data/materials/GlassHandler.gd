@@ -1,6 +1,7 @@
 class_name GlassHandler extends BaseHandler
 
 func play():
+	await  _on_grid_shape_placed()
 	GameManager.open_pile_viewer(GameManager.discard,"Discard Pile",GameManager.discard.size(),false,on_click_handle)
 
 func on_click_handle(card_affected: Control):

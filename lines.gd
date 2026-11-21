@@ -30,7 +30,7 @@ func _draw() -> void:
 	if grid.in_bounds(grid.hovered_cell):
 		#if there is an active block in the player's hand, it draws that instead.
 		if GameManager._active_card != null:
-			var highlight_color = Color.WHITE if grid.can_place(GameManager._active_card.card_data.shape.offsets, grid.hovered_cell, GameManager._active_card.card_data.element) else Color.RED
+			var highlight_color = Color.WHITE if grid.can_place(GameManager._active_card.card_data.shape.offsets, grid.hovered_cell, GameManager._active_card.card_data.element, GameManager._active_card.card_data.material) else Color.RED
 			
 			var shape_offsets : Array[Vector2i] 
 			shape_offsets.assign(GameManager._active_card.card_data.shape.offsets.map(func(offset): return offset - Vector2i(1,1)) if GameManager._active_card.card_data.shape.display_name != "I-shape" else GameManager._active_card.card_data.shape.offsets)

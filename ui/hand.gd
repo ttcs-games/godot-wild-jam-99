@@ -224,14 +224,7 @@ func _on_card_clicked(card: Control) -> void:
 	SFX.select()
 	card_selected.emit(card, cards.find(card))
 
-func _on_grid_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
-	var card: Control = GameManager._active_card
-	if card == null or not cards.has(card):
-		return
-	GameManager.discard_card(card.card_data)
-	GameManager.remove_card()
-	cards.erase(card)
-	discard_one(card)
+
 
 func _compute_step(n: int, card_w: float) -> float:
 	if n <= 1 or size.x <= 0.0:
