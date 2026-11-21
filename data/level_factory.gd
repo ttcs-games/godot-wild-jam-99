@@ -23,7 +23,12 @@ static func generate(level_number: int) -> LevelData:
 	#creating modifiers randomly here.
 	var i = 0
 	while i < modifiers_count:
-		var new_modifier = Modifier.new(_rng.randi_range(0,len(Modifier.Types) - 1), _rng.randi_range(0,3), 1) #all modifiers begin at intensity level 1
+		var new_modifier: Modifier
+		if (i == 0): #first modifier is always an element restriction
+			new_modifier = Modifier.new(_rng.randi_range(0,1), _rng.randi_range(0,3), 1) #all modifiers begin at intensity level 1
+		else:
+			new_modifier = Modifier.new(_rng.randi_range(0,len(Modifier.Types) - 1), _rng.randi_range(0,3), 1) #all modifiers begin at intensity level 1
+		
 		if (modifiers.any(func (x): return x.equals(new_modifier))): #if the modifier already exists in current modifiers
 			if (new_modifier.Type == Modifier.Types.FASTER_LAVA):
 				continue #quicker lava can only have an intensity level of 1
@@ -50,7 +55,7 @@ static func is_modifier_allowed(new_modifier: Modifier) -> bool:
 	#Lava Mines are always allowed
 	if (new_modifier.Type == Modifier.Types.LAVA_MINE):
 		return true
-	
+		
 	#checks if the player has cards related to the modifier element. if not, sends false
 	for card in GameManager.deck._cards:
 		if (card.element == new_modifier.element):
