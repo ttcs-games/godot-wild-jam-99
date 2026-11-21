@@ -12,7 +12,7 @@ static func generate(level_number: int) -> LevelData:
 	#defining number of modifiers and array holding modifiers
 	var _rng = RandomNumberGenerator.new()
 	var modifiers : Array[Modifier] = []
-	var modifiers_count : int = max(0,level_number / 3 - 1) + 4
+	var modifiers_count : int = max(0,level_number / 3 - 1)
 	modifiers_count += 1 if boss else 0
 	
 	if boss:
@@ -22,23 +22,20 @@ static func generate(level_number: int) -> LevelData:
 	
 	#creating modifiers randomly here.
 	var i = 0
+	var modifier_weights = [1.0, 1.0, 1.0, 1.0] # ["Exclusively", "Anti", "Acid Mines", "Quicker Acid"]
+	var element_weights = get_element_weights()
 	while i < modifiers_count:
 		var new_modifier: Modifier
-		new_modifier = Modifier.new(2, _rng.randi_range(0,3), 1) #all modifiers begin at intensity level 1
-		#if (i == 0): #first modifier is always an element restriction
-			#new_modifier = Modifier.new(_rng.randi_range(0,1), _rng.randi_range(0,3), 1) #all modifiers begin at intensity level 1
-		#else:
-			#new_modifier = Modifier.new(_rng.randi_range(0,len(Modifier.Types) - 1), _rng.randi_range(0,3), 1) #all modifiers begin at intensity level 1
-		#
+		if (i == 0): #first modifier is always an element restriction
+			new_modifier = Modifier.new(_rng.randi_range(0,1), _rng.rand_weighted(element_weights), 1) #all modifiers begin at intensity level 1
+		else:
+			new_modifier = Modifier.new(_rng.rand_weighted(modifier_weights), _rng.rand_weighted(element_weights), 1) #all modifiers begin at intensity level 1
 		if (modifiers.any(func (x): return x.equals(new_modifier))): #if the modifier already exists in current modifiers
 			if (new_modifier.Type == Modifier.Types.FASTER_LAVA):
 				continue #quicker lava can only have an intensity level of 1
 			#weird line here. It filters the array for a sub-array containing the modifier that has the same type as ours, then increases its intensity level by 1. sub-array will always have length 1, so we use [0] to get the only element.
 			modifiers.filter(func (x): return x.equals(new_modifier))[0].intensity_level += 1
 		else:
-			if (is_modifier_allowed(new_modifier) == false): #if modifier is not allowed, rolls back increment integer
-				continue
-			
 			modifiers.append(new_modifier)
 		i = i + 1
 		
@@ -52,14 +49,11 @@ static func generate(level_number: int) -> LevelData:
 	d.objective_row = maxi(1, d.grid_height - 5 - (level_number - 1))
 	return d
 
-static func is_modifier_allowed(new_modifier: Modifier) -> bool:
-	#Lava Mines are always allowed
-	if (new_modifier.Type == Modifier.Types.LAVA_MINE):
-		return true
-		
+static func get_element_weights() -> Array[float]:
+	#[0] = RED, [1] = BLUE, [2] = GREEN, [3] = YELLOW
+	var element_weights: Array[float] = [0.0, 0.0, 0.0, 0.0]
 	#checks if the player has cards related to the modifier element. if not, sends false
 	for card in GameManager.deck._cards:
-		if (card.element == new_modifier.element):
-			return true
-	return false
+		element_weights[card.element] += 1
+	return element_weights
 	

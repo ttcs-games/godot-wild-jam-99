@@ -205,17 +205,28 @@ func apply_level_data(data: LevelData) -> void:
 	
 	#allocating tiles to each modifier
 	level_modifiers = data.level_modifiers
-	var total_cells = grid_height * grid_width - (objective_row * grid_width) #getting total number of cells
 	var i = 0
 	for modifier in level_modifiers:
+		var total_cells = grid_height * grid_width - (objective_row * grid_width) #getting total number of cells
 		var num_of_tiles: int = total_cells * 0.05 * modifier.intensity_level
+		var bottom_of_grid: int = grid_height - 1
+		
+		#Lava Mines will not appear on first or second rows
+		if (modifier.Type == Modifier.Types.LAVA_MINE):
+			num_of_tiles -= 2 * grid_width * 0.05 * modifier.intensity_level
+			bottom_of_grid -= 2
+		
 		i = 0
 		while i <= num_of_tiles:
-			var random_tile = Vector2i(_rng.randi_range(0,grid_width - 1), _rng.randi_range(objective_row,grid_height - 1))
-			if (random_tile in tiles_to_block.keys()): #reroll tile if it's already being used
+			var random_tile = Vector2i(_rng.randi_range(0,grid_width - 1), _rng.randi_range(objective_row,bottom_of_grid))
+			if (random_tile in tiles_to_block.keys() && total_cells > 0): #reroll tile if it's already being used
+				total_cells = total_cells - 1
 				continue
+			if (total_cells <= 0): #no more places to put tiles
+				break
 			tiles_to_block[random_tile] = modifier.Type
 			place_tile(random_tile, modifier)
+			total_cells = total_cells - 1
 			i = i + 1
 			
 	_fit_lava()
