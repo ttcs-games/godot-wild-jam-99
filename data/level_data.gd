@@ -16,3 +16,5 @@ extends Resource
 @export var draw_per_turn: int = 8
 
 @export var is_boss_level: bool = false
+@export var level_modifiers: Array[Modifier] = []
+ 

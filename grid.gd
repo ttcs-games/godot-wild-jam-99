@@ -22,6 +22,12 @@ const BLOCK := preload("res://game_objects/block.tscn")
 @onready var lava3_overlay: AnimatedSprite2D = $Lava/Lava3
 @onready var lines: Node2D = $Lines
 
+# MODIFIER VARIABLES
+var level_modifiers : Array[Modifier] = []
+var _rng = RandomNumberGenerator.new() #used for randomly spreading modifiers among tiles
+@onready var tile_root: Node2D = $TileRoot # node where all the blocks will be stored
+
+
 # SIGNALS
 # todo: placement is yet to be processed
 # When a block is placed (L shape = 4 calls)
@@ -34,8 +40,10 @@ signal level_cleared(delta: int)
 signal game_over()
 
 # VARIABLES
-# Stores the occupied cells
+# Stores the occupied cells for blocks and tile modifiers both
 var cell_to_block: = {} # key: Vector2i, value: Block
+var tiles_to_block: = {} # key: Vector2i, value: Modifier
+var tiles_to_block_nodes: = {} #key: Vector2i, value: Sprite2d node. holds the nodes created by tiles.
 # Keeps track of cell that is aimed at
 var hovered_cell := Vector2i (-1, -1) 
 var _last_hovered: Vector2i = Vector2i(-999, -999)
@@ -98,6 +106,13 @@ func can_place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id)
 		if cell_to_block.has(cell+Vector2i(0,1)):
 			has_foundation = true
 		
+		#check if the tile modifier will allow it
+		if (cell in tiles_to_block.keys()):
+			if (tiles_to_block[cell].Type == 0 && tiles_to_block[cell].element != element):
+				return false
+			if (tiles_to_block[cell].Type == 1 && tiles_to_block[cell].element == element):
+				return false
+		
 		# Check every side
 		for neighbor in _neighbors(cell):
 			# Check side isn't taken by opposite element
@@ -154,7 +169,6 @@ func reset_level() -> void:
 func rise_lava(n: int) -> void:
 	if is_animating:
 		return
-	
 	var target := maxi(objective_row, lava_row - n)
 	lava_row = target
 	var target_y := float(target) * float(cell_size)
@@ -166,6 +180,11 @@ func rise_lava(n: int) -> void:
 	tw.tween_property(lava_overlay, "position:y", target_y, lava_rise_seconds).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	SFX.rise()
 	await tw.finished
+	
+	for key_below_lava in tiles_to_block_nodes.keys().filter(func(x): return x[1] >= lava_row):
+		tiles_to_block_nodes[key_below_lava].queue_free()
+		tiles_to_block_nodes.erase(key_below_lava)
+		tiles_to_block.erase(key_below_lava)
 	
 	await _run_cascade()
 	is_animating = false
@@ -183,6 +202,22 @@ func apply_level_data(data: LevelData) -> void:
 	lava_row = grid_height + data.lava_delay
 	_level_cleared_fired = false
 	is_animating = false
+	
+	#allocating tiles to each modifier
+	level_modifiers = data.level_modifiers
+	var total_cells = grid_height * grid_width - (objective_row * grid_width) #getting total number of cells
+	var i = 0
+	for modifier in level_modifiers:
+		var num_of_tiles: int = total_cells * 0.05 * modifier.intensity_level
+		i = 0
+		while i <= num_of_tiles:
+			var random_tile = Vector2i(_rng.randi_range(0,grid_width - 1), _rng.randi_range(objective_row,grid_height - 1))
+			if (random_tile in tiles_to_block.keys()): #reroll tile if it's already being used
+				continue
+			tiles_to_block[random_tile] = modifier.Type
+			place_tile(random_tile, modifier)
+			i = i + 1
+			
 	_fit_lava()
 	lines.queue_redraw()
 
@@ -217,6 +252,18 @@ func _on_block_placed(cell: Vector2i, element: Elements.Id, mat : MaterialData) 
 
 func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
 	SFX.place()
+	
+	#todo: remove the sprite of the mine once its triggered.
+	var mine_count := cells.filter(func (cell): return cell in tiles_to_block.keys() && tiles_to_block[cell].Type == Modifier.Types.LAVA_MINE)
+	if (len(mine_count) > 0):
+		GameManager.is_end_turn_in_progress = true
+		await rise_lava(len(mine_count))
+		GameManager.is_end_turn_in_progress = false
+		for mine in mine_count:
+			tiles_to_block.erase(mine)
+			tiles_to_block_nodes[mine].queue_free()
+			tiles_to_block_nodes.erase(mine)
+	
 	# Send the win singal once ever, if any placed cell turned the line into finished line above the objective
 	if not _level_cleared_fired and objective_row >= 0 and objective_row < grid_height:
 		var checked_rows := {}
@@ -410,3 +457,23 @@ func _update_grid_position() -> void:
 		300 - grid_px.x * 0.5,
 		vp_size.y * 0.5 - grid_px.y * 0.5
 	)
+func place_tile(cell: Vector2i, modifier: Modifier) -> void:
+	var b := Sprite2D.new()
+	b.centered = false
+	#index 0 = RED, 1 = BLUE, 2 = GREEN, 3 = YELLOW
+	var element_lookup = [Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW]
+	if (modifier.Type == 0): #as in, its an "exclusive element" tile
+		b.texture = load("res://assets/sprites/Exclusive.png")
+	elif (modifier.Type == 1): #as in, its an "anti element" tile
+		b.texture = load("res://assets/sprites/Anti.png")
+	else: #if its an Acid Mine tile
+		b.texture = load("res://assets/sprites/Mine.png")
+	b.scale = Vector2(0.625,0.625)
+	if (modifier.Type < 2):
+		b.modulate = Color(element_lookup[modifier.element])
+	
+	b.position = cell_to_coords(cell)
+	# todo: setup the material
+	tile_root.add_child(b)
+	tiles_to_block[cell] = modifier
+	tiles_to_block_nodes[cell] = b #adding node to dict so we can remove it later.
