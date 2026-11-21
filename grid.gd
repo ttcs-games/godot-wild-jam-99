@@ -249,12 +249,6 @@ func _on_block_placed(cell: Vector2i, element: Elements.Id, mat : MaterialData) 
 	# todo: setup the material
 	block_root.add_child(b)
 	cell_to_block[cell] = b
-	
-	#todo: remove the sprite of the mine once its triggered.
-	if (cell in tiles_to_block.keys() && tiles_to_block[cell].Type == Modifier.Types.FASTER_LAVA):
-		await GameManager._phase_rise_lava()
-		tiles_to_block.erase(cell)
-		tiles_to_block_nodes.erase(cell)
 
 func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
 	SFX.place()
@@ -267,6 +261,7 @@ func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
 		GameManager.is_end_turn_in_progress = false
 		for mine in mine_count:
 			tiles_to_block.erase(mine)
+			tiles_to_block_nodes[mine].queue_free()
 			tiles_to_block_nodes.erase(mine)
 	
 	# Send the win singal once ever, if any placed cell turned the line into finished line above the objective
