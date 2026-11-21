@@ -61,8 +61,8 @@ offset_bottom = 160.00003
 layout_mode = 0
 offset_left = 875.99963
 offset_top = 277.333
-offset_right = 890.99963
-offset_bottom = 282.333
+offset_right = 975.0592
+offset_bottom = 360.38403
 scale = Vector2(1.7363334, 1.5733333)
 icon_texture = ExtResource("7_78ipi")
 
