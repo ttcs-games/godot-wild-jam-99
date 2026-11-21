@@ -465,18 +465,17 @@ func _update_grid_position() -> void:
 func place_tile(cell: Vector2i, modifier: Modifier) -> void:
 	var b := Sprite2D.new()
 	b.centered = false
-	#another really dumb way to do this, but its the only one
-	#var element_lookup = [Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW_GREEN]
+	#index 0 = RED, 1 = BLUE, 2 = GREEN, 3 = YELLOW
+	var element_lookup = [Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW]
 	if (modifier.Type == 0): #as in, its an "exclusive element" tile
 		b.texture = load("res://assets/sprites/Exclusive.png")
 	elif (modifier.Type == 1): #as in, its an "anti element" tile
 		b.texture = load("res://assets/sprites/Anti.png")
 	else: #if its an Acid Mine tile
 		b.texture = load("res://assets/sprites/Mine.png")
-	
-	b.scale = Vector2(0.5,0.5)
-	#if (modifier.Type < 2):
-	#	b.modulate = Color(element_lookup[modifier.element])
+	b.scale = Vector2(0.625,0.625)
+	if (modifier.Type < 2):
+		b.modulate = Color(element_lookup[modifier.element])
 	
 	b.position = cell_to_coords(cell)
 	# todo: setup the material

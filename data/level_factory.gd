@@ -12,7 +12,7 @@ static func generate(level_number: int) -> LevelData:
 	#defining number of modifiers and array holding modifiers
 	var _rng = RandomNumberGenerator.new()
 	var modifiers : Array[Modifier] = []
-	var modifiers_count : int = max(0,level_number / 3 - 1) + 2
+	var modifiers_count : int = max(0,level_number / 3 - 1)
 	modifiers_count += 1 if boss else 0
 	
 	if boss:
