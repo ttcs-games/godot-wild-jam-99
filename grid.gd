@@ -40,7 +40,7 @@ var _rng = RandomNumberGenerator.new() #used for randomly spreading modifiers am
 # When a block is placed (L shape = 4 calls)
 signal block_placed(cell: Vector2i, element: Elements.Id) # todo: material?
 # When a shape is placed (L shape = 1 call)
-signal shape_placed(cells: Array[Vector2i], element: Elements.Id) # todo: material?
+signal shape_placed(cells: Array[Vector2i], element: Elements.Id, mat:MaterialData) 
 # When shape cannot be placed
 signal placement_rejected(offsets: Array[Vector2i])
 signal level_cleared(delta: int)
@@ -88,8 +88,8 @@ func _ready() -> void:
 	get_viewport().size_changed.connect(_update_grid_position)
 
 # Checker for an array of blocks (a shape) if it can be placed in required cell
-func can_place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id) -> bool:
-	var has_foundation := false
+func can_place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id, mat:MaterialData) -> bool:
+	var has_foundation: bool= false
 	# Check every block in an array
 	for offset in offsets:
 		# Get coordinates of to-be-placed block
@@ -126,10 +126,13 @@ func can_place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id)
 		for neighbor in _neighbors(cell):
 			# Check side isn't taken by opposite element
 			if cell_to_block.has(neighbor):
-				if Elements.opposes(cell_to_block[neighbor].element, element):
-					return false
+				if Elements.opposes(cell_to_block[neighbor].element, element)&&!cell_to_block[neighbor].mat.handler.ignores_opposition() :
+					return mat.handler.ignores_opposition()
+				# checks for sticky neigbhor 
+				if (cell_to_block[neighbor].mat.handler.sticky_neighbour()):
+					return true
 	
-	return has_foundation
+	return has_foundation|| !mat.handler.needs_foundation() 
 
 # Helper: return all neighboring cells coordinates for a given cell 
 func _neighbors(c: Vector2i) -> Array[Vector2i]:
@@ -148,7 +151,7 @@ func place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id, mat
 	if GameManager.is_end_turn_in_progress:
 		return false
 	
-	if not can_place(offsets, origin, element):
+	if not can_place(offsets, origin, element,mat):
 		return false
 	
 	# For each block, register it in the grid
@@ -157,12 +160,12 @@ func place(offsets: Array[Vector2i], origin: Vector2i, element: Elements.Id, mat
 		var cell := origin + offset - Vector2i(1,1) if GameManager._active_card.card_data.shape.display_name != "I-shape" else origin + offset
 		placed.append(cell)
 	
+	
 	# Signal for each new block that is has been placed on a certain cell
 	for cell in placed:
 		block_placed.emit(cell, element, mat)
 	
-	shape_placed.emit(placed, element)
-	mat.handler.play()
+	shape_placed.emit(placed, element, mat)
 	lines.queue_redraw()
 	return true
 
@@ -272,7 +275,7 @@ func _on_block_placed(cell: Vector2i, element: Elements.Id, mat : MaterialData) 
 	block_root.add_child(b)
 	cell_to_block[cell] = b
 
-func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
+func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id, mat:MaterialData) -> void:
 	SFX.place()
 	
 	#todo: remove the sprite of the mine once its triggered.
@@ -286,6 +289,19 @@ func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
 			if (mine in tiles_to_block_nodes.keys()):
 				tiles_to_block_nodes[mine].queue_free()
 				tiles_to_block_nodes.erase(mine)
+	
+	await mat.handler.play()
+	
+	#todo: remove the sprite of the mine once its triggered.
+	var mine_count := cells.filter(func (cell): return cell in tiles_to_block.keys() && tiles_to_block[cell].Type == Modifier.Types.LAVA_MINE)
+	if (len(mine_count) > 0):
+		GameManager.is_end_turn_in_progress = true
+		await rise_lava(len(mine_count))
+		GameManager.is_end_turn_in_progress = false
+		for mine in mine_count:
+			tiles_to_block.erase(mine)
+			tiles_to_block_nodes[mine].queue_free()
+			tiles_to_block_nodes.erase(mine)
 	
 	# Send the win singal once ever, if any placed cell turned the line into finished line above the objective
 	if not _level_cleared_fired and objective_row >= 0 and objective_row < grid_height:
@@ -312,7 +328,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and GameManager._active_card != null:
 		var test_offsets: Array[Vector2i] = GameManager._active_card.card_data.shape.offsets
-		var ok := place(test_offsets, hovered_cell, GameManager._active_card.card_data.element, GameManager._active_card.card_data.material)
+		var ok := await place(test_offsets, hovered_cell, GameManager._active_card.card_data.element, GameManager._active_card.card_data.material)
 		
 		if not ok:
 			SFX.denied()

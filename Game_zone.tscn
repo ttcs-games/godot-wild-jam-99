@@ -358,7 +358,6 @@ text = "End run
 (Main menu)"
 
 [connection signal="pressed" from="Control/RedrawButton" to="." method="_on_redraw_button_pressed"]
-[connection signal="shape_placed" from="Grid" to="Control/Hand2" method="_on_grid_shape_placed"]
 [connection signal="value_changed" from="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/MasterSlider" to="." method="_on_master_slider_value_changed"]
 [connection signal="value_changed" from="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
 [connection signal="value_changed" from="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/SFXSlider" to="." method="_on_sfx_slider_value_changed"]

@@ -1,11 +1,17 @@
 [gd_resource type="Resource" script_class="MaterialData" format=3 uid="uid://ceh3kxmww3pia"]
 
 [ext_resource type="Script" uid="uid://kl16elp5u6du" path="res://data/material_data.gd" id="1_aslbk"]
+[ext_resource type="Script" uid="uid://b4vyydhgqqr10" path="res://data/materials/IceHandler.gd" id="1_tx4g3"]
 [ext_resource type="Texture2D" uid="uid://cr7ox1puvepbu" path="res://assets/sprites/Block Ice.png" id="2_vdrlx"]
+
+[sub_resource type="Resource" id="Resource_o48n1"]
+script = ExtResource("1_tx4g3")
+metadata/_custom_type_script = "uid://b4vyydhgqqr10"
 
 [resource]
 script = ExtResource("1_aslbk")
 display_name = "Ice"
 description = "Ignores element opposition"
 sprite = ExtResource("2_vdrlx")
+handler = SubResource("Resource_o48n1")
 metadata/_custom_type_script = "uid://kl16elp5u6du"
