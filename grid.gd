@@ -254,15 +254,16 @@ func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
 	SFX.place()
 	
 	#todo: remove the sprite of the mine once its triggered.
-	var mine_count := cells.filter(func (cell): return cell in tiles_to_block.keys() && tiles_to_block[cell].Type == Modifier.Types.LAVA_MINE)
+	var mine_count : Array[Vector2i] = cells.filter(func (cell): return cell in tiles_to_block.keys() && tiles_to_block[cell].Type == Modifier.Types.LAVA_MINE)
 	if (len(mine_count) > 0):
 		GameManager.is_end_turn_in_progress = true
 		await rise_lava(len(mine_count))
 		GameManager.is_end_turn_in_progress = false
 		for mine in mine_count:
 			tiles_to_block.erase(mine)
-			tiles_to_block_nodes[mine].queue_free()
-			tiles_to_block_nodes.erase(mine)
+			if (mine in tiles_to_block_nodes.keys()):
+				tiles_to_block_nodes[mine].queue_free()
+				tiles_to_block_nodes.erase(mine)
 	
 	# Send the win singal once ever, if any placed cell turned the line into finished line above the objective
 	if not _level_cleared_fired and objective_row >= 0 and objective_row < grid_height:

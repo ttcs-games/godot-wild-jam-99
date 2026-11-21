@@ -12,7 +12,7 @@ static func generate(level_number: int) -> LevelData:
 	#defining number of modifiers and array holding modifiers
 	var _rng = RandomNumberGenerator.new()
 	var modifiers : Array[Modifier] = []
-	var modifiers_count : int = max(0,level_number / 3 - 1)
+	var modifiers_count : int = max(0,level_number / 3 - 1) + 4
 	modifiers_count += 1 if boss else 0
 	
 	if boss:
@@ -24,11 +24,12 @@ static func generate(level_number: int) -> LevelData:
 	var i = 0
 	while i < modifiers_count:
 		var new_modifier: Modifier
-		if (i == 0): #first modifier is always an element restriction
-			new_modifier = Modifier.new(_rng.randi_range(0,1), _rng.randi_range(0,3), 1) #all modifiers begin at intensity level 1
-		else:
-			new_modifier = Modifier.new(_rng.randi_range(0,len(Modifier.Types) - 1), _rng.randi_range(0,3), 1) #all modifiers begin at intensity level 1
-		
+		new_modifier = Modifier.new(2, _rng.randi_range(0,3), 1) #all modifiers begin at intensity level 1
+		#if (i == 0): #first modifier is always an element restriction
+			#new_modifier = Modifier.new(_rng.randi_range(0,1), _rng.randi_range(0,3), 1) #all modifiers begin at intensity level 1
+		#else:
+			#new_modifier = Modifier.new(_rng.randi_range(0,len(Modifier.Types) - 1), _rng.randi_range(0,3), 1) #all modifiers begin at intensity level 1
+		#
 		if (modifiers.any(func (x): return x.equals(new_modifier))): #if the modifier already exists in current modifiers
 			if (new_modifier.Type == Modifier.Types.FASTER_LAVA):
 				continue #quicker lava can only have an intensity level of 1
