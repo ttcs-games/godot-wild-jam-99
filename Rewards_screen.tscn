@@ -47,8 +47,8 @@ color = Color(0, 0, 0, 0.50980395)
 layout_mode = 0
 offset_left = 400.0
 offset_top = 300.0
-offset_right = 693.0
-offset_bottom = 548.0
+offset_right = 850.0
+offset_bottom = 623.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1923518730]
 layout_mode = 2
@@ -85,14 +85,13 @@ text = "                  "
 
 [node name="RedrawButtonContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1013870584]
 layout_mode = 2
-alignment = 1
 
 [node name="Label" type="Label" parent="HBoxContainer/RedrawButtonContainer" unique_id=1294767074]
 layout_mode = 2
-text = " "
+theme_override_font_sizes/font_size = 24
 
 [node name="TextureButton" type="Button" parent="HBoxContainer/RedrawButtonContainer" unique_id=642681960]
-custom_minimum_size = Vector2(31, 31)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
 disabled = true
@@ -100,7 +99,7 @@ icon = ExtResource("2_on28u")
 expand_icon = true
 
 [node name="TextureButton2" type="Button" parent="HBoxContainer/RedrawButtonContainer" unique_id=229137030]
-custom_minimum_size = Vector2(31, 31)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
 disabled = true
@@ -108,7 +107,7 @@ icon = ExtResource("2_on28u")
 expand_icon = true
 
 [node name="TextureButton3" type="Button" parent="HBoxContainer/RedrawButtonContainer" unique_id=2039012856]
-custom_minimum_size = Vector2(31, 31)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
 disabled = true
@@ -116,7 +115,7 @@ icon = ExtResource("2_on28u")
 expand_icon = true
 
 [node name="TextureButton4" type="Button" parent="HBoxContainer/RedrawButtonContainer" unique_id=58439769]
-custom_minimum_size = Vector2(31, 31)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
 disabled = true
@@ -124,7 +123,7 @@ icon = ExtResource("2_on28u")
 expand_icon = true
 
 [node name="TextureButton5" type="Button" parent="HBoxContainer/RedrawButtonContainer" unique_id=1121293987]
-custom_minimum_size = Vector2(31, 31)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_on28u")
 disabled = true
