@@ -43,6 +43,7 @@ signal game_over()
 # Stores the occupied cells for blocks and tile modifiers both
 var cell_to_block: = {} # key: Vector2i, value: Block
 var tiles_to_block: = {} # key: Vector2i, value: Modifier
+var tiles_to_block_nodes: = {} #key: Vector2i, value: Sprite2d node. holds the nodes created by tiles.
 # Keeps track of cell that is aimed at
 var hovered_cell := Vector2i (-1, -1) 
 var _last_hovered: Vector2i = Vector2i(-999, -999)
@@ -177,6 +178,11 @@ func rise_lava(n: int) -> void:
 	#tw.tween_property(lava_particles, "position:y", bottom_target_y, lava_rise_seconds).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	await tw.finished
 	
+	for key_below_lava in tiles_to_block_nodes.keys().filter(func(x): return x[1] >= lava_row):
+		tiles_to_block_nodes[key_below_lava].queue_free()
+		tiles_to_block_nodes.erase(key_below_lava)
+		tiles_to_block.erase(key_below_lava)
+	
 	await _run_cascade()
 	is_animating = false
 	lines.queue_redraw()
@@ -236,6 +242,7 @@ func _on_block_placed(cell: Vector2i, element: Elements.Id, mat : MaterialData) 
 	if (cell in tiles_to_block.keys() && tiles_to_block[cell].Type == Modifier.Types.FASTER_LAVA):
 		await GameManager._phase_rise_lava()
 		tiles_to_block.erase(cell)
+		tiles_to_block_nodes.erase(cell)
 
 func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
 	SFX.place()
@@ -445,3 +452,4 @@ func place_tile(cell: Vector2i, modifier: Modifier) -> void:
 	# todo: setup the material
 	tile_root.add_child(b)
 	tiles_to_block[cell] = modifier
+	tiles_to_block_nodes[cell] = b #adding node to dict so we can remove it later.
