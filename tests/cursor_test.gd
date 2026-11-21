@@ -143,6 +143,7 @@ func _on_help_pressed() -> void:
 func _on_settings_pressed() -> void:
 	SFX.button()
 	GameManager.remove_card()
+	cursor.play("idle")
 	settings_panel.visible = true
 	help_button.visible = false
 	settings_button.visible = false

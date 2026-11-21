@@ -24,6 +24,14 @@ func get_display_name() -> String:
 	else: #Quicker Acid
 		return "Quicker Acid, but Delayed"
 
+func get_tooltip_name() -> String:
+	if Type < 2: #Exclusive and Anti Tiles
+		return "%s %s" % [type_name[Type], elements[element]]
+	elif Type == 2: #Acid Mines
+		return type_name[Type]
+	else: #Quicker Acid
+		return "Quicker Acid, but Delayed"
+
 func assign_tiles(tiles: Array[Vector2i]) -> void:
 	tiles_affected.assign(tiles)
 	

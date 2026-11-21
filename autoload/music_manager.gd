@@ -64,7 +64,7 @@ func _play_ducked_sfx(stream: AudioStream, swtich: bool) -> void:
 		_tween.kill()
 	
 	_sfx_player.stream = stream
-	var sfx_len: float  = stream.get_length()
+	var sfx_len: float = stream.get_length()
 	var fade_dur: float = min(FADE_TIME, sfx_len * 0.5)
 	var original_db: float = 0.0
 	

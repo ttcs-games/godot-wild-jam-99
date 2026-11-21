@@ -12,6 +12,9 @@ extends Node2D
 @export var flash_seconds: float = 0.25
 @export var flash_hold_seconds: float = 0.25
 @export var delay_per_destruction: float = 0.01
+@export var border_source_texture: Texture2D = preload("res://assets/sprites/Blocks.tres")
+@export var border_target_block_size: float = 20.0
+@export var border_tint: Color = Color.WHITE
 
 # CONSTANTS
 const BLOCK := preload("res://game_objects/block.tscn")
@@ -21,6 +24,10 @@ const BLOCK := preload("res://game_objects/block.tscn")
 @onready var lava2_overlay: AnimatedSprite2D = $Lava/Lava2
 @onready var lava3_overlay: AnimatedSprite2D = $Lava/Lava3
 @onready var lines: Node2D = $Lines
+const TILE_TOOLTIP_GAP := 8.0
+var _tile_tooltip: PanelContainer
+var _tile_tooltip_label: RichTextLabel
+var _tile_tooltip_cell: Vector2i = Vector2i(-999, -999)
 
 # MODIFIER VARIABLES
 var level_modifiers : Array[Modifier] = []
@@ -55,6 +62,8 @@ var _level_cleared_fired: bool = false
 
 var _bubble_scale_tex: CurveTexture
 var _bubble_fade_tex: GradientTexture1D
+var _border_root: Node2D
+var _border_white_tex: ImageTexture
 
 # (1, 2) * 32px = (32px, 64px)
 func cell_to_coords(c: Vector2i) -> Vector2:
@@ -196,10 +205,10 @@ func apply_level_data(data: LevelData) -> void:
 			b.queue_free()
 	cell_to_block.clear()
 	
-	grid_width  = data.grid_width
+	grid_width = data.grid_width
 	grid_height = data.grid_height
 	objective_row = data.objective_row
-	lava_row = grid_height + data.lava_delay
+	lava_row = grid_height + data.lava_delay * data.lava_per_turn
 	_level_cleared_fired = false
 	is_animating = false
 	
@@ -231,6 +240,7 @@ func apply_level_data(data: LevelData) -> void:
 			
 	_fit_lava()
 	lines.queue_redraw()
+	_build_border()
 
 # Each tick get mouse position to get aimed cell
 func _process(delta: float) -> void:
@@ -241,6 +251,7 @@ func _process(delta: float) -> void:
 		_last_hovered = c
 		hovered_cell = c
 		lines.queue_redraw()
+	_update_tile_hover()
 
 func _draw() -> void:
 	var grid_area := Rect2(
@@ -458,6 +469,7 @@ func _fit_lava() -> void:
 	
 	lava2_overlay.material.set_shader_parameter("clip_global_x", 620.0)
 	lava2_overlay.material.set_shader_parameter("keep_left", true)
+	lava2_overlay.material.set_shader_parameter("keep_left", false)
 	lava_overlay.play("lava")
 	lava2_overlay.play("lava")
 	lava3_overlay.play("lava")
@@ -489,3 +501,193 @@ func place_tile(cell: Vector2i, modifier: Modifier) -> void:
 	tile_root.add_child(b)
 	tiles_to_block[cell] = modifier
 	tiles_to_block_nodes[cell] = b #adding node to dict so we can remove it later.
+
+func _build_border() -> void:
+	if _border_root and is_instance_valid(_border_root):
+		_border_root.queue_free()
+		_border_root = null
+	
+	if border_source_texture == null:
+		return
+	
+	if _border_white_tex == null:
+		var region_img := _extract_region_image(border_source_texture)
+		if region_img == null:
+			return
+		_border_white_tex = _make_white_image_texture(region_img)
+		if _border_white_tex == null:
+			return
+		
+		_border_root = Node2D.new()
+		_border_root.name = "BorderRoot"
+		add_child(_border_root)
+		
+		# Find size in px
+		var pad      := float(grid_padding)
+		var inner_x  := -pad
+		var inner_y  := -pad
+		var inner_w  := float(grid_width  * cell_size) + 2.0 * pad
+		var inner_h  := float(grid_height * cell_size) + 2.0 * pad
+		
+		# Find size in amount of blocks
+		var n_h := maxi(1, int(round(inner_w / border_target_block_size)))
+		var n_v := maxi(1, int(round(inner_h / border_target_block_size)))
+		var bw  := inner_w / float(n_h)
+		var bh  := inner_h / float(n_v)
+		
+		# Texture size
+		var tw := float(_border_white_tex.get_width())
+		var th := float(_border_white_tex.get_height())
+		
+		# Up
+		for i in n_h + 2:
+			_spawn_border_block(Vector2(inner_x - bw + i * bw, inner_y - bh), Vector2(bw, bh), tw, th)
+		# Bottom
+		for i in n_h + 2:
+			_spawn_border_block(Vector2(inner_x - bw + i * bw, inner_y + inner_h), Vector2(bw, bh), tw, th)
+		# Left
+		for i in n_v:
+			_spawn_border_block(Vector2(inner_x - bw, inner_y + i * bh), Vector2(bw, bh), tw, th)
+		# Right
+		for i in n_v:
+			_spawn_border_block(Vector2(inner_x + inner_w, inner_y + i * bh), Vector2(bw, bh), tw, th)
+
+func _spawn_border_block(pos: Vector2, size: Vector2, tex_w: float, tex_h: float) -> void:
+	var s := Sprite2D.new()
+	s.texture = _border_white_tex
+	s.centered = false
+	s.position = pos
+	s.scale = Vector2(size.x / tex_w, size.y / tex_h)
+	s.modulate = border_tint
+	_border_root.add_child(s)
+
+func _extract_region_image(src: Texture2D) -> Image:
+	if src == null:
+		return null
+	if src is AtlasTexture:
+		var at := src as AtlasTexture
+		if at.atlas == null:
+			return null
+		var base := at.atlas.get_image()
+		if base == null:
+			return null
+		var r := at.region
+		var ix := clampi(int(r.position.x), 0, base.get_width())
+		var iy := clampi(int(r.position.y), 0, base.get_height())
+		var iw := clampi(int(r.size.x), 0, base.get_width()  - ix)
+		var ih := clampi(int(r.size.y), 0, base.get_height() - iy)
+		if iw <= 0 or ih <= 0:
+			return null
+		return base.get_region(Rect2i(ix, iy, iw, ih))
+	return src.get_image()
+
+func _make_white_image_texture(img: Image) -> ImageTexture:
+	var out := img.duplicate()
+	out.convert(Image.FORMAT_RGBA8)
+	for y in out.get_height():
+		for x in out.get_width():
+			var c = out.get_pixel(x, y)
+			var v := maxf(c.r, maxf(c.g, c.b))
+			out.set_pixel(x, y, Color(v, v, v, c.a))
+	return ImageTexture.create_from_image(out)
+
+func _update_tile_hover() -> void:
+	# Don't show tooltips while the board is busy / game is transitioning
+	if is_animating or GameManager.is_end_turn_in_progress:
+		if _tile_tooltip_cell != Vector2i(-999, -999):
+			_tile_tooltip_cell = Vector2i(-999, -999)
+			_hide_tile_tooltip()
+		return
+
+	var found_cell := Vector2i(-999, -999)
+	if tiles_to_block_nodes.has(hovered_cell):
+		var sprite: Sprite2D = tiles_to_block_nodes[hovered_cell]
+		if is_instance_valid(sprite) and sprite.texture != null:
+			if _sprite_screen_rect(sprite).has_point(get_global_mouse_position()):
+				found_cell = hovered_cell
+	
+	if found_cell == _tile_tooltip_cell:
+		return
+	
+	_tile_tooltip_cell = found_cell
+	if found_cell == Vector2i(-999, -999):
+		_hide_tile_tooltip()
+	else:
+		_show_tile_tooltip(found_cell)
+
+func _sprite_screen_rect(sprite: Sprite2D) -> Rect2:
+	# get_global_transform_with_canvas() maps the sprite's local space -> screen space,
+	# so this works whether or not there's a Camera2D in the scene.
+	var xform := sprite.get_global_transform_with_canvas()
+	var top_left := xform.origin
+	var size := Vector2(sprite.texture.get_size()) * sprite.scale
+	return Rect2(top_left, size)
+
+func _show_tile_tooltip(cell: Vector2i) -> void:
+	_hide_tile_tooltip()
+	if not tiles_to_block.has(cell) or not tiles_to_block_nodes.has(cell):
+		return
+	var modifier: Modifier = tiles_to_block[cell]
+	var sprite: Sprite2D = tiles_to_block_nodes[cell]
+	if modifier == null or not is_instance_valid(sprite) or sprite.texture == null:
+		return
+	
+	var panel := PanelContainer.new()
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.1, 0.1, 0.1, 0.85)
+	panel.add_theme_stylebox_override("panel", style)
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.z_index = 2000
+	
+	var margin := MarginContainer.new()
+	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	margin.add_theme_constant_override("margin_left", 10)
+	margin.add_theme_constant_override("margin_right", 10)
+	margin.add_theme_constant_override("margin_top", 8)
+	margin.add_theme_constant_override("margin_bottom", 8)
+	
+	var label := RichTextLabel.new()
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.bbcode_enabled = true
+	label.fit_content = true
+	label.scroll_active = false
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size = Vector2(180, 0)
+	label.text = modifier.get_tooltip_name()
+	
+	margin.add_child(label)
+	panel.add_child(margin)
+	_get_tooltip_parent().add_child(panel)
+	
+	panel.visible = false
+	_tile_tooltip = panel
+	_tile_tooltip_label = label
+	
+	# Wait one frame so the PanelContainer reports its final minimum size
+	await get_tree().process_frame
+	
+	# Bail if the tooltip was hidden or the tile was destroyed during the await
+	if not is_instance_valid(_tile_tooltip) or _tile_tooltip_cell != cell:
+		return
+	if not is_instance_valid(sprite) or sprite.texture == null:
+		_hide_tile_tooltip()
+		_tile_tooltip_cell = Vector2i(-999, -999)
+		return
+	
+	var rect := _sprite_screen_rect(sprite)
+	# Anchor to the RIGHT edge of the sprite, aligned with its top
+	var target_x := rect.end.x + TILE_TOOLTIP_GAP
+	var target_y := rect.position.y
+	_tile_tooltip.global_position = Vector2(maxf(target_x, 8.0), maxf(target_y, 8.0))
+	_tile_tooltip.visible = true
+
+func _hide_tile_tooltip() -> void:
+	if is_instance_valid(_tile_tooltip):
+		_tile_tooltip.queue_free()
+	_tile_tooltip = null
+	_tile_tooltip_label = null
+
+func _get_tooltip_parent() -> Node:
+	if GameManager != null and is_instance_valid(GameManager.cursor_layer):
+		return GameManager.cursor_layer
+	return get_tree().root

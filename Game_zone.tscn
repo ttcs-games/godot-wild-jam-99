@@ -108,9 +108,9 @@ anchors_preset = 0
 [node name="OptionMenu" type="Panel" parent="Control2" unique_id=566262725]
 layout_mode = 1
 offset_left = 647.0
-offset_top = 53.0
+offset_top = 28.0
 offset_right = 1585.0
-offset_bottom = 632.0
+offset_bottom = 607.0
 
 [node name="MarginContainer" type="MarginContainer" parent="Control2/OptionMenu" unique_id=1674933718]
 layout_mode = 1
@@ -182,39 +182,46 @@ text = "Back"
 [node name="SettingsButton" type="Button" parent="." unique_id=1134588382]
 custom_minimum_size = Vector2(150, 50)
 offset_left = 650.0
-offset_top = 58.0
+offset_top = 30.0
 offset_right = 800.0
-offset_bottom = 108.0
+offset_bottom = 80.0
 theme_override_font_sizes/font_size = 24
 text = "Settings"
 
 [node name="HelpButton" type="Button" parent="." unique_id=469126619]
 custom_minimum_size = Vector2(150, 50)
 offset_left = 1436.0
-offset_top = 58.0
+offset_top = 30.0
 offset_right = 1586.0
-offset_bottom = 108.0
+offset_bottom = 80.0
 theme_override_font_sizes/font_size = 24
 text = "Help"
 
 [node name="Info" type="Panel" parent="." unique_id=1824028891]
 visible = false
 offset_left = 613.0
-offset_top = 38.0
+offset_top = 9.0
 offset_right = 1596.0
 offset_bottom = 614.0
+mouse_filter = 2
 
 [node name="Label" type="RichTextLabel" parent="Info" unique_id=318622348]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 0
 offset_left = 20.0
-offset_top = 86.0
+offset_top = 16.0
 offset_right = 963.0
 offset_bottom = 600.0
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.82346123, 0.99999994, 0.8705237, 1)
 theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
-text = "At the start of each turn, cards are drawn from your deck. Cards are free to play. 
+text = "Controls:
+Select / Place a card : Left Mouse Button
+Rotate shape : R
+Cancel selection : Esc / Right Mouse Button
+
+At the start of each turn, cards are drawn from your deck. Cards are free to play. 
 
 Placed and unused cards go into discard pile, which will be reshuffled back into deck when its empty. 
 
