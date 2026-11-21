@@ -47,3 +47,8 @@ func _center_shape_on_mouse() -> void:
 	var bbox := Utils.bounding_box(card_data.shape.offsets)
 	# set shape to be located where its center is (easily calculated via rectangle we just got)
 	_shape.position = -Vector2(bbox.size) * _shape.cell_size * 0.5
+	if (card_data.shape.offsets.any(func (x): return x in [Vector2i(0,3), Vector2i(2,3)])):
+		_shape.position.y += _shape.cell_size
+	elif (card_data.shape.offsets.any(func (x): return x in [Vector2i(3,0), Vector2i(3,2)])):
+		_shape.position.x += _shape.cell_size
+		
