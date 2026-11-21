@@ -7,9 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://cpqylr4csh80v" path="res://ui/pile_view.tscn" id="2_rftav"]
 [ext_resource type="PackedScene" uid="uid://b3ori8l4rn1g4" path="res://grid.tscn" id="3_ob6xn"]
 [ext_resource type="PackedScene" uid="uid://cqfhq5gsgm80q" path="res://ui/cursorAnimation.tscn" id="4_rftav"]
-[ext_resource type="Texture2D" uid="uid://cahscb3n0lj1p" path="res://assets/sprites/deck.png" id="5_fxueq"]
-[ext_resource type="Texture2D" uid="uid://cfnqp2308nkmp" path="res://assets/sprites/card_icons.png" id="6_2l2xc"]
+[ext_resource type="Texture2D" uid="uid://oimbyuocl25x" path="res://assets/sprites/Card Pile.png" id="5_fxueq"]
 [ext_resource type="Texture2D" uid="uid://ctemlwn8tfb3o" path="res://assets/sprites/redraw.png" id="6_b88yg"]
+[ext_resource type="Texture2D" uid="uid://r8adbd2ykgtr" path="res://assets/sprites/Card Pile 2.png" id="7_78ipi"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6qcef"]
 
@@ -42,11 +42,12 @@ grow_vertical = 1
 scale = Vector2(0.75, 0.75)
 
 [node name="DeckView" parent="Control" unique_id=321091678 instance=ExtResource("2_rftav")]
+custom_minimum_size = Vector2(65, 50)
 layout_mode = 0
-offset_left = -239.99997
-offset_top = 277.3333
-offset_right = -164.99997
-offset_bottom = 337.3333
+offset_left = -285.33334
+offset_top = 277.33334
+offset_right = -210.33334
+offset_bottom = 337.33334
 icon_texture = ExtResource("5_fxueq")
 
 [node name="Hand2" parent="Control" unique_id=435155043 instance=ExtResource("2_ob6xn")]
@@ -60,9 +61,10 @@ offset_bottom = 160.00003
 layout_mode = 0
 offset_left = 875.99963
 offset_top = 277.333
-offset_right = 950.9997
-offset_bottom = 337.333
-icon_texture = ExtResource("6_2l2xc")
+offset_right = 890.99963
+offset_bottom = 282.333
+scale = Vector2(1.7363334, 1.5733333)
+icon_texture = ExtResource("7_78ipi")
 
 [node name="CursorLayer2" type="CanvasLayer" parent="Control" unique_id=2095042195]
 layer = 2

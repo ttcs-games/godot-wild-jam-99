@@ -83,6 +83,9 @@ layout_mode = 2
 disabled = true
 text = "                  "
 
+[node name="TextureButton" type="TextureButton" parent="HBoxContainer/VBoxContainer" unique_id=743612984]
+layout_mode = 2
+
 [node name="RedrawButtonContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1013870584]
 layout_mode = 2
 

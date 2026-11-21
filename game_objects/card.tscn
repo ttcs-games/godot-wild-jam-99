@@ -22,6 +22,19 @@ offset_bottom = 40.0
 mouse_filter = 1
 script = ExtResource("1_ofhub")
 
+[node name="Back" type="TextureRect" parent="." unique_id=544405828]
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_ofhub")
+expand_mode = 1
+stretch_mode = 6
+
 [node name="Cover" type="TextureRect" parent="." unique_id=24016845]
 use_parent_material = true
 layout_mode = 1
