@@ -169,7 +169,6 @@ func reset_level() -> void:
 func rise_lava(n: int) -> void:
 	if is_animating:
 		return
-	
 	var target := maxi(objective_row, lava_row - n)
 	lava_row = target
 	var target_y := float(target) * float(cell_size)
@@ -250,15 +249,20 @@ func _on_block_placed(cell: Vector2i, element: Elements.Id, mat : MaterialData) 
 	# todo: setup the material
 	block_root.add_child(b)
 	cell_to_block[cell] = b
-	
-	#todo: remove the sprite of the mine once its triggered.
-	if (cell in tiles_to_block.keys() && tiles_to_block[cell].Type == Modifier.Types.FASTER_LAVA):
-		await GameManager._phase_rise_lava()
-		tiles_to_block.erase(cell)
-		tiles_to_block_nodes.erase(cell)
 
 func _on_shape_placed(cells: Array[Vector2i], element: Elements.Id) -> void:
 	SFX.place()
+	
+	#todo: remove the sprite of the mine once its triggered.
+	var mine_count := cells.filter(func (cell): return cell in tiles_to_block.keys() && tiles_to_block[cell].Type == Modifier.Types.LAVA_MINE)
+	if (len(mine_count) > 0):
+		GameManager.is_end_turn_in_progress = true
+		await rise_lava(len(mine_count))
+		GameManager.is_end_turn_in_progress = false
+		for mine in mine_count:
+			tiles_to_block.erase(mine)
+			tiles_to_block_nodes.erase(mine)
+	
 	# Send the win singal once ever, if any placed cell turned the line into finished line above the objective
 	if not _level_cleared_fired and objective_row >= 0 and objective_row < grid_height:
 		var checked_rows := {}
