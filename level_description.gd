@@ -2,10 +2,18 @@ extends Control
 
 @onready var title_label: Label = $MarginContainer/VBoxContainer/TitleLabel
 @onready var stats_grid: GridContainer = $MarginContainer/VBoxContainer/StatsGrid
-@onready var deck_view: Control = $MarginContainer/VBoxContainer/DeckView
+@onready var deck_view: Control = $MarginContainer/VBoxContainer/HBoxContainer/DeckView
 @onready var play_button: Button = $MarginContainer/VBoxContainer/PlayButton
 @onready var deck_layer: CanvasLayer = $CanvasLayer
 @onready var cursor_animation: AnimatedSprite2D = $CanvasLayer/Cursor
+
+@onready var settings_button: Button = $SettingsButton
+@onready var back_button: Button = $Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/BackButton
+@onready var settings_panel: Control = $Control2
+
+@onready var MasterSlider = $Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/MasterSlider
+@onready var MusicSlider = $Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/MusicSlider
+@onready var SFXSlider = $Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/SFXSlider
 
 func _ready() -> void:
 	GameManager.play_slide_in(self)
@@ -26,6 +34,8 @@ func _ready() -> void:
 	deck_view.bind(GameManager.deck)
 	deck_view.clicked.connect(func(pile): GameManager.open_pile_viewer(pile, "Deck"))
 	play_button.pressed.connect(_on_play_pressed)
+	settings_button.pressed.connect(_on_settings_pressed)
+	back_button.pressed.connect(_on_back_pressed)
 	_populate(data)
 	data.level_modifiers = data.level_modifiers.filter(func (x): return x.Type != Modifier.Types.FASTER_LAVA)
 	GameManager.current_level_data = data
@@ -73,3 +83,26 @@ func _add_row(label_text: String, value_text: String) -> void:
 func _on_play_pressed() -> void:
 	SFX.button()
 	GameManager.start_level()
+
+func _on_settings_pressed() -> void:
+	SFX.button()
+	GameManager.remove_card()
+	settings_panel.visible = true
+	settings_button.visible = false
+	MasterSlider.value = Utils.getAudio("Master")
+	MusicSlider.value = Utils.getAudio("Music")
+	SFXSlider.value = Utils.getAudio("SFX")
+
+func _on_back_pressed() -> void:
+	SFX.button()
+	settings_panel.visible = false
+	settings_button.visible = true
+
+func _on_master_slider_value_changed(value: float) -> void:
+	Utils.changeAudio("Master",value)
+
+func _on_music_slider_value_changed(value: float) -> void:
+	Utils.changeAudio("Music",value)
+
+func _on_sfx_slider_value_changed(value: float) -> void:
+	Utils.changeAudio("SFX",value)

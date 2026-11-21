@@ -113,12 +113,12 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 3.0
+offset_top = 97.0
 offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 48
-theme_override_constants/margin_top = 48
+theme_override_constants/margin_top = 128
 theme_override_constants/margin_right = 48
 theme_override_constants/margin_bottom = 48
 
@@ -135,14 +135,37 @@ horizontal_alignment = 1
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1247500962]
 layout_mode = 2
 
+[node name="TextLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1762818600]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Level Modifiers"
+horizontal_alignment = 1
+
 [node name="StatsGrid" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=75395426]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_constants/h_separation = 24
 theme_override_constants/v_separation = 10
 columns = 2
 
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1995460738]
 layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1652931647]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=513453940]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Your Deck:"
+vertical_alignment = 1
+
+[node name="DeckView" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=321091678 instance=ExtResource("2_oul27")]
+layout_mode = 2
+size_flags_horizontal = 4
+icon_texture = ExtResource("3_h0lew")
 
 [node name="PlayButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1060983852]
 custom_minimum_size = Vector2(180, 64)
@@ -151,11 +174,6 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 24
 text = "Play"
 
-[node name="DeckView" parent="MarginContainer/VBoxContainer" unique_id=321091678 instance=ExtResource("2_oul27")]
-layout_mode = 2
-size_flags_horizontal = 0
-icon_texture = ExtResource("3_h0lew")
-
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2058082307]
 
 [node name="Cursor" parent="CanvasLayer" unique_id=1383289649 instance=ExtResource("3_yp1oy")]
@@ -163,3 +181,100 @@ z_index = 1001
 z_as_relative = false
 
 [node name="Node" type="Node" parent="." unique_id=1914462100]
+
+[node name="Control2" type="Control" parent="." unique_id=828758087]
+visible = false
+custom_minimum_size = Vector2(1600, 900)
+anchors_preset = 0
+offset_left = -67.0
+offset_top = -1.0
+offset_right = 1533.0
+offset_bottom = 899.0
+
+[node name="OptionMenu" type="Panel" parent="Control2" unique_id=546899606]
+layout_mode = 1
+offset_left = 100.0
+offset_top = 53.0
+offset_right = 664.0
+offset_bottom = 458.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Control2/OptionMenu" unique_id=781669064]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 256
+theme_override_constants/margin_right = 256
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control2/OptionMenu/MarginContainer" unique_id=343107251]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Control2/OptionMenu/MarginContainer/VBoxContainer" unique_id=1776304422]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Master" type="Label" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=2131128449]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Master"
+
+[node name="MasterSlider" type="HSlider" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1349706202]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Music" type="Label" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=898605367]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=413544056]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SFX" type="Label" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1923849581]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "SFX"
+
+[node name="SFXSlider" type="HSlider" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=28679656]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Control" type="Control" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=2028289236]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=2001993892]
+custom_minimum_size = Vector2(185, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 24
+text = "Back"
+
+[node name="SettingsButton" type="Button" parent="." unique_id=184164643]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 0
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 174.0
+offset_bottom = 68.0
+theme_override_font_sizes/font_size = 24
+text = "Settings"
+
+[connection signal="value_changed" from="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/MasterSlider" to="." method="_on_master_slider_value_changed"]
+[connection signal="value_changed" from="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/SFXSlider" to="." method="_on_sfx_slider_value_changed"]

@@ -10,6 +10,14 @@ extends Control
 @onready var NextLevelButton: Button = $NextLevelButton
 @onready var RedrawAmountLabel : Label = $"HBoxContainer/RedrawButtonContainer/Redraws Left"
 
+@onready var settings_button: Button = $SettingsButton
+@onready var back_button: Button = $Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/BackButton
+@onready var settings_panel: Control = $Control2
+
+@onready var MasterSlider = $Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/MasterSlider
+@onready var MusicSlider = $Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/MusicSlider
+@onready var SFXSlider = $Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/SFXSlider
+
 var Rewards : Array[Reward] = []
 var index_of_reward_applied : int
 var reward_strings : Array[String] = []
@@ -40,6 +48,8 @@ func _ready() -> void:
 	NextLevelButton.pressed.connect(GameManager.finish_rewards)
 	
 	GameManager.reward_applied.connect(reward_applied_aftermath)
+	settings_button.pressed.connect(_on_settings_pressed)
+	back_button.pressed.connect(_on_back_pressed)
 	
 	var i = 0
 	while i < Reward_amount:
@@ -342,6 +352,26 @@ func _on_redraw_button_pressed(button_index: int) -> void:
 		break
 	
 	create_sub_decks()
-	
-	
-	
+
+func _on_settings_pressed() -> void:
+	SFX.button()
+	GameManager.remove_card()
+	settings_panel.visible = true
+	settings_button.visible = false
+	MasterSlider.value = Utils.getAudio("Master")
+	MusicSlider.value = Utils.getAudio("Music")
+	SFXSlider.value = Utils.getAudio("SFX")
+
+func _on_back_pressed() -> void:
+	SFX.button()
+	settings_panel.visible = false
+	settings_button.visible = true
+
+func _on_master_slider_value_changed(value: float) -> void:
+	Utils.changeAudio("Master",value)
+
+func _on_music_slider_value_changed(value: float) -> void:
+	Utils.changeAudio("Music",value)
+
+func _on_sfx_slider_value_changed(value: float) -> void:
+	Utils.changeAudio("SFX",value)
