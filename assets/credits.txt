@@ -1,11 +1,3 @@
-denied_long
-https://freesound.org/people/LilMati/sounds/489486/
-LilMati
-
-denied_short
-https://freesound.org/people/LilMati/sounds/404150/
-LilMati
-
 draw
 https://freesound.org/people/caphonic/sounds/797826/
 caphonic
@@ -13,14 +5,6 @@ caphonic
 button_big
 https://freesound.org/people/Bertrof/sounds/131658/
 Bertrof
-
-button
-https://freesound.org/people/StavSounds/sounds/546079/
-StavSounds
-
-rotate
-https://freesound.org/people/Krokulator/sounds/653382/
-Krokulator
 
 upgrade
 https://freesound.org/people/Scrampunk/sounds/345299/
@@ -46,22 +30,24 @@ hover_over
 https://freesound.org/people/Tony_Cannoli/sounds/801081/
 Tony_Cannoli
 
-placed
-Samoylow Maxim
-
 lava
 https://freesound.org/people/SilverIllusionist/sounds/472688/?
 SilverIllusionist
 https://freesound.org/people/EminYILDIRIM/sounds/548009/?
 EminYILDIRIM
 
-error_005 / error_006
+error_006
+card-fan-1
+card-fan-2
 https://kenney.nl/assets/interface-sounds
 Kenney
 
 Music by Eric Matyas
 www.soundimage.org
 
+rise
+https://freesound.org/people/InspectorJ/sounds/421184/
+InspectorJ
 
 font: Green Matcha
 https://www.dafont.com/green-matcha.font
