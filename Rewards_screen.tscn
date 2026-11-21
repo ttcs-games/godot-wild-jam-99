@@ -162,6 +162,99 @@ offset_bottom = 393.0
 scale = Vector2(1.7, 1.7)
 icon_texture = ExtResource("7_81klb")
 
+[node name="Control2" type="Control" parent="." unique_id=1842367675]
+visible = false
+custom_minimum_size = Vector2(1600, 900)
+anchors_preset = 0
+offset_left = -67.0
+offset_top = -1.0
+offset_right = 1533.0
+offset_bottom = 899.0
+
+[node name="OptionMenu" type="Panel" parent="Control2" unique_id=1037473201]
+layout_mode = 1
+offset_left = 100.0
+offset_top = 53.0
+offset_right = 664.0
+offset_bottom = 458.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Control2/OptionMenu" unique_id=1289031223]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 256
+theme_override_constants/margin_right = 256
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control2/OptionMenu/MarginContainer" unique_id=578266057]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="Control2/OptionMenu/MarginContainer/VBoxContainer" unique_id=758182893]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Master" type="Label" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=847359837]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Master"
+
+[node name="MasterSlider" type="HSlider" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1794971540]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Music" type="Label" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=392050698]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=2137632479]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SFX" type="Label" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=503154795]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "SFX"
+
+[node name="SFXSlider" type="HSlider" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1239479601]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Control" type="Control" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=1372362178]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer" unique_id=925351074]
+custom_minimum_size = Vector2(185, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 24
+text = "Back"
+
+[node name="SettingsButton" type="Button" parent="." unique_id=1911511516]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 0
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 174.0
+offset_bottom = 68.0
+theme_override_font_sizes/font_size = 24
+text = "Settings"
+
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Button" to="." method="_on_button_pressed" binds= [0]]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Button2" to="." method="_on_button_pressed" binds= [1]]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Button3" to="." method="_on_button_pressed" binds= [2]]
@@ -172,3 +265,6 @@ icon_texture = ExtResource("7_81klb")
 [connection signal="pressed" from="HBoxContainer/RedrawButtonContainer/TextureButton3" to="." method="_on_redraw_button_pressed" binds= [2]]
 [connection signal="pressed" from="HBoxContainer/RedrawButtonContainer/TextureButton4" to="." method="_on_redraw_button_pressed" binds= [3]]
 [connection signal="pressed" from="HBoxContainer/RedrawButtonContainer/TextureButton5" to="." method="_on_redraw_button_pressed" binds= [4]]
+[connection signal="value_changed" from="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/MasterSlider" to="." method="_on_master_slider_value_changed"]
+[connection signal="value_changed" from="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/SFXSlider" to="." method="_on_sfx_slider_value_changed"]

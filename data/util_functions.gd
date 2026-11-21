@@ -25,3 +25,12 @@ static func bounding_box(offsets: Array[Vector2i]) -> Rect2i:
 # Replace [ with a special character (to not confuse rich text with tag start)
 static func escape_bbcode(text: String) -> String:
 	return text.replace("[", "[lb]")
+
+static func getAudio(busName):
+	var busIndex = AudioServer.get_bus_index(busName)
+	return AudioServer.get_bus_volume_linear(busIndex)
+
+static func changeAudio (busName:String, value:float):
+	var busIndex = AudioServer.get_bus_index(busName)
+	AudioServer.set_bus_volume_db(busIndex, linear_to_db(value) )
+	AudioServer.set_bus_mute(busIndex, value<0.01)

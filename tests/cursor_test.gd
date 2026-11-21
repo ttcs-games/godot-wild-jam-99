@@ -17,6 +17,16 @@ extends Node2D
 @onready var finish_button: Button = $VictoryLayer/VictoryPanel/CenterContainer/MarginContainer/VBoxContainer/FinishButton
 @onready var cursor: AnimatedSprite2D = %Cursor
 @onready var redraw_label: Label = $Control/RedrawButton/RedrawLabel
+@onready var info: Panel = $Info
+@onready var close_button: Button = $Info/CloseButton
+@onready var help_button: Button = $HelpButton
+@onready var settings_button: Button = $SettingsButton
+@onready var back_button: Button = $Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/BackButton
+@onready var settings_panel: Control = $Control2
+
+@onready var MasterSlider = $Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/MasterSlider
+@onready var MusicSlider = $Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/MusicSlider
+@onready var SFXSlider = $Control2/OptionMenu/MarginContainer/VBoxContainer/GridContainer/SFXSlider
 
 func _ready() -> void:
 	GameManager.play_slide_in(self)
@@ -48,11 +58,22 @@ func _ready() -> void:
 	
 	turn_label.text = "Turn %d" % GameManager.turn_number
 	grid.apply_level_data(GameManager.current_level_data)
+	if (GameManager.current_level_data.level_number == 1):
+		info.visible = true
+		help_button.visible = false
+		settings_button.visible = false
+	else:
+		info.visible = false
+		help_button.visible = true
+		settings_button.visible = true
 	
 	grid.level_cleared.connect(_on_level_cleared)
 	continue_button.pressed.connect(_on_continue_pressed)
 	finish_button.pressed.connect(_on_finish_pressed)
-	
+	close_button.pressed.connect(_on_close_button)
+	help_button.pressed.connect(_on_help_pressed)
+	settings_button.pressed.connect(_on_settings_pressed)
+	back_button.pressed.connect(_on_back_pressed)
 	GameManager.start_turn()
 
 func _on_level_cleared(buffer: int) -> void:
@@ -106,3 +127,40 @@ func _on_redraw_button_pressed() -> void:
 	await GameManager._phase_draw_hand(cards_discarded_count)
 
 	redraw_label.text = "x%d" % [GameManager.redraws]
+
+func _on_close_button() -> void:
+	SFX.button()
+	info.visible = false
+	help_button.visible = true
+	settings_button.visible = true
+
+func _on_help_pressed() -> void:
+	SFX.button()
+	info.visible = true
+	help_button.visible = false
+	settings_button.visible = false
+
+func _on_settings_pressed() -> void:
+	SFX.button()
+	GameManager.remove_card()
+	settings_panel.visible = true
+	help_button.visible = false
+	settings_button.visible = false
+	MasterSlider.value = Utils.getAudio("Master")
+	MusicSlider.value = Utils.getAudio("Music")
+	SFXSlider.value = Utils.getAudio("SFX")
+
+func _on_back_pressed() -> void:
+	SFX.button()
+	settings_panel.visible = false
+	help_button.visible = true
+	settings_button.visible = true
+
+func _on_master_slider_value_changed(value: float) -> void:
+	Utils.changeAudio("Master",value)
+
+func _on_music_slider_value_changed(value: float) -> void:
+	Utils.changeAudio("Music",value)
+
+func _on_sfx_slider_value_changed(value: float) -> void:
+	Utils.changeAudio("SFX",value)
